@@ -6,7 +6,7 @@ import 'package:reussite_io_new/widget/button_green.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
-class AddNewChild extends StatelessWidget{
+class EditChild extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,14 @@ class AddNewChild extends StatelessWidget{
                 ),
                 Expanded(child:const SizedBox()),
 
-
+                InkWell(
+                  onTap: (){},
+                  child: Icon(
+                    Icons.edit,
+                    size: 30,
+                    color: PsColors.mainColor,
+                  ),
+                )
               ],
             ),
           ),
@@ -41,62 +48,53 @@ class AddNewChild extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
 
+                 Row(
+                   children: [
+                     Text(
+                       'Rayna\nStanton',
+                       style: GoogleFonts.notoSans(
+                           fontWeight: FontWeight.bold,
+                           fontSize: 33,
+                           color: PsColors.mainColor
+                       ),
+                     ),
+
+                     Expanded(child: const SizedBox()),
+                     Container(
+                       height: 60,
+                       width: 60,
+                       margin: const EdgeInsets.only(
+                           right: 10
+                       ),
+                       decoration: BoxDecoration(
+                           color: PsColors.light_grey,
+                           borderRadius: BorderRadius.circular(10)
+                       ),
+                       child: Image.asset(
+                           'assets/dummy/squircle.png'
+                       ),
+                     )
+
+                   ],
+                 ),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   Text(
-                    'add_you_child'.tr,
-                    style: GoogleFonts.notoSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 33,
-                        color: PsColors.mainColor
+                    'meet.appui.io/rayna-maldrene',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w500,
+                      color: PsColors.meetLinkColor,
+                      fontSize: 12
                     ),
                   ),
 
-
-                  const SizedBox(
-                    height: 55,
-                  ),
-
-                  Row(
-                    children: [
-
-                      Container(
-                        height: 60,
-                        width: 60,
-                        margin: const EdgeInsets.only(
-                            right: 10
-                        ),
-                        decoration: BoxDecoration(
-                            color: PsColors.light_green,
-                            borderRadius: BorderRadius.circular(7)
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Image.asset(
-                            'assets/icons/profile_pic_icon.png'
-                        ),
-                      ),
-
-                      Text(
-                        'add_child_avater'.tr,
-                        style: GoogleFonts.notoSans(
-                            color: PsColors.toolTitleColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14
-                        ),
-                      )
-
-                    ],
-                  ),
                   const SizedBox(
                     height: 30,
                   ),
 
-                  InputLevel(
-                    margin: const EdgeInsets.all(0),
-                    hint: 'full_name'.tr,
-                    onChange: (v){},
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+
+
                   InputLevel(
                     margin: const EdgeInsets.all(0),
                     hint: 'school_name'.tr,
@@ -140,7 +138,7 @@ class AddNewChild extends StatelessWidget{
                     height: 30,
                   ),
                   SelectionDropdown(
-                    hint: 'change_phone_no'.tr,
+                    hint: 'remove_child'.tr,
                     onTap: (){
 
                     },
@@ -149,30 +147,7 @@ class AddNewChild extends StatelessWidget{
                     height: 30,
                   ),
 
-                  Align(
-                    alignment: Alignment.center,
-                    child: RaisedGradientButtonGreen(
-                      margin: const EdgeInsets.all(0),
-                      onPressed: (){
-                        // Get.offNamedUntil(Routes.HOME, (route) => true);
 
-                      },
-                      width: 150,
-                      child:    Text(
-                        'create'.tr.toUpperCase(),
-                        style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 17,
-                            color: PsColors.white
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    height: 30,
-                  ),
                 ],
               ),
             ),

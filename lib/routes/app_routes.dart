@@ -14,4 +14,9 @@ abstract class Routes {
   static const MENU = '/menu';
   static const EDIT_PROFIE = '/editprofile';
   static const ADD_NEW_CHILD = '/addnewchild';
+  static const EDIT_CHILD = '/edit_child';
+  static const HELP = '/help_list';
+  static const SUPPORT_PAGE = '/support_page';
+  static const SUPPORT_REQUEST = '/support_request';
+  static const NOTIFICATION = '/notification';
 }

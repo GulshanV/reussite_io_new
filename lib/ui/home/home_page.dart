@@ -34,9 +34,15 @@ class HomePage extends GetView<HomeController>{
 
                 Expanded(child: const SizedBox()),
 
-                Image.asset(
-                  'assets/icons/nav_notification.png',
-                  height: 25,
+                InkWell(
+                  onTap: (){
+
+                    Get.offNamedUntil(Routes.NOTIFICATION, (route) => true);
+                  },
+                  child: Image.asset(
+                    'assets/icons/nav_notification.png',
+                    height: 25,
+                  ),
                 )
               ],
             ),

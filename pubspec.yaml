@@ -29,9 +29,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
   get:
+  intl:
   google_fonts:
   pin_code_fields:
   table_calendar:
+  share:
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +54,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/dummy/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

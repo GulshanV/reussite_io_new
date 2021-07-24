@@ -35,7 +35,7 @@ class AddNameandProfilePicture extends GetView<AuthController>{
                 'let_get_acquanted'.tr,
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: 33,
                     color: PsColors.white
                 ),
               ),

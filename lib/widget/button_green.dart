@@ -7,6 +7,7 @@ class RaisedGradientButtonGreen extends StatelessWidget {
   final double height;
   final EdgeInsetsGeometry margin;
   final Function onPressed;
+  final bool isValid;
 
   const RaisedGradientButtonGreen({
     Key key,
@@ -14,6 +15,7 @@ class RaisedGradientButtonGreen extends StatelessWidget {
     this.margin,
     this.width = double.infinity,
     this.height = 50.0,
+    this.isValid = true,
     this.onPressed,
   }) : super(key: key);
 
@@ -24,7 +26,7 @@ class RaisedGradientButtonGreen extends StatelessWidget {
       height: 50.0,
       margin: margin?? const EdgeInsets.only(top:20.0,bottom: 5,left: 20,right: 20),
       decoration: BoxDecoration(
-          color: PsColors.mainColor,
+          color: isValid?PsColors.mainColor:PsColors.disableColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

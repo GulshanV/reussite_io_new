@@ -11,4 +11,7 @@ class PsColors{
   static Color dark_textcolor=Color(0xff20222B);
   static Color borderlineColor=Color(0xffE4EFEC);
   static Color toolTitleColor=Color(0xff414141);
+  static Color light_grey=Color(0xffEBEFF2);
+  static Color meetLinkColor=Color(0xff8E9AA5);
+  static Color disableColor=Color(0xffD3DCDB);
 }

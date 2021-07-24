@@ -35,7 +35,7 @@ class LoginPage extends GetView<AuthController>{
                 'mobile_number'.tr,
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: 33,
                     color: PsColors.white
                 ),
               ),

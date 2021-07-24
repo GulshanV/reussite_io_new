@@ -30,6 +30,7 @@ const Map<String, String> en_US = {
   'save': 'Save',
   'add_you_child': 'Add\nyour child',
   'add_child_avater': 'Add an avatar (optional)',
+  'edit_child_avater': 'Edit an avatar(optional)',
   'school_name': 'School Name',
   'school_board': 'School board',
   'phone_number': 'Phone number',
@@ -43,4 +44,16 @@ const Map<String, String> en_US = {
   'privacy_policy': 'Privacy Policy',
   'tc': 'Terms and Conditions',
   'logout': 'Logout',
+  'remove_child': 'Remove Child',
+  'create_child_profile': 'Create your child\'s\nprofile (2 min)',
+  'create_child_sreserve': 'Create your child\'s\nreserve (1 min)',
+  'click_hyperlink_profile': 'Clicking on the\nHyperlink in the profile',
+  'click_parenting_guide': 'Check out the\nparenting guide',
+  'Lukas_app': 'Lukas\'s Fenkam app',
+  'share_app': 'Share app',
+  'support': 'Support',
+  'message': 'Message',
+  'send': 'Send',
+  'notification': 'Notification'
+
 };

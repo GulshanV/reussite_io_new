@@ -36,7 +36,7 @@ class VerificationPage extends GetView<AuthController>{
                 'verification'.tr,
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: 33,
                     color: PsColors.white
                 ),
               ),

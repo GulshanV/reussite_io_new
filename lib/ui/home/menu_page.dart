@@ -54,7 +54,7 @@ class MenuPage extends StatelessWidget{
                      'add_your_full_name'.tr,
                      style: GoogleFonts.notoSans(
                          fontWeight: FontWeight.bold,
-                         fontSize: 30,
+                         fontSize: 33,
                          color: PsColors.mainColor
                      ),
                    ),
@@ -100,9 +100,15 @@ class MenuPage extends StatelessWidget{
 
                    MenuLevel(
                      levelValue: 'help'.tr,
+                     onTap: (){
+                       Get.offNamedUntil(Routes.HELP, (route) => true);
+                     },
                    ),
                    MenuLevel(
                      levelValue: 'about'.tr,
+                     onTap: (){
+                       Get.offNamedUntil(Routes.SUPPORT_PAGE, (route) => true);
+                     },
                    ),
                    MenuLevel(
                      levelValue: 'privacy_policy'.tr,

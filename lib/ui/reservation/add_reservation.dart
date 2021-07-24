@@ -34,14 +34,14 @@ class AddNewReservation extends GetView<AddReservationController>{
 
 
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
 
                     Text(
                       'add_reservation'.tr,
                       style: GoogleFonts.notoSans(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 33,
                           color: PsColors.mainColor
                       ),
                     ),
@@ -87,18 +87,38 @@ class AddNewReservation extends GetView<AddReservationController>{
                       children: [
 
                         Container(
-                          height: 60,
-                          width: 60,
+                          height: 80,
+                          width: 80,
                           margin: const EdgeInsets.only(
                               right: 10
                           ),
                           decoration: BoxDecoration(
-                              color: PsColors.light_green,
-                              borderRadius: BorderRadius.circular(7)
+                              color: PsColors.light_grey,
+                              borderRadius: BorderRadius.circular(10)
                           ),
-                          padding: const EdgeInsets.all(10),
                           child: Image.asset(
-                              'assets/icons/profile_pic_icon.png'
+                              'assets/dummy/squircle.png'
+                          ),
+                        ),
+
+                        InkWell(
+                          onTap: (){
+                            Get.toNamed(Routes.EDIT_CHILD);
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            margin: const EdgeInsets.only(
+                                right: 10
+                            ),
+                            decoration: BoxDecoration(
+                                color: PsColors.light_grey,
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            padding: const EdgeInsets.all(5),
+                            child: Image.asset(
+                                'assets/images/placeholder_girl.png'
+                            ),
                           ),
                         ),
 
@@ -183,7 +203,7 @@ class AddNewReservation extends GetView<AddReservationController>{
                           style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w400,
                               fontSize: 17,
-                              color: PsColors.black
+                              color: PsColors.white
                           ),
                           textAlign: TextAlign.center,
                         ),

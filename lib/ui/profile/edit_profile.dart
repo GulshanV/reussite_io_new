@@ -52,7 +52,7 @@ class EditProfile extends StatelessWidget{
                      'edit_profile'.tr,
                      style: GoogleFonts.notoSans(
                          fontWeight: FontWeight.bold,
-                         fontSize: 30,
+                         fontSize: 33,
                          color: PsColors.mainColor
                      ),
                    ),

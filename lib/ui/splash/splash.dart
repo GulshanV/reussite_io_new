@@ -23,7 +23,6 @@ class _Splash extends State<Splash>{
 
   timer(){
     Timer(Duration(seconds: 3), (){
-      // Get.offNamedUntil(Routes.HOME, (route) => true);
       Get.offNamedUntil(Routes.WELCOME, (route) => true);
     });
   }
@@ -66,7 +65,7 @@ class _Splash extends State<Splash>{
                 'student_support'.tr.toUpperCase(),
                 style: GoogleFonts.notoSans(
                   fontWeight: FontWeight.bold,
-                  fontSize: 30,
+                  fontSize: 33,
                   color: PsColors.white
                 ),
             ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/widget/tools.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:get/get.dart';
-
 class ReservationDatePicker extends StatefulWidget{
 
   @override
@@ -16,7 +16,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
   final ValueNotifier<List<String>> _selectedEvents = ValueNotifier([]);
   List<String> _getEventsForDay(DateTime day) {
     // Implementation example
-    return ['',''];
+    return [];
   }
 
     @override
@@ -64,16 +64,45 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                       ),
                     ),
                     TableCalendar<String>(
-                      firstDay: DateTime.now(),
-                      lastDay: DateTime.now(),
+                      firstDay: DateTime(2019),
+                      lastDay:  DateTime(2030),
                       focusedDay: _focusedDay,
                       calendarFormat: _calendarFormat,
                       headerVisible: false,
+                      calendarStyle: CalendarStyle(
+                        defaultTextStyle: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.w600
+                        ),
+                        selectedTextStyle: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.w600
+                        ),
+                        weekendTextStyle: GoogleFonts.notoSans(
+                            fontWeight: FontWeight.w600
+                        ),
+                      ),
                       eventLoader: _getEventsForDay,
+                      calendarBuilders: CalendarBuilders(
+                        dowBuilder: (context, day) {
+
+                            final text = DateFormat.E().format(day);
+
+                            return Center(
+                              child: Text(
+                                text.substring(0,1),
+                                style: GoogleFonts.notoSans(color: PsColors.hintColor),
+                              ),
+                            );
+                          }
+                      ),
                       startingDayOfWeek: StartingDayOfWeek.monday,
+                      daysOfWeekStyle: DaysOfWeekStyle(
+                         weekdayStyle: GoogleFonts.notoSans(
+                           color: PsColors.dark_textcolor,
+                         ),
+                      ),
                       selectedDayPredicate: (day) {
                         // Use values from Set to mark multiple days as selected
-                        return true;//_selectedDays.contains(day);
+                        return false;//_selectedDays.contains(day);
                       },
                       onDaySelected:null,
                       onFormatChanged: (format) {
@@ -93,11 +122,11 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                         valueListenable: _selectedEvents,
                         builder: (context, value, _) {
                           return GridView.builder(
-                            itemCount: 12,
+                            itemCount: 6,
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:  3,
                               childAspectRatio: MediaQuery.of(context).size.width /
-                                  (MediaQuery.of(context).size.height / 4),
+                                  (MediaQuery.of(context).size.height / 4.5),
                             ),
                             padding: EdgeInsets.all(8),
                             itemBuilder: (BuildContext context, int index) {
@@ -111,7 +140,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                                   child: Text(
                                     '09:30 am',
                                     style: GoogleFonts.notoSans(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: PsColors.black
                                     ),
@@ -132,7 +161,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
         ),
 
         bottomNavigationBar: Container(
-          height: 150,
+          height: 170,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(40),
@@ -158,18 +187,49 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                 children: [
 
                   Container(
+                    height: 80,
+                    width: 80,
+                    margin: const EdgeInsets.only(
+                        right: 10
+                    ),
+                    decoration: BoxDecoration(
+                        color: PsColors.light_grey,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Image.asset(
+                        'assets/images/add_child.png'
+                    ),
+                  ),
+
+                  Container(
                     height: 60,
                     width: 60,
                     margin: const EdgeInsets.only(
                         right: 10
                     ),
                     decoration: BoxDecoration(
-                        color: PsColors.light_green,
-                        borderRadius: BorderRadius.circular(7)
+                        color: PsColors.light_grey,
+                        borderRadius: BorderRadius.circular(15)
                     ),
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(5),
                     child: Image.asset(
-                        'assets/icons/profile_pic_icon.png'
+                        'assets/dummy/squircle.png'
+                    ),
+                  ),
+
+                  Container(
+                    height: 60,
+                    width: 60,
+                    margin: const EdgeInsets.only(
+                        right: 10
+                    ),
+                    decoration: BoxDecoration(
+                        color: PsColors.light_grey,
+                        borderRadius: BorderRadius.circular(15)
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Image.asset(
+                        'assets/images/placeholder_girl.png'
                     ),
                   ),
 
