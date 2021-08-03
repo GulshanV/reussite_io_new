@@ -139,8 +139,8 @@ class VerificationPage extends GetView<AuthController>{
                   child:    Text(
                     'submit'.tr.toUpperCase(),
                     style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                         color: PsColors.black
                     ),
                     textAlign: TextAlign.center,

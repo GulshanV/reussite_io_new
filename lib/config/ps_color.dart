@@ -14,4 +14,7 @@ class PsColors{
   static Color light_grey=Color(0xffEBEFF2);
   static Color meetLinkColor=Color(0xff8E9AA5);
   static Color disableColor=Color(0xffD3DCDB);
+  static Color weekendColor=Color(0xffB6BEC5);
+  static Color calenderSelectedColor=Color(0xffABE237);
+  static Color markColor=Color(0xffFF4C4C);
 }

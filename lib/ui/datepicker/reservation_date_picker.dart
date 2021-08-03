@@ -16,7 +16,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
   final ValueNotifier<List<String>> _selectedEvents = ValueNotifier([]);
   List<String> _getEventsForDay(DateTime day) {
     // Implementation example
-    return [];
+    return ['1','2'];
   }
 
     @override
@@ -70,18 +70,48 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                       calendarFormat: _calendarFormat,
                       headerVisible: false,
                       calendarStyle: CalendarStyle(
+                        markerDecoration: BoxDecoration(
+                          color: PsColors.markColor,
+                          shape: BoxShape.circle
+                        ),
+                        markerSize: 5,
+                        markerMargin: const EdgeInsets.only(top:6),
+                        cellMargin: const EdgeInsets.all(10),
+                        todayDecoration : BoxDecoration(
+                          color: PsColors.calenderSelectedColor,
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        todayTextStyle:  GoogleFonts.notoSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: PsColors.white
+                        ),
+
                         defaultTextStyle: GoogleFonts.notoSans(
-                            fontWeight: FontWeight.w600
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: PsColors.dark_textcolor
                         ),
                         selectedTextStyle: GoogleFonts.notoSans(
-                            fontWeight: FontWeight.w600
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: PsColors.white,
                         ),
+
                         weekendTextStyle: GoogleFonts.notoSans(
-                            fontWeight: FontWeight.w600
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: PsColors.dark_textcolor,
+                        ),
+                        disabledTextStyle:  GoogleFonts.notoSans(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: PsColors.weekendColor,
                         ),
                       ),
                       eventLoader: _getEventsForDay,
                       calendarBuilders: CalendarBuilders(
+
                         dowBuilder: (context, day) {
 
                             final text = DateFormat.E().format(day);
@@ -89,7 +119,11 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                             return Center(
                               child: Text(
                                 text.substring(0,1),
-                                style: GoogleFonts.notoSans(color: PsColors.hintColor),
+                                style: GoogleFonts.notoSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: PsColors.weekendColor,
+                                ),
                               ),
                             );
                           }
@@ -97,8 +131,11 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       daysOfWeekStyle: DaysOfWeekStyle(
                          weekdayStyle: GoogleFonts.notoSans(
-                           color: PsColors.dark_textcolor,
+                           fontSize: 12,
+                           fontWeight: FontWeight.w700,
+                           color: PsColors.weekendColor,
                          ),
+
                       ),
                       selectedDayPredicate: (day) {
                         // Use values from Set to mark multiple days as selected
@@ -161,7 +198,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
         ),
 
         bottomNavigationBar: Container(
-          height: 170,
+          height: 120,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(40),
@@ -182,13 +219,13 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                   color: PsColors.black
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
               Row(
                 children: [
 
                   Container(
-                    height: 80,
-                    width: 80,
+                    height: 60,
+                    width: 60,
                     margin: const EdgeInsets.only(
                         right: 10
                     ),
@@ -202,8 +239,8 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                   ),
 
                   Container(
-                    height: 60,
-                    width: 60,
+                    height: 46,
+                    width: 46,
                     margin: const EdgeInsets.only(
                         right: 10
                     ),
@@ -218,8 +255,8 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                   ),
 
                   Container(
-                    height: 60,
-                    width: 60,
+                    height: 46,
+                    width: 46,
                     margin: const EdgeInsets.only(
                         right: 10
                     ),

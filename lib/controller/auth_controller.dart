@@ -2,15 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/repositry/repository_adapter.dart';
+import 'package:reussite_io_new/services/cqapi.dart';
 
 class AuthController extends SuperController<AuthModel>{
-  AuthController({@required this.homeRepository});
 
-  final IAuthRepository homeRepository;
+  var loginProcess = false.obs;
+  var error = "";
+
+  Future<String> login({String phone}) async {
+    error = "";
+    try {
+      loginProcess(true);
+      dynamic loginResp = await CQAPI.login(mobile: phone);
+
+    } finally {
+      loginProcess(false);
+    }
+    return error;
+  }
+
+
   @override
   void onInit() {
     super.onInit();
-    append(() => homeRepository.getCases);
   }
 
   @override

@@ -54,6 +54,7 @@ const Map<String, String> en_US = {
   'support': 'Support',
   'message': 'Message',
   'send': 'Send',
-  'notification': 'Notification'
+  'notification': 'Notification',
+  'invalid_mobile_no': 'Enter valid mobile number.'
 
 };

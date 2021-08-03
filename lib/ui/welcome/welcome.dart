@@ -79,8 +79,8 @@ class WelComePage extends StatelessWidget{
                           Text(
                             'lets_go'.tr.toUpperCase(),
                             style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
                                 color: PsColors.black
                             ),
                           ),

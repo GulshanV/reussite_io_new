@@ -7,7 +7,16 @@ import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/widget/button.dart';
 import 'package:reussite_io_new/widget/mobile_widget.dart';
 
-class LoginPage extends GetView<AuthController>{
+class LoginPage extends StatefulWidget{
+
+  @override
+  _LoginPage createState()=>_LoginPage();
+}
+
+class _LoginPage extends State<LoginPage>{
+final AuthController controller = Get.put(AuthController());
+
+TextEditingController phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +56,16 @@ class LoginPage extends GetView<AuthController>{
                 'enter_phone_no'.tr,
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w500,
-                    fontSize: 14,
+                    fontSize: 13,
                     color: PsColors.white
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              MobileWidget(),
+              MobileWidget(
+                phoneNumberController: phoneNumberController,
+              ),
 
               const SizedBox(
                 height: 25,
@@ -91,15 +102,28 @@ class LoginPage extends GetView<AuthController>{
                 alignment: Alignment.topLeft,
                 child: RaisedGradientButton(
                   margin: const EdgeInsets.all(0),
-                  onPressed: (){
-                    Get.toNamed(Routes.OTP_VERIFY_nav);
+                  onPressed: () async {
+                    if(phoneNumberController.text.length<9){
+                      Get.defaultDialog(
+                          title: "invalid!", middleText: 'invalid_mobile_no');
+                    }else{
+                      String error = await controller.login(
+                          phone: phoneNumberController.text
+                      );
+                      if(error != "") {
+                        Get.defaultDialog(title: "Oop!", middleText: error);
+                        } else {
+                          Get.toNamed(Routes.OTP_VERIFY_nav);
+                       }
+                    }
+
                   },
                   width: 175,
                   child:    Text(
                     'send_code'.tr.toUpperCase(),
                     style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                         color: PsColors.black
                     ),
                     textAlign: TextAlign.center,

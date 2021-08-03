@@ -105,7 +105,7 @@ class AddNameandProfilePicture extends GetView<AuthController>{
                     'next'.tr.toUpperCase(),
                     style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w400,
-                        fontSize: 17,
+                        fontSize: 16,
                         color: PsColors.black
                     ),
                     textAlign: TextAlign.center,
