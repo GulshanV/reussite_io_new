@@ -1,22 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reussite_io_new/model/auth_model.dart';
+import 'package:reussite_io_new/model/course_model.dart';
+import 'package:reussite_io_new/model/course_selection_model.dart';
+import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/repositry/repository_adapter.dart';
+import 'package:reussite_io_new/services/cqapi.dart';
 
 class AddReservationController extends SuperController<AuthModel>{
-  AddReservationController({@required this.homeRepository});
 
-  final IAuthRepository homeRepository;
+
+  var arrStudent = List<Student>().obs;
+  var arrCourseList =List<CourseSelectionModel>().obs;
+
+  var index=0.obs;
+
+  var childLoadProcess = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    append(() => homeRepository.getCases);
+    getChildList();
+    getAllCoure();
   }
+
+
+   getChildList() async {
+
+    try {
+      childLoadProcess(true);
+      var value = await CQAPI.getMyChild(
+        id: '8a0080277ae7d1d0017ae7e502a10023'
+      );
+      arrStudent(value);
+    } finally {
+      childLoadProcess(false);
+    }
+    // notifyChildrens();
+  }
+
+
+   getAllCoure() async {
+
+    try {
+      childLoadProcess(true);
+      List<Course> value = await CQAPI.getAllCourseList();
+
+      for(var m in value){
+        int isExist=-1;
+        for(int i=0;i<arrCourseList.length;i++){
+           if(m.subject.name==arrCourseList[i].courseName){
+             isExist=i;
+             break;
+           }
+        }
+
+        if(isExist==-1){
+          var coursM=CourseSelectionModel();
+          coursM.arrCourse.add(m);
+          coursM.courseName=m.subject.name;
+          arrCourseList.add(coursM);
+        }else{
+          arrCourseList[isExist].arrCourse.add(m);
+        }
+      }
+
+
+    } finally {
+      childLoadProcess(false);
+    }
+    // notifyChildrens();
+  }
+
+
 
   @override
   void onReady() {
-    print('The build method is done. '
-        'Your controller is ready to call dialogs and snackbars');
     super.onReady();
   }
 
@@ -39,6 +98,10 @@ class AddReservationController extends SuperController<AuthModel>{
   @override
   void onResumed() {
     // TODO: implement onResumed
+  }
+
+  void changeIndex(int index) {
+     this.index(index);
   }
 
 }

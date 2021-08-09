@@ -4,19 +4,31 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/add_reservation_controller.dart';
 import 'package:reussite_io_new/controller/auth_controller.dart';
+import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
+import 'package:reussite_io_new/ui/selection/course_selection.dart';
+import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/button.dart';
 import 'package:reussite_io_new/widget/button_green.dart';
+import 'package:reussite_io_new/widget/child_view.dart';
 import 'package:reussite_io_new/widget/input.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 import 'package:reussite_io_new/widget/tools.dart';
 
-class AddNewReservation extends GetView<AddReservationController>{
+class AddNewReservation extends StatefulWidget{
+  @override
+  _AddNewReservation createState()=>_AddNewReservation();
+}
+
+class _AddNewReservation extends State<AddNewReservation>{
+  final AddReservationController controller = Get.put(AddReservationController());
+
+  Course course;
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: PsColors.white,
       body: Column(
         children: [
@@ -63,8 +75,11 @@ class AddNewReservation extends GetView<AddReservationController>{
                         ),
                         Expanded(child: const SizedBox()),
                         InkWell(
-                          onTap: (){
-                            Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
+                          onTap: () async {
+                            var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
+                            if(value!=null){
+
+                            }
                           },
                           child: Text(
                             'add_child'.tr,
@@ -83,44 +98,48 @@ class AddNewReservation extends GetView<AddReservationController>{
                       height: 20,
                     ),
 
+                    controller.childLoadProcess.value?Center(
+                      child: CircularProgressIndicator(),
+                    ):controller.childLoadProcess.value && controller.arrStudent.length==0?Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        'not_child_found',
+                        style: GoogleFonts.notoSans(
+                          fontWeight: FontWeight.w400,
+                          color: PsColors.hintColor,
+                          fontSize: 16
+                        ),
+                      ),
+                    ):Wrap(
+                      children: List.generate(controller.arrStudent.length, (index){
+
+                          return  InkWell(
+                            onTap: (){
+                              controller.changeIndex(index);
+                            },
+                            onLongPress: () async {
+                              var map={
+                                'id':controller.arrStudent[index].id
+                              };
+                             var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
+                              if(value!=null){
+                                print('Delete: $value');
+                              }
+                            },
+                            child:ChildView(controller.arrStudent[index],
+                             isSelected:controller.index.value == index
+                            )
+                          );
+
+                      }),
+                    ),
+
                     Row(
                       children: [
 
-                        Container(
-                          height: 80,
-                          width: 80,
-                          margin: const EdgeInsets.only(
-                              right: 10
-                          ),
-                          decoration: BoxDecoration(
-                              color: PsColors.light_grey,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Image.asset(
-                              'assets/dummy/squircle.png'
-                          ),
-                        ),
 
-                        InkWell(
-                          onTap: (){
-                            Get.toNamed(Routes.EDIT_CHILD);
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            margin: const EdgeInsets.only(
-                                right: 10
-                            ),
-                            decoration: BoxDecoration(
-                                color: PsColors.light_grey,
-                                borderRadius: BorderRadius.circular(15)
-                            ),
-                            padding: const EdgeInsets.all(5),
-                            child: Image.asset(
-                                'assets/images/placeholder_girl.png'
-                            ),
-                          ),
-                        ),
+
+
 
 
                       ],
@@ -130,9 +149,24 @@ class AddNewReservation extends GetView<AddReservationController>{
                     ),
                     SelectionDropdown(
                       hint: 'subject'.tr,
-                      onTap: (){
+                      levelValue: course==null?null:course.subject.name,
+                      subLevelValue: 'material'.tr,
+                      onTap: () async {
+                        if(controller.arrCourseList.value.isNotEmpty){
+                        var value = await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                             backgroundColor: Colors.transparent,
+                            builder: (context)=>
+                                CourseSelection(controller.arrCourseList.value)
+                        );
+                        if(value!=null){
+                          setState(() {
+                            course=value;
+                          });
+                        }
 
-                      },
+                      }}
                     ),
                     const SizedBox(
                       height: 15,
@@ -140,7 +174,16 @@ class AddNewReservation extends GetView<AddReservationController>{
                     SelectionDropdown(
                       hint: 'date_time'.tr,
                       onTap: (){
-                        Get.offNamedUntil(Routes.RESERVATION_DATETIME, (route) => true);
+                        if(course==null){
+                          Utils.errorToast('select_reservation_course');
+                        }else{
+                          var map={
+                            'id':'8a0080547b1c0554017b1c10839d0002'
+                            // 'id':course.id
+                          };
+                          Get.offNamedUntil(Routes.RESERVATION_DATETIME, (route) => true,arguments: map);
+                        }
+
                       },
                     ),
 
@@ -164,7 +207,7 @@ class AddNewReservation extends GetView<AddReservationController>{
                         decoration: InputDecoration(
                             border:  InputBorder.none,
                             contentPadding: const EdgeInsets.only(left: 20,right: 0,top: 15,bottom: 15),
-                             hintText: 'assistance_description'.tr,
+                            hintText: 'assistance_description'.tr,
                             hintStyle:TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: PsColors.hintColor,
@@ -218,6 +261,6 @@ class AddNewReservation extends GetView<AddReservationController>{
           ),
         ],
       ),
-    );
+    ));
   }
 }

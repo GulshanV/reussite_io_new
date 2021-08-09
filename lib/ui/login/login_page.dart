@@ -63,6 +63,7 @@ TextEditingController phoneNumberController = TextEditingController();
               const SizedBox(
                 height: 30,
               ),
+
               MobileWidget(
                 phoneNumberController: phoneNumberController,
               ),
@@ -107,14 +108,15 @@ TextEditingController phoneNumberController = TextEditingController();
                       Get.defaultDialog(
                           title: "invalid!", middleText: 'invalid_mobile_no');
                     }else{
-                      String error = await controller.login(
-                          phone: phoneNumberController.text
-                      );
-                      if(error != "") {
-                        Get.defaultDialog(title: "Oop!", middleText: error);
-                        } else {
-                          Get.toNamed(Routes.OTP_VERIFY_nav);
-                       }
+                      Get.toNamed(Routes.OTP_VERIFY_nav);
+                      // String error = await controller.login(
+                      //     phone: phoneNumberController.text
+                      // );
+                      // if(error != "") {
+                      //   Get.defaultDialog(title: "Oop!", middleText: error);
+                      //   } else {
+                      //     Get.toNamed(Routes.OTP_VERIFY_nav);
+                      //  }
                     }
 
                   },

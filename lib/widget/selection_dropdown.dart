@@ -32,7 +32,7 @@ class SelectionDropdown extends StatelessWidget{
             Text(
               levelValue??hint??'',
               style: GoogleFonts.notoSans(
-                fontWeight: FontWeight.w500,
+                fontWeight: levelValue==null?FontWeight.w500:FontWeight.w600,
                 color: levelValue==null?PsColors.hintColor:PsColors.black,
                 fontSize: 14
               ),

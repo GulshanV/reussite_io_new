@@ -55,6 +55,16 @@ const Map<String, String> en_US = {
   'message': 'Message',
   'send': 'Send',
   'notification': 'Notification',
-  'invalid_mobile_no': 'Enter valid mobile number.'
+  'invalid_mobile_no': 'Enter valid mobile number.',
+  'full_name_required': 'Full name is required',
+  'school_required': 'School is required',
+  'full_name_min_length_error': 'Full name is to short',
+  'board_required': 'Board is required',
+  'level_required': 'Level is required',
+  'email_required': 'Email is required',
+  'email_invalid': 'Email is not valid',
+  'not_child_found': 'No child available',
+  'material': 'Material',
+  'select_reservation_course': 'Select reservation course'
 
 };

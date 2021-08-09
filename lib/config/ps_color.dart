@@ -17,4 +17,5 @@ class PsColors{
   static Color weekendColor=Color(0xffB6BEC5);
   static Color calenderSelectedColor=Color(0xffABE237);
   static Color markColor=Color(0xffFF4C4C);
+  static Color textColor=Color(0xff20222B);
 }

@@ -33,8 +33,10 @@ dependencies:
   google_fonts:
   pin_code_fields:
   mask_text_input_formatter:
+  fluttertoast:
   table_calendar:
   share:
+  flutter_calendar_carousel:
 
 dev_dependencies:
   flutter_test:

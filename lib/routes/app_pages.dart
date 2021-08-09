@@ -39,8 +39,12 @@ class AppPages {
 
     ),
     GetPage(
+      
         name: Routes.EDIT_CHILD,
-        page: () => EditChild(),
+        page: (){
+          return  EditChild();
+         }
+
     ),
     GetPage(
         name: Routes.SUPPORT_REQUEST,
@@ -84,6 +88,7 @@ class AppPages {
     GetPage(
         name: Routes.ADD_NEW_CHILD,
         page: () => AddNewChild(),
+
 
     ),
     GetPage(

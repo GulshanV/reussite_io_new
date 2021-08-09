@@ -9,9 +9,36 @@ import 'package:reussite_io_new/config/ps_config.dart';
 
 class RequestApi {
 
-  
+
 
   static Future<String> postAsync(String endPoint, {Map<String,dynamic> body}) async {
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+
+    String fullUrl=PsConfig.baseUrl+endPoint;
+    print('post:$fullUrl');
+    print(body);
+
+    try{
+      HttpClientRequest request = await client.postUrl(Uri.parse(fullUrl));
+
+      request.headers.set('content-type', 'application/json');
+      request.add(utf8.encode(json.encode(body)));
+
+      HttpClientResponse response = await request.close();
+
+      String reply = await response.transform(utf8.decoder).join();
+
+        return reply;
+    } catch(_) {
+      print(_);
+      return null;
+    }
+
+
+  }
+
+  static Future<String> putAsync(String endPoint, {Map<String,dynamic> body}) async {
 
     String fullUrl=PsConfig.baseUrl+endPoint;
     print(fullUrl);
@@ -19,7 +46,7 @@ class RequestApi {
 
 
     try{
-      return http.post(Uri.parse(fullUrl),headers: header, body:body).then((http.Response response) {
+      return http.put(Uri.parse(fullUrl),headers: header, body:body).then((http.Response response) {
         final int statusCode = response.statusCode;
         print(statusCode);
         print(response.body);
@@ -54,20 +81,23 @@ class RequestApi {
     print(fullUrl);
     var header = Map<String,String>();
 
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
     try{
-      return http.get(Uri.parse(fullUrl),headers: header).then((http.Response response) {
-        final int statusCode = response.statusCode;
-        if (statusCode < 200 || statusCode > 400 || json == null) {
-          return null;
-        }else if(response.body==null){
-          return null;
-        }
-        return response.body;
-      });
+      HttpClientRequest request = await client.getUrl(Uri.parse(fullUrl));
+
+      request.headers.set('content-type', 'application/json');
+      HttpClientResponse response = await request.close();
+
+      String reply = await response.transform(utf8.decoder).join();
+
+      return reply;
     } catch(_) {
+      print(_);
       return null;
     }
+
   }
 
 
