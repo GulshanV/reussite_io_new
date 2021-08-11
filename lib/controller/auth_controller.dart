@@ -18,10 +18,10 @@ class AuthController extends SuperController<AuthModel>{
    print(otp);
    if(otp.length<4){
      otpInvalid(true);
-     return null;
+     return 'otp is required';
    }else if(otp=='3232'){
-      otpInvalid(true);
-      return 'otp is required';
+      otpInvalid(false);
+      return null;
     }else{
       otpInvalid(true);
       return "invalid";

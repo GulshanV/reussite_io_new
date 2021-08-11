@@ -151,7 +151,7 @@ class _VerificationPage extends State<VerificationPage> {
                    margin: const EdgeInsets.all(0),
                    onPressed: (){
                      var value= controller.otpValid(textEditingController.text);
-                     if(value!=null){
+                     if(value==null){
                        Get.offNamedUntil(Routes.ADD_NAME_PIC_LOGIN, (route) => true);
                      }else{
                        setState(() {

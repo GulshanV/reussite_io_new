@@ -166,7 +166,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                     fontSize: 16,
                   ),
 
-                  minSelectedDate:DateTime.now(),
+                  minSelectedDate:DateTime.now().add(Duration(days: -1)),
                   maxSelectedDate: DateTime.now().add(Duration(days: 360)),
                   todayButtonColor: Colors.transparent,
                   todayBorderColor: Color(0xffABE237),
@@ -217,6 +217,9 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                         child: RaisedGradientButtonGreen(
                           margin: const EdgeInsets.all(0),
                           onPressed: (){
+                            if(slotIndex>=0){
+                              Get.back(result: controller.arrSlot[slotIndex]);
+                            }
                             // Get.offNamedUntil(Routes.HOME, (route) => true);
 
                           },

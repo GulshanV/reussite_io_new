@@ -1,24 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:reussite_io_new/controller/home_controller.dart';
+import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
+import 'package:reussite_io_new/ui/add_child/home_controller.dart';
+import 'package:reussite_io_new/ui/datepicker/calender_with_subject.dart';
 import 'package:reussite_io_new/ui/reservation/reservation_list.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../utils.dart';
 
-class HomePage extends GetView<HomeController>{
+class HomePage extends StatefulWidget{
+  @override
+  _HomePage createState()=>_HomePage();
+}
+
+class _HomePage extends State<HomePage>{
+  final HomeController controller = Get.put(HomeController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getChildList();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return Obx(() => Scaffold(
+      backgroundColor: PsColors.white,
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.only(
-              top: 50,
-              bottom: 15,
-              right: 20,
-              left: 20
+                top: 50,
+                bottom: 15,
+                right: 20,
+                left: 20
             ),
             child: Row(
               children: [
@@ -34,6 +51,25 @@ class HomePage extends GetView<HomeController>{
 
                 Expanded(child: const SizedBox()),
 
+                controller.arrStudent.length==0?const SizedBox():InkWell(
+                  onTap: () async {
+                    var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
+                    if(value!=null){
+                      Utils.successToast('booking_create_successfully');
+                      controller.getChildList();
+                    }
+
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/plus.svg',
+                    height: 25,
+                  ),
+                ),
+
+                const SizedBox(
+                  width: 20,
+                ),
+
                 InkWell(
                   onTap: (){
 
@@ -43,17 +79,24 @@ class HomePage extends GetView<HomeController>{
                     'assets/icons/nav_notification.png',
                     height: 25,
                   ),
-                )
+                ),
               ],
             ),
           ),
-          Expanded(child: Center(
-            child: ReservationList(),
-          ))
+          Expanded(child:controller.isLoading.value?Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ):controller.arrStudent.length==0? Center(
+            child: ReservationList(controller),
+          ):BookListWithCalender(controller)
+
+          )
 
         ],
       ),
-    );
+    ));
 
   }
 

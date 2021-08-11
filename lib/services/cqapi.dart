@@ -46,11 +46,15 @@ class CQAPI {
   static Future<List<Student>> getMyChild({dynamic id}) async {
     var response = await RequestApi.get('student?parentId=$id');
     List<Student> list = [];
-    if(response!=null){
-      var js = json.decode(response);
-      list=(js['content'] as List).map((e) => Student.fromJSON(e)).toList();
-    }
 
+    try{
+      print(response);
+      if(response!=null){
+        var js = json.decode(response);
+        list=(js['content'] as List).map((e) => Student.fromJSON(e)).toList();
+      }
+    }finally{
+    }
     return list;
 
   }
@@ -107,6 +111,14 @@ class CQAPI {
     }
 
     return student;
+
+  }
+
+  static Future<String> newBooking(Map map) async {
+    var response = await RequestApi.postAsync('booking',body: map);
+    print(response);
+
+    return response;
 
   }
 

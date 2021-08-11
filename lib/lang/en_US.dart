@@ -65,6 +65,9 @@ const Map<String, String> en_US = {
   'email_invalid': 'Email is not valid',
   'not_child_found': 'No child available',
   'material': 'Material',
-  'select_reservation_course': 'Select reservation course'
+  'select_reservation_course': 'Select reservation course',
+  'child_a_child': 'Select your child',
+  'select_booking_course': 'Select booking course',
+  'select_booking_schedule': 'Select booking schedule'
 
 };

@@ -1,204 +1,202 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
+import 'package:reussite_io_new/ui/add_child/home_controller.dart';
+import 'package:reussite_io_new/widget/child_view.dart';
 import 'package:reussite_io_new/widget/tools.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:get/get.dart';
-class ReservationDatePicker extends StatefulWidget{
+import 'package:reussite_io_new/routes/app_routes.dart';
+class BookListWithCalender extends StatefulWidget{
+final HomeController controller;
+BookListWithCalender(this.controller);
 
   @override
-  _ReservationDatePicker createState()=>_ReservationDatePicker();
+  _BookListWithCalender createState()=>_BookListWithCalender();
 }
-class _ReservationDatePicker extends State<ReservationDatePicker>{
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  final ValueNotifier<List<String>> _selectedEvents = ValueNotifier([]);
-  List<String> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return ['1','2'];
+class _BookListWithCalender extends State<BookListWithCalender>{
+
+
+  int slotIndex=-1;
+  var currentMonth = DateTime.now();
+  var currentDate = DateTime.now();
+
+  EventList<Event> getEvent(){
+    var map=Map<DateTime,List<Event>>();
+    // for(int i=0;i<controller.arrSchedule.length;i++){
+    //   var d= controller.arrSchedule[i].startDate.toString().split(' ')[0];
+    //   var format = DateFormat('MM/dd/yyyy').parse(d);
+    //   List<Event> list =[];
+    //   list.add(Event(
+    //     date: format,
+    //     title: '$i',
+    //     dot: Container(
+    //       margin: EdgeInsets.symmetric(horizontal: 1.0),
+    //       height: 5.0,
+    //       width: 5.0,
+    //       decoration: BoxDecoration(
+    //           color: Colors.green,
+    //           borderRadius: BorderRadius.circular(2.5)
+    //       ),
+    //     ),
+    //   ));
+    //   map[format]=list;
+    // }
+    EventList<Event> event=EventList<Event>(
+        events:map
+    );
+
+    return event;
+
   }
 
-    @override
+
+
+
+
+  @override
   Widget build(BuildContext context) {
 
-      return Scaffold(
+    return Obx(() => Scaffold(
         backgroundColor: PsColors.white,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
 
-            ToolsBar(
-              title: 'select_day'.tr,
-            ),
 
 
             Expanded(
-                child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: const SizedBox(),
-                          ),
-                          Text(
-                            'July',
-                            style: GoogleFonts.notoSans(
-                                fontWeight: FontWeight.w500,
-                                color: PsColors.mainColor,
-                                fontSize: 20
-                            ),
-                          ),
-                          const SizedBox(width: 10,),
-                          Icon(
-                            Icons.keyboard_arrow_right,
-                            size: 30,
-                            color: PsColors.mainColor,
-                          )
-                        ],
+              child:Padding(
+                padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 15,
                       ),
-                    ),
-                    TableCalendar<String>(
-                      firstDay: DateTime(2019),
-                      lastDay:  DateTime(2030),
-                      focusedDay: _focusedDay,
-                      calendarFormat: _calendarFormat,
-                      headerVisible: false,
-                      calendarStyle: CalendarStyle(
-                        markerDecoration: BoxDecoration(
-                          color: PsColors.markColor,
-                          shape: BoxShape.circle
+                      CalendarCarousel<Event>(
+                        onDayPressed: (date, events) {
+                          this.setState(() => currentDate = date);
+                          // controller.clearSlot();
+                          // events.forEach((event){
+                          //   controller.selectEvent(event.title);
+                          // });
+                        },
+                        weekdayTextStyle:  TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: PsColors.weekendColor
                         ),
-                        markerSize: 5,
-                        markerMargin: const EdgeInsets.only(top:6),
-                        cellMargin: const EdgeInsets.all(10),
-                        todayDecoration : BoxDecoration(
-                          color: PsColors.calenderSelectedColor,
-                            borderRadius: BorderRadius.circular(15)
-                        ),
-                        todayTextStyle:  GoogleFonts.notoSans(
+                        weekendTextStyle: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: PsColors.white
-                        ),
-
-                        defaultTextStyle: GoogleFonts.notoSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                             color: PsColors.dark_textcolor
                         ),
-                        selectedTextStyle: GoogleFonts.notoSans(
+                        daysTextStyle: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: PsColors.white,
+                            fontWeight: FontWeight.w600,
+                            color: PsColors.black
                         ),
-
-                        weekendTextStyle: GoogleFonts.notoSans(
+                        thisMonthDayBorderColor: Colors.grey,
+                        weekDayFormat: WeekdayFormat.narrow,
+                        markedDatesMap: getEvent(),
+                        height: 280.0,
+                        selectedDateTime: currentDate,
+                        showIconBehindDayText: true,
+                        customGridViewPhysics: NeverScrollableScrollPhysics(),
+                        markedDateShowIcon: false,
+                        markedDateIconMaxShown: 2,
+                        showHeader: false,
+                        selectedDayTextStyle: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: PsColors.dark_textcolor,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
                         ),
-                        disabledTextStyle:  GoogleFonts.notoSans(
+                        selectedDayButtonColor: Color(0xffABE237),
+                        todayTextStyle: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w600,
                           fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: PsColors.weekendColor,
                         ),
+
+                        minSelectedDate:DateTime.now().add(Duration(days: -1)),
+                        maxSelectedDate: DateTime.now().add(Duration(days: 360)),
+                        todayButtonColor: Colors.transparent,
+                        todayBorderColor: Color(0xffABE237),
+                        childAspectRatio: 1.2,
+
+                        markedDateMoreShowTotal: true,
                       ),
-                      eventLoader: _getEventsForDay,
-                      calendarBuilders: CalendarBuilders(
 
-                        dowBuilder: (context, day) {
-
-                            final text = DateFormat.E().format(day);
-
-                            return Center(
-                              child: Text(
-                                text.substring(0,1),
-                                style: GoogleFonts.notoSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: PsColors.weekendColor,
-                                ),
-                              ),
-                            );
-                          }
-                      ),
-                      startingDayOfWeek: StartingDayOfWeek.monday,
-                      daysOfWeekStyle: DaysOfWeekStyle(
-                         weekdayStyle: GoogleFonts.notoSans(
-                           fontSize: 12,
-                           fontWeight: FontWeight.w700,
-                           color: PsColors.weekendColor,
-                         ),
-
-                      ),
-                      selectedDayPredicate: (day) {
-                        // Use values from Set to mark multiple days as selected
-                        return false;//_selectedDays.contains(day);
-                      },
-                      onDaySelected:null,
-                      onFormatChanged: (format) {
-                        if (_calendarFormat != format) {
-                          setState(() {
-                            _calendarFormat = format;
-                          });
-                        }
-                      },
-                      // onPageChanged: (focusedDay) {
-                      //   _focusedDay = focusedDay;
-                      // },
-                    ),
-                    const SizedBox(height: 8.0),
-                    Expanded(
-                      child: ValueListenableBuilder<List<String>>(
-                        valueListenable: _selectedEvents,
-                        builder: (context, value, _) {
-                          return GridView.builder(
-                            itemCount: 6,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount:  3,
-                              childAspectRatio: MediaQuery.of(context).size.width /
-                                  (MediaQuery.of(context).size.height / 4.5),
-                            ),
-                            padding: EdgeInsets.all(8),
-                            itemBuilder: (BuildContext context, int index) {
-                              return new Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE4EFEC),
-                                  borderRadius: BorderRadius.circular(10)
-                                ),
-                                margin: const EdgeInsets.all(5),
-                                child: Center(
-                                  child: Text(
-                                    '09:30 am',
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: PsColors.black
-                                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:10.0,right:10),
+                        child: Wrap(
+                          children:  List.generate(7, (index) => Row(
+                            children: [
+                              Text.rich(
+                                  TextSpan(
+                                  text: '$index',
+                                  style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.w300,
+                                      color: PsColors.meetLinkColor,
+                                      fontSize: 22
                                   ),
+                                  children: [
+                                    TextSpan(
+                                        text: 'AM',
+                                        style: GoogleFonts.notoSans(
+                                            fontWeight: FontWeight.w500,
+                                            color: PsColors.meetLinkColor,
+                                            fontSize: 11
+                                        )
+                                    )
+                                  ]
+                              ),
+                                // textAlign: TextAlign.start,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: index%2==0?null:PsColors.mainColor,
+                                  border: Border.all(
+                                    color: PsColors.hintColor.withOpacity(0.5),
+                                    width: 0.5
+                                  )
                                 ),
-                              );
-                            },
-                          );
-                        },
+                              ))
+                            ],
+                          )),
+                        ),
                       ),
-                    ),
-                  ],
+
+                      const SizedBox(
+                        height: 50,
+                      )
+
+                    ],
+                  ),
                 ),
+              ),
             )
 
 
           ],
         ),
-
         bottomNavigationBar: Container(
-          height: 120,
+          height: 170,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(40),
@@ -214,68 +212,39 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
               Text(
                 'Select a child to see his reservations',
                 style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  color: PsColors.black
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: PsColors.black
                 ),
               ),
-              const SizedBox(height: 10,),
-              Row(
-                children: [
+              const SizedBox(height: 20,),
+              Wrap(
+                children: List.generate(widget.controller.arrStudent.length, (index){
 
-                  Container(
-                    height: 60,
-                    width: 60,
-                    margin: const EdgeInsets.only(
-                        right: 10
-                    ),
-                    decoration: BoxDecoration(
-                        color: PsColors.light_grey,
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Image.asset(
-                        'assets/images/add_child.png'
-                    ),
-                  ),
+                  return  InkWell(
+                      onTap: (){
+                        widget.controller.changeIndex(index);
+                      },
+                      onLongPress: () async {
+                        var map={
+                          'id':widget.controller.arrStudent[index].id
+                        };
+                        var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
+                        if(value!=null){
+                          print('Delete: $value');
+                        }
+                      },
+                      child:ChildView(widget.controller.arrStudent[index],
+                          isSelected:widget.controller.index.value == index
+                      )
+                  );
 
-                  Container(
-                    height: 46,
-                    width: 46,
-                    margin: const EdgeInsets.only(
-                        right: 10
-                    ),
-                    decoration: BoxDecoration(
-                        color: PsColors.light_grey,
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Image.asset(
-                        'assets/dummy/squircle.png'
-                    ),
-                  ),
-
-                  Container(
-                    height: 46,
-                    width: 46,
-                    margin: const EdgeInsets.only(
-                        right: 10
-                    ),
-                    decoration: BoxDecoration(
-                        color: PsColors.light_grey,
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Image.asset(
-                        'assets/images/placeholder_girl.png'
-                    ),
-                  ),
-
-
-                ],
-              ),
+                }),
+              )
             ],
           ),
-        ),
-      );
+        )
+
+    ));
   }
 }

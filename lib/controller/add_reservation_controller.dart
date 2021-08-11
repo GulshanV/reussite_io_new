@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/model/course_selection_model.dart';
+import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/repositry/repository_adapter.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
+import 'package:reussite_io_new/utils.dart';
 
 class AddReservationController extends SuperController<AuthModel>{
 
@@ -70,6 +74,52 @@ class AddReservationController extends SuperController<AuthModel>{
       childLoadProcess(false);
     }
     // notifyChildrens();
+  }
+
+
+   var isBack=false.obs;
+
+
+  addReservation(Student student,Course course, ScheduleModel schedule,String descripton) async {
+    if(student==null){
+      Utils.errorToast('child_a_child'.tr);
+    }else if(course==null){
+      Utils.errorToast('select_booking_course'.tr);
+    }else if(schedule==null){
+      Utils.errorToast('select_booking_schedule'.tr);
+    }else{
+      var courseMap={
+        'name':course.name,
+        'description':descripton??'',
+        'subject':course.subject.name,
+      };
+      var scheduleMap={
+        'course':courseMap,
+        'id':schedule.id
+      };
+      var studentProfileMap={
+        'id':student.id
+      };
+      var map={
+        'studentProfile':studentProfileMap,
+        'schedule':scheduleMap
+      };
+      try {
+        isBack(true);
+        var value = await CQAPI.newBooking(map );
+        if(value!=null){
+          Map js = json.decode(value);
+          if(js.containsKey('id')){
+            Get.back(result: true);
+          }
+        }
+        isBack(false);
+      } finally {
+        isBack(false);
+      }
+    }
+
+
   }
 
 
