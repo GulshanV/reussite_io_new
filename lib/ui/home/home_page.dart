@@ -44,23 +44,23 @@ class _HomePage extends State<HomePage> {
                       ),
                     ),
                     Expanded(child: const SizedBox()),
-                    controller.arrStudent.length == 0
+                    Obx(()=>controller.arrStudent.length == 0
                         ? const SizedBox()
                         : InkWell(
-                            onTap: () async {
-                              var value = await Get.offNamedUntil(
-                                  Routes.ADD_RESERVATION, (route) => true);
-                              if (value != null) {
-                                Utils.successToast(
-                                    'booking_create_successfully');
-                                controller.getChildList();
-                              }
-                            },
-                            child: SvgPicture.asset(
-                              'assets/icons/plus.svg',
-                              height: 25,
-                            ),
-                          ),
+                      onTap: () async {
+                        var value = await Get.offNamedUntil(
+                            Routes.ADD_RESERVATION, (route) => true);
+                        if (value != null) {
+                          Utils.successToast(
+                              'booking_create_successfully');
+                          controller.getChildList();
+                        }
+                      },
+                      child: SvgPicture.asset(
+                        'assets/images/plus.svg',
+                        height: 25,
+                      ),
+                    )),
                     const SizedBox(
                       width: 20,
                     ),

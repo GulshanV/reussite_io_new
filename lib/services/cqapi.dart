@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:reussite_io_new/model/booking_model.dart';
 import 'package:reussite_io_new/model/course_model.dart';
+import 'package:reussite_io_new/model/parent_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/services/request_api.dart';
@@ -47,6 +49,21 @@ class CQAPI {
     return list;
   }
 
+  static Future<ParentModel> getParentProfile({dynamic id}) async {
+    var response = await RequestApi.get('parent/$id');
+
+    ParentModel parentModel;
+
+    try {
+      print(response);
+      if (response != null) {
+        var js = json.decode(response);
+        parentModel= ParentModel.fromJSON(js);
+      }
+    } finally {}
+    return parentModel;
+  }
+
   static Future<List<Student>> getMyChild({dynamic id}) async {
     var response = await RequestApi.get('student?parentId=$id');
     List<Student> list = [];
@@ -62,7 +79,7 @@ class CQAPI {
   }
 
   static Future<List<Course>> getAllCourseList() async {
-    var response = await RequestApi.get('course');
+    var response = await RequestApi.get('course?size=100');
     print(response);
     List<Course> list = [];
     if (response != null) {
@@ -70,6 +87,16 @@ class CQAPI {
       list = (js['content'] as List).map((e) => Course.fromJSON(e)).toList();
     }
 
+    return list;
+  }
+  static Future<List<BookingModel>> getBookingListChildId(String childId) async {
+    var response = await RequestApi.get('booking?profileId=$childId');
+    print(response);
+    List<BookingModel> list = [];
+    if (response != null) {
+      var js = json.decode(response);
+      list = (js['content'] as List).map((e) => BookingModel.fromJSON(e)).toList();
+    }
     return list;
   }
 

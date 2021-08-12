@@ -3,11 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:get/get.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
+import 'package:reussite_io_new/ui/profile/profile_controller.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
 import 'package:reussite_io_new/widget/manu_tile.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
-class MenuPage extends StatelessWidget{
+class MenuPage extends StatefulWidget{
+
+  @override
+  _MenuPage createState()=>_MenuPage();
+}
+
+class _MenuPage extends State<MenuPage>{
+
+  // final ProfileController controller = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    // controller.getParentDetails();
+  }
 
    @override
   Widget build(BuildContext context) {

@@ -27,29 +27,30 @@ class _BookListWithCalender extends State<BookListWithCalender>{
 
   EventList<Event> getEvent(){
     var map=Map<DateTime,List<Event>>();
-    // for(int i=0;i<controller.arrSchedule.length;i++){
-    //   var d= controller.arrSchedule[i].startDate.toString().split(' ')[0];
-    //   var format = DateFormat('MM/dd/yyyy').parse(d);
-    //   List<Event> list =[];
-    //   list.add(Event(
-    //     date: format,
-    //     title: '$i',
-    //     dot: Container(
-    //       margin: EdgeInsets.symmetric(horizontal: 1.0),
-    //       height: 5.0,
-    //       width: 5.0,
-    //       decoration: BoxDecoration(
-    //           color: Colors.green,
-    //           borderRadius: BorderRadius.circular(2.5)
-    //       ),
-    //     ),
-    //   ));
-    //   map[format]=list;
-    // }
+    for(int i=0;i<widget.controller.arrBooking.length;i++){
+      var d= widget.controller.arrBooking[i].startDate.toString().split(' ')[0];
+      var format = DateFormat('MM/dd/yyyy').parse(d);
+      List<Event> list =[];
+      list.add(Event(
+        date: format,
+        title: '$i',
+        dot: Container(
+          margin: EdgeInsets.symmetric(horizontal: 1.0),
+          height: 5.0,
+          width: 5.0,
+          decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(2.5)
+          ),
+        ),
+      ));
+      map[format]=list;
+    }
     EventList<Event> event=EventList<Event>(
         events:map
     );
 
+    print(event);
     return event;
 
   }
@@ -63,7 +64,12 @@ class _BookListWithCalender extends State<BookListWithCalender>{
 
     return Obx(() => Scaffold(
         backgroundColor: PsColors.white,
-        body: Column(
+        body: widget.controller.isLoadingSlot.value?Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ):Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -87,10 +93,10 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                       CalendarCarousel<Event>(
                         onDayPressed: (date, events) {
                           this.setState(() => currentDate = date);
-                          // controller.clearSlot();
-                          // events.forEach((event){
-                          //   controller.selectEvent(event.title);
-                          // });
+                          events.forEach((event){
+                            widget.controller.selectEvent(event.title);
+
+                          });
                         },
                         weekdayTextStyle:  TextStyle(
                             fontSize: 14,
@@ -129,7 +135,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                           fontSize: 16,
                         ),
 
-                        minSelectedDate:DateTime.now().add(Duration(days: -1)),
+                        minSelectedDate:DateTime.now().add(Duration(days: -90)),
                         maxSelectedDate: DateTime.now().add(Duration(days: 360)),
                         todayButtonColor: Colors.transparent,
                         todayBorderColor: Color(0xffABE237),
@@ -141,7 +147,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                       Padding(
                         padding: const EdgeInsets.only(left:10.0,right:10),
                         child: Wrap(
-                          children:  List.generate(7, (index) => Row(
+                          children:  List.generate(widget.controller.arrSubjectList.length, (index) => Row(
                             children: [
                               Text.rich(
                                   TextSpan(
@@ -170,11 +176,19 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                               Expanded(child: Container(
                                 height: 50,
                                 decoration: BoxDecoration(
-                                  color: index%2==0?null:PsColors.mainColor,
+                                  color: 12==1?null:PsColors.mainColor,
                                   border: Border.all(
                                     color: PsColors.hintColor.withOpacity(0.5),
                                     width: 0.5
                                   )
+                                ),
+                                child: Text(
+                                    widget.controller.arrSubjectList[index].schedule.startDate,
+                                  style: GoogleFonts.notoSans(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: PsColors.white
+                                  ),
                                 ),
                               ))
                             ],
@@ -205,7 +219,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
             color: PsColors.btnColor,
           ),
           padding: const EdgeInsets.only(left: 25),
-          child: Column(
+          child: widget.controller.index.value==10001?Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20,),
@@ -242,7 +256,86 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                 }),
               )
             ],
-          ),
+          ):Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20,),
+            Row(
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: PsColors.mainColor,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Image.asset('assets/images/link.png'),
+                ),
+                Expanded(
+                  child: Text(
+                    '${widget.controller.arrStudent[widget.controller.index.value].conferenceUrl ?? ''}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: PsColors.black
+                    ),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: (){
+                    widget.controller.changeIndex(10001);
+                  },
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                        color: PsColors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Icon(
+                      Icons.close
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20,),
+            Row(
+              children: [
+                Container(
+                  height: 60,
+                  width:  60,
+                  margin: const EdgeInsets.only(
+                      right: 10
+                  ),
+                  decoration: BoxDecoration(
+                      color: PsColors.light_grey,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: PsColors.mainColor,
+                          width: 3
+                      )
+                  ),
+                  padding: const EdgeInsets.all(5),
+                  child: Image.asset(
+                      'assets/images/placeholder_girl.png'
+                  ),
+                ),
+                Text(
+                  '${widget.controller.arrStudent[widget.controller.index.value].firstName ?? ''} ${widget.controller.arrStudent[widget.controller.index.value].lastName ?? ''}',
+                  style: GoogleFonts.notoSans(
+                      fontWeight: FontWeight.w600,
+                      color: PsColors.black,
+                      fontSize: 18
+                  ),
+                )
+              ],
+            )
+
+          ],
+        ),
         )
 
     ));

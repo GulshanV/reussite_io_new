@@ -2,17 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:get/get.dart';
+import 'package:reussite_io_new/ui/profile/profile_controller.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
-class EditProfile extends StatelessWidget{
+class EditProfile extends StatefulWidget{
+
+  @override
+  _EditProfile createState()=>_EditProfile();
+}
+
+class _EditProfile extends State<EditProfile>{
+  final ProfileController controller = Get.put(ProfileController());
+
+  TextEditingController phoneNo= TextEditingController();
+  TextEditingController fullName= TextEditingController();
+  TextEditingController email= TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    controller.getParentDetails().then((value){
+      setState(() {
+        phoneNo.text=controller.model.value.phoneNumber;
+        fullName.text='${controller.model.value.firstName} ${controller.model.value.lastName}';
+        email.text=controller.model.value.email;
+      });
+    });
+  }
 
    @override
   Widget build(BuildContext context) {
 
      return Scaffold(
        backgroundColor: PsColors.white,
-       body: Column(
+       body:Column(
          children: [
            Padding(
              padding: const EdgeInsets.only(top: 60,left: 15,right: 15,bottom: 10),
@@ -98,6 +121,7 @@ class EditProfile extends StatelessWidget{
 
 
                    InputLevel(
+                     controller: phoneNo,
                      margin: const EdgeInsets.all(0),
                      hint: 'phone_number'.tr,
                      onChange: (v){},
@@ -106,6 +130,7 @@ class EditProfile extends StatelessWidget{
                      height: 15,
                    ),
                    InputLevel(
+                     controller: fullName,
                      margin: const EdgeInsets.all(0),
                      hint: 'full_name'.tr,
                      onChange: (v){},
@@ -114,6 +139,7 @@ class EditProfile extends StatelessWidget{
                      height: 15,
                    ),
                    InputLevel(
+                     controller: email,
                      margin: const EdgeInsets.all(0),
                      hint: 'email'.tr,
                      onChange: (v){},
@@ -139,7 +165,7 @@ class EditProfile extends StatelessWidget{
              ),
            ),)
          ],
-       ),
+       )
      );
   }
 }

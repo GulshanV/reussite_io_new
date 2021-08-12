@@ -5,6 +5,7 @@ class ScheduleModel{
   dynamic startDate;
   dynamic endDate;
   dynamic courseId;
+  dynamic durationInMinutes;
   dynamic repeatPeriodInDays;
 
   ScheduleModel.empty(){}
@@ -15,7 +16,12 @@ class ScheduleModel{
     startDate=map['startDate'];
     endDate=map['endDate'];
     courseId=map['courseId'];
-    repeatPeriodInDays=map['repeatPeriodInDays'];
+    if(map.containsKey('durationInMinutes')){
+      durationInMinutes=map['durationInMinutes'];
+    }else{
+      repeatPeriodInDays=map['repeatPeriodInDays'];
+    }
+
   }
 
 

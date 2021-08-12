@@ -28,4 +28,12 @@ class Student {
     onlineStatus = map['onlineStatus'];
     termCondionApproved = map['termCondionApproved'];
   }
+
+  dynamic studentParentId;
+  Student.fromDetails(Map<String,dynamic> map){
+    id=map['id'];
+    lastName=map['lastName'];
+    firstName=map['firstName'];
+    studentParentId=map['studentParentId'];
+  }
 }
