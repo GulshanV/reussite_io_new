@@ -1,5 +1,4 @@
-class Student{
-
+class Student {
   dynamic id;
   dynamic parentId;
   dynamic email;
@@ -13,20 +12,20 @@ class Student{
   dynamic onlineStatus;
   dynamic termCondionApproved;
 
-  Student.empty(){}
+  Student.empty() {}
 
-  Student.fromJSON(Map<String,dynamic> map){
-     id=map['id'];
-     parentId=map['parentId'];
-     email=map['email'];
-     lastName=map['lastName'];
-     firstName=map['firstName'];
-     schoolName=map['schoolName'];
-     grade=map['grade'];
-     schoolBoard=map['schoolBoard'];
-     conferenceUrl=map['conferenceUrl'];
-     createDate=map['createDate'];
-     onlineStatus=map['onlineStatus'];
-     termCondionApproved=map['termCondionApproved'];
+  Student.fromJSON(Map<String, dynamic> map) {
+    id = map['id'];
+    parentId = map['studentParentId'];
+    email = map['email'];
+    lastName = map['lastName'];
+    firstName = map['firstName'];
+    schoolName = map['schoolName'];
+    grade = map['grade'];
+    schoolBoard = map['schoolBoard'];
+    conferenceUrl = map['conferenceUrl'];
+    createDate = map['createDate'];
+    onlineStatus = map['onlineStatus'];
+    termCondionApproved = map['termCondionApproved'];
   }
 }
