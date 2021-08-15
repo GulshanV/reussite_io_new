@@ -35,7 +35,7 @@ class Utils{
     try{
       var d= time.toString().split('+')[0].trim();
       var format = DateFormat('MM/dd/yyyy HH:mm:ss').parse(d).toLocal();
-      time = DateFormat('HH:mm a').format(format);
+      time = DateFormat('hh:mm a').format(format);
     }catch(_){
       time = arrSlot;
     }

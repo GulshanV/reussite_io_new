@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/ui/add_child/home_controller.dart';
+import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/child_view.dart';
 import 'package:reussite_io_new/widget/tools.dart';
 import 'package:get/get.dart';
@@ -87,15 +88,42 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        height: 15,
+
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: const SizedBox(),
+                            ),
+                            Text(
+                              DateFormat.LLLL().format(currentMonth),
+                              style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.w500,
+                                  color: PsColors.mainColor,
+                                  fontSize: 17
+                              ),
+                            ),
+                            const SizedBox(width: 10,),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              size: 25,
+                              color: PsColors.mainColor,
+                            )
+                          ],
+                        ),
                       ),
                       CalendarCarousel<Event>(
                         onDayPressed: (date, events) {
                           this.setState(() => currentDate = date);
+                          widget.controller.clearSubject();
                           events.forEach((event){
                             widget.controller.selectEvent(event.title);
-
+                          });
+                        },
+                        onCalendarChanged: (d){
+                          setState(() {
+                            currentMonth=d;
                           });
                         },
                         weekdayTextStyle:  TextStyle(
@@ -147,52 +175,72 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                       Padding(
                         padding: const EdgeInsets.only(left:10.0,right:10),
                         child: Wrap(
-                          children:  List.generate(widget.controller.arrSubjectList.length, (index) => Row(
-                            children: [
-                              Text.rich(
+                          children:  List.generate(widget.controller.arrSubjectList.length, (index){
+                            var time=Utils.convertTime(widget.controller.arrSubjectList[index].schedule.startDate).split(' ');
+                            return  Row(
+                              children: [
+                                Text.rich(
                                   TextSpan(
-                                  text: '$index',
-                                  style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.w300,
-                                      color: PsColors.meetLinkColor,
-                                      fontSize: 22
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                        text: 'AM',
-                                        style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.w500,
-                                            color: PsColors.meetLinkColor,
-                                            fontSize: 11
+                                      text: '${time[0]}',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w300,
+                                          color: PsColors.meetLinkColor,
+                                          fontSize: 22
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                            text: time.length>1?time[1]:'',
+                                            style: GoogleFonts.notoSans(
+                                                fontWeight: FontWeight.w500,
+                                                color: PsColors.meetLinkColor,
+                                                fontSize: 11
+                                            )
                                         )
-                                    )
-                                  ]
-                              ),
-                                // textAlign: TextAlign.start,
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: 12==1?null:PsColors.mainColor,
-                                  border: Border.all(
-                                    color: PsColors.hintColor.withOpacity(0.5),
-                                    width: 0.5
-                                  )
-                                ),
-                                child: Text(
-                                    widget.controller.arrSubjectList[index].schedule.startDate,
-                                  style: GoogleFonts.notoSans(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                    color: PsColors.white
+                                      ]
                                   ),
+                                  // textAlign: TextAlign.start,
                                 ),
-                              ))
-                            ],
-                          )),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(child: InkWell(
+                                  onTap:() async {
+                                    var map={
+                                      'id':widget.controller.arrSubjectList[index].id,
+                                      'subject':widget.controller.arrSubjectList[index].schedule.course.name,
+                                      'stdId':widget.controller.arrStudent[widget.controller.index.value].id,
+                                      'stdFirstName':widget.controller.arrStudent[widget.controller.index.value].firstName,
+                                      'stdLastName':widget.controller.arrStudent[widget.controller.index.value].lastName,
+
+                                    };
+                                    var value=await Get.toNamed(Routes.COMMENT,arguments: map);
+
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: (index>0 && widget.controller.arrSubjectList[index-1].schedule.course.name==widget.controller.arrSubjectList[index].schedule.course.name)?null:PsColors.mainColor,
+                                        border: Border.all(
+                                            color: PsColors.hintColor.withOpacity(0.5),
+                                            width: 0.5
+                                        )
+                                    ),
+                                    child: (index>0 && widget.controller.arrSubjectList[index-1].schedule.course.name==widget.controller.arrSubjectList[index].schedule.course.name)?null:Center(
+                                      child: Text(
+                                        widget.controller.arrSubjectList[index].schedule.course.name??'',
+                                        style: GoogleFonts.notoSans(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                            color: PsColors.white
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                              ],
+                            );
+                          }
+                          ),
                         ),
                       ),
 
@@ -224,7 +272,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
             children: [
               const SizedBox(height: 20,),
               Text(
-                'Select a child to see his reservations',
+                'Select a child to see this child bookings',
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -245,7 +293,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                         };
                         var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
                         if(value!=null){
-                          print('Delete: $value');
+                          widget.controller.getChildList();
                         }
                       },
                       child:ChildView(widget.controller.arrStudent[index],

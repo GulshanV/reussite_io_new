@@ -114,6 +114,41 @@ class RequestApi {
 
   }
 
+  static Future<String> patch(String endPoint, {Map<String,dynamic> body}) async {
+
+    String fullUrl=PsConfig.baseUrl+endPoint;
+    print(fullUrl);
+    print(body);
+    var header = Map<String,String>();
+
+
+    try{
+
+      var headers = {
+        'Content-Type': 'application/json'
+      };
+      var request = http.Request('PATCH', Uri.parse(fullUrl));
+      request.body = json.encode(body);
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        var res = await response.stream.bytesToString();
+        print(res);
+        return res;
+      } else {
+        return response.reasonPhrase;
+      }
+
+    } catch(_) {
+      print(_);
+      return null;
+    }
+
+
+  }
+
   static Future<String> putAsync(String endPoint, {Map<String,dynamic> body}) async {
 
     String fullUrl=PsConfig.baseUrl+endPoint;

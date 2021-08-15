@@ -1,3 +1,5 @@
+import 'course_model.dart';
+
 class ScheduleModel{
 
   dynamic id;
@@ -10,6 +12,8 @@ class ScheduleModel{
 
   ScheduleModel.empty(){}
 
+  Course course;
+
   ScheduleModel.fromJSON(Map<String,dynamic> map){
     id=map['id'];
     createDate=map['createDate'];
@@ -21,6 +25,8 @@ class ScheduleModel{
     }else{
       repeatPeriodInDays=map['repeatPeriodInDays'];
     }
+
+    course=Course.fromBooking(map['course']);
 
   }
 

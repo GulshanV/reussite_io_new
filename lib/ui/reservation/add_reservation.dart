@@ -44,7 +44,7 @@ class _AddNewReservation extends State<AddNewReservation>{
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 60,left: 15,right: 15,bottom: 10),
+              padding: const EdgeInsets.only(top: 45,left: 15,right: 15,bottom: 10),
               child: Row(
                 children: [
                   InkWell(
@@ -165,7 +165,7 @@ class _AddNewReservation extends State<AddNewReservation>{
                                 };
                                var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
                                 if(value!=null){
-                                  print('Delete: $value');
+                                  controller.getChildList();
                                 }
                               },
                               child:ChildView(controller.arrStudent[index],

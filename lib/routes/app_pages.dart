@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:reussite_io_new/bindings/auth_binding.dart';
 import 'package:reussite_io_new/ui/add_child/addnewchild.dart';
 import 'package:reussite_io_new/ui/add_child/edit_child.dart';
+import 'package:reussite_io_new/ui/comment/list_add_comment.dart';
 import 'package:reussite_io_new/ui/country/country_page.dart';
 import 'package:reussite_io_new/ui/datepicker/reservation_date_picker.dart';
 import 'package:reussite_io_new/ui/help/help_list.dart';
@@ -32,6 +33,10 @@ class AppPages {
     GetPage(
       name: Routes.WELCOME,
       page: () => WelComePage(),
+    ),
+    GetPage(
+      name: Routes.COMMENT,
+      page: () => CommentSection(),
     ),
     GetPage(
       name: Routes.HELP,

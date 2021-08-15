@@ -34,7 +34,7 @@ class AddReservationController extends SuperController<AuthModel>{
     try {
       childLoadProcess(true);
       var value = await CQAPI.getMyChild(
-        id: '8a0080277ae7d1d0017ae7e502a10023'
+        id: '8a0081917b3f334d017b3f4cbe480023'
       );
       arrStudent(value);
     } finally {

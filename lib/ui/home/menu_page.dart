@@ -33,7 +33,7 @@ class _MenuPage extends State<MenuPage>{
        body: Column(
          children: [
            Padding(
-             padding: const EdgeInsets.only(top: 60,left: 15,right: 15,bottom: 10),
+             padding: const EdgeInsets.only(top: 45,left: 15,right: 15,bottom: 10),
              child: Row(
                children: [
                  InkWell(
@@ -47,7 +47,9 @@ class _MenuPage extends State<MenuPage>{
                  Expanded(child:const SizedBox()),
 
                  InkWell(
-                   onTap: ()=> Get.offNamedUntil(Routes.EDIT_PROFIE, (route) => true),
+                   onTap: (){
+                     Get.offNamedUntil(Routes.EDIT_PROFIE, (route) => true);
+                   },
                    child: Icon(
                      Icons.edit,
                      size: 30,

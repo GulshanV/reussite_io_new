@@ -87,24 +87,27 @@ class AuthController extends SuperController<AuthModel>{
       errorMsg('full_name_required'.tr);
     }else if(name.length<3){
       errorMsg('full_name_min_length_error'.tr);
+    }else if(name.split(' ').length<=1){
+      print('last: $name');
+      errorMsg('last_name_required'.tr);
     }else if(school.isEmpty){
       errorMsg('school_required'.tr);
     }else if(board.isEmpty){
       errorMsg('board_required'.tr);
-    }else if(level.isEmpty){
+    }else if(level==null){
       errorMsg('level_required'.tr);
     }else  if(phone.length<9){
       errorMsg('invalid_mobile_no'.tr);
     }else  if(email.isEmpty){
       errorMsg('email_required'.tr);
-    }else  if(validateEmail(email)){
+    }else  if(!validateEmail(email)){
       errorMsg('email_invalid'.tr);
     }else {
       error = "";
       try {
         loginProcess(true);
         Student loginResp = await CQAPI.addNewChild(
-          '8a0080277ae7d1d0017ae7e502a10023',
+          '8a0081917b3f334d017b3f4cbe480023',
             name,
             school,
             board,
@@ -121,49 +124,6 @@ class AuthController extends SuperController<AuthModel>{
       return error;
     }
   }
-
-
-
-  validationUpdateStudent(String name,String school,String board,String level,String phone,String email) async {
-    print('fullname: $name');
-    if(name.isEmpty){
-      errorMsg('full_name_required'.tr);
-    }else if(name.length<3){
-      errorMsg('full_name_min_length_error'.tr);
-    }else if(school.isEmpty){
-      errorMsg('school_required'.tr);
-    }else if(board.isEmpty){
-      errorMsg('board_required'.tr);
-    }else if(level.isEmpty){
-      errorMsg('level_required'.tr);
-    }else  if(phone.length<9){
-      errorMsg('invalid_mobile_no'.tr);
-    }else  if(email.isEmpty){
-      errorMsg('email_required'.tr);
-    }else  if(validateEmail(email)){
-      errorMsg('email_invalid'.tr);
-    }else {
-      error = "";
-      try {
-        loginProcess(true);
-        dynamic loginResp = await CQAPI.updateChild(
-            '8a0080277ae7d1d0017ae7e502a10023', //StudentId
-            '8a0080277ae7d1d0017ae7e502a10023',//ParentId
-            name,
-            school,
-            board,
-            level,
-            phone,
-            email
-        );
-
-      } finally {
-        loginProcess(false);
-      }
-      return error;
-    }
-  }
-
 
 
   errorMsg(String msg){

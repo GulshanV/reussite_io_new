@@ -78,6 +78,7 @@ class CQAPI {
     return list;
   }
 
+
   static Future<List<Course>> getAllCourseList() async {
     var response = await RequestApi.get('course?size=100');
     print(response);
@@ -126,7 +127,7 @@ class CQAPI {
     var arr = name.split(' ');
     if (arr.length > 1) {
       fName = arr[0];
-      lastName = arr[0];
+      lastName = arr[1];
     } else {
       fName = name;
     }
@@ -136,7 +137,7 @@ class CQAPI {
       "firstName": fName,
       "grade": level,
       "lastName": lastName,
-      "parentId": parentId,
+      "studentParentId": parentId,
       "schoolBoard": board,
       "schoolName": school,
       "phone": mobile
@@ -160,7 +161,7 @@ class CQAPI {
     return response;
   }
 
-  static Future<String> updateChild(
+  static Future<Student> updateChild(
       String studentId,
       String parentId,
       String name,
@@ -180,25 +181,76 @@ class CQAPI {
     var arr = name.split(' ');
     if (arr.length > 1) {
       fName = arr[0];
-      lastName = arr[0];
+      lastName = arr[1];
     } else {
       fName = name;
     }
 
     var map = {
       "email": email,
-      // "phoneNumber": mobile,
       "firstName": fName,
       "grade": level,
       "lastName": lastName,
-      "parentId": parentId,
+      "phoneNumber": mobile,
+      "studentParentId": parentId,
       "schoolBoard": board,
       "schoolName": school
     };
+    print(map);
 
-    var response = await RequestApi.putAsync('student/$studentId', body: map);
-    print("update response ==========> $response");
+    Student student;
+    var response = await RequestApi.patch('student/$studentId', body: map);
 
-    return null;
+    print(response);
+    if(response!=null){
+      var js = jsonDecode(response);
+      student= Student.fromJSON(js);
+    }
+
+    return student;
+  }
+
+  static Future<ParentModel> updateParent(
+      String parentId,
+      String name,
+      String email,
+      String language,
+      String phone) async {
+    String mobile = phone
+        .replaceAll('-', '')
+        .replaceAll(' ', '')
+        .replaceAll('(', '')
+        .replaceAll(')', '');
+
+    String fName = '';
+    String lastName = '';
+    var arr = name.split(' ');
+    if (arr.length > 1) {
+      fName = arr[0];
+      lastName = arr[1];
+    } else {
+      fName = name;
+    }
+
+    var map = {
+      "email": email,
+      "firstName": fName,
+      "lastName": lastName,
+      "phoneNumber": mobile,
+      "id": parentId,
+      "language": language,
+
+    };
+    print(map);
+
+    ParentModel student;
+    var response = await RequestApi.patch('parent/$parentId', body: map);
+    print(response);
+    if(response!=null){
+      var js = jsonDecode(response);
+      student= ParentModel.fromJSON(js);
+    }
+
+    return student;
   }
 }

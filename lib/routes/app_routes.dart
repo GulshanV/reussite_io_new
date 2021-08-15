@@ -1,6 +1,7 @@
 abstract class Routes {
   static const SPLASH = '/splash';
   static const WELCOME = '/welcome';
+  static const COMMENT = '/comment';
   static const LOGIN = '/login';
   static const OTP_VERIFY = '/otp_verify';
   static const OTP_VERIFY_nav = '/login/otp_verify';

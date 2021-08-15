@@ -25,6 +25,8 @@ class _EditChild extends State<EditChild> {
   var phone = TextEditingController();
   var email = TextEditingController();
 
+  bool isLoading=false;
+
   _updateProfile() {
     RegExp regExp = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -43,8 +45,10 @@ class _EditChild extends State<EditChild> {
     } else if (!regExp.hasMatch(email.text)) {
       Utils.errorToast('email_invalid'.tr);
     } else {
-      controller
-          .updateChildInformation(
+      setState(() {
+        isLoading=true;
+      });
+      controller.updateChildInformation(
               controller.student.value.id,
               controller.student.value.parentId,
               fullName.text,
@@ -54,17 +58,22 @@ class _EditChild extends State<EditChild> {
               phone.text,
               email.text)
           .then((value) {
+            setState(() {
+              isLoading=false;
+            });
         controller.edit();
         controller.getChildInformation();
       });
     }
   }
+  String level;
 
   @override
   void initState() {
     super.initState();
     controller.getChildInformation().then((value) {
       setState(() {
+        level=controller.student.value.grade;
         fullName.text = controller.student.value.firstName +
             " " +
             controller.student.value.lastName;
@@ -83,7 +92,7 @@ class _EditChild extends State<EditChild> {
         children: [
           Padding(
             padding:
-                const EdgeInsets.only(top: 60, left: 15, right: 15, bottom: 10),
+                const EdgeInsets.only(top: 45, left: 15, right: 15, bottom: 10),
             child: Row(children: [
               InkWell(
                 onTap: () => Navigator.pop(context),
@@ -96,7 +105,7 @@ class _EditChild extends State<EditChild> {
               Expanded(child: const SizedBox()),
               Obx(
                 () => controller.isEdit.value
-                    ? InkWell(
+                    ? isLoading?CircularProgressIndicator():InkWell(
                         onTap: () {
                           // print("School ==========> $school");
                           _updateProfile();
@@ -250,9 +259,58 @@ class _EditChild extends State<EditChild> {
                           ),
                           SelectionDropdown(
                             hint: 'level_of_study'.tr,
-                            levelValue:
-                                controller.student.value.grade.toString() ?? '',
-                            onTap: () {},
+                            levelValue: '${level?? ''}',
+                            onTap: () async {
+                              var ind=await  showModalBottomSheet(context: context, builder:(context)=>ListView(
+                                padding: const EdgeInsets.all(15),
+                                children: [
+                                  Text(
+                                    'Select your Study Level',
+                                    style: GoogleFonts.notoSans(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
+                                        color: Colors.black
+                                    ),
+                                  ),
+                                  Wrap(
+                                    children: List.generate(12, (index) => InkWell(
+                                      onTap: (){
+
+                                        Navigator.pop(context,index);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: PsColors.light_grey,
+                                                    width: 1
+                                                )
+                                            )
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              '${index+1}',
+                                              style: GoogleFonts.notoSans(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                  color: Colors.black
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                                  )
+                                ],
+                              ));
+                              if(ind!=null){
+                                setState(() {
+                                  level = '${ind+1}';
+                                });
+                              }
+                            },
                           ),
                           const SizedBox(
                             height: 15,
@@ -326,7 +384,7 @@ class _EditChild extends State<EditChild> {
                           const SizedBox(
                             height: 20,
                           ),
-                          Padding(
+                          controller.isEdit.value?const SizedBox():Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: InkWell(
                               onTap: () {

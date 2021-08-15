@@ -129,6 +129,11 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
 
                     });
                   },
+                       onCalendarChanged: (d){
+                    setState(() {
+                      currentMonth=d;
+                    });
+                       },
                        weekdayTextStyle:  TextStyle(
                            fontSize: 14,
                            fontWeight: FontWeight.w500,

@@ -22,6 +22,16 @@ class Course{
        imageUrl = map['imageUrl'];
     arrGrades=(map['grades'] as List).map((e) => Grades.fromJSON(e)).toList();
   }
+
+  Course.fromBooking(Map<String,dynamic> map){
+    id = map['id'];
+    name = map['name'];
+    arrGrades=(map['grades'] as List).map((e) => Grades.fromJSON(e)).toList();
+    subject=Subject.fromJSON(map['subject']);
+  }
+
+
+
 }
 
 class Grades{

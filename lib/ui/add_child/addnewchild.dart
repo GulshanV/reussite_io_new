@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
@@ -23,6 +24,7 @@ class _AddNewChild extends State<AddNewChild>{
   String board='';
   String phone='';
   String email='';
+  String level;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class _AddNewChild extends State<AddNewChild>{
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 60,left: 15,right: 15,bottom: 10),
+            padding: const EdgeInsets.only(top: 45,left: 15,right: 15,bottom: 10),
             child: Row(
               children: [
                 InkWell(
@@ -137,8 +139,57 @@ class _AddNewChild extends State<AddNewChild>{
                   ),
                   SelectionDropdown(
                     hint: 'level_of_study'.tr,
-                    onTap: (){
-                     // school=v;
+                    levelValue: level,
+                    onTap: () async {
+                    var ind=await  showModalBottomSheet(context: context, builder:(context)=>ListView(
+                        padding: const EdgeInsets.all(15),
+                        children: [
+                          Text(
+                              'Select your Study Level',
+                            style: GoogleFonts.notoSans(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              color: Colors.black
+                            ),
+                          ),
+                          Wrap(
+                            children: List.generate(12, (index) => InkWell(
+                              onTap: (){
+
+                                 Navigator.pop(context,index);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: PsColors.light_grey,
+                                      width: 1
+                                    )
+                                  )
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${index+1}',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.black
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )),
+                          )
+                        ],
+                      ));
+                     if(ind!=null){
+                       setState(() {
+                         level = '${ind+1}';
+                       });
+                     }
                     },
                   ),
                   const SizedBox(
@@ -231,15 +282,17 @@ class _AddNewChild extends State<AddNewChild>{
 
                   Align(
                     alignment: Alignment.center,
-                    child: RaisedGradientButtonGreen(
+                    child: Obx(()=>controller.loginProcess.value?Center(
+                      child: CircularProgressIndicator(),
+                    ):RaisedGradientButtonGreen(
                       margin: const EdgeInsets.all(0),
                       onPressed: (){
                         controller.validationCreateStudent(
-                        fullName,
+                          fullName,
                           school,
                           board,
-                          '1',
-                         phone,
+                          level,
+                          phone,
                           email,
                         );
                       },
@@ -253,7 +306,7 @@ class _AddNewChild extends State<AddNewChild>{
                         ),
                         textAlign: TextAlign.center,
                       ),
-                    ),
+                    )),
                   ),
 
                   const SizedBox(

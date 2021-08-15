@@ -17,9 +17,9 @@ const Map<String, String> en_US = {
   'add_an_avater': 'Add an avatar (optional)',
   'full_name': 'Full Name',
   'next': 'Next',
-  'there_is_no_reservations': 'There are no reservations yet.',
+  'there_is_no_reservations': 'There are no booking yet.',
   'add': 'Add',
-  'add_reservation': 'Add\nyour reserve',
+  'add_reservation': 'Make\na booking',
   'select_child': 'Select  Child',
   'add_child': 'Add  Child +',
   'date_time': 'Day and Time',
@@ -27,6 +27,7 @@ const Map<String, String> en_US = {
   'assistance_description': 'Description of the assistance needed',
   'create': 'Create',
   'select_day': 'Select Day',
+  'last_name_required': 'Last name is required',
   'save': 'Save',
   'add_you_child': 'Add\nyour child',
   'add_child_avater': 'Add an avatar (optional)',
@@ -64,9 +65,10 @@ const Map<String, String> en_US = {
   'email_required': 'Email is required',
   'email_invalid': 'Email is not valid',
   'not_child_found': 'No child available',
-  'material': 'Material',
+  'material': 'Subject',
   'select_reservation_course': 'Select reservation course',
   'child_a_child': 'Select your child',
   'select_booking_course': 'Select booking course',
-  'select_booking_schedule': 'Select booking schedule'
+  'select_booking_schedule': 'Select booking schedule',
+  'child_update_msg': 'Child Update successfully'
 };
