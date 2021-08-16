@@ -48,13 +48,11 @@ class _HomePage extends State<HomePage> {
                         ? const SizedBox()
                         : InkWell(
                       onTap: () async {
-                        var value = await Get.offNamedUntil(
-                            Routes.ADD_RESERVATION, (route) => true);
+                        var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
                         if (value != null) {
-                          Utils.successToast(
-                              'booking_create_successfully');
-                          controller.getChildList();
+                          Utils.successToast('booking_create_successfully');
                         }
+                        controller.getChildList();
                       },
                       child: SvgPicture.asset(
                         'assets/images/plus.svg',

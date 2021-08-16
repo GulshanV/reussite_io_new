@@ -58,7 +58,6 @@ class AddReservationController extends SuperController<AuthModel>{
              break;
            }
         }
-
         if(isExist==-1){
           var coursM=CourseSelectionModel();
           coursM.arrCourse.add(m);

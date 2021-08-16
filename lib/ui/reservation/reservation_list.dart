@@ -47,8 +47,8 @@ class ReservationList extends StatelessWidget{
                var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
                if(value!=null){
                  Utils.successToast('booking_create_successfully');
-                 controller.getChildList();
                }
+               controller.getChildList();
             },
             width: 130,
             child:Row(

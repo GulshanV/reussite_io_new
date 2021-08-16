@@ -21,7 +21,6 @@ class ReservationDatePicker extends StatefulWidget{
 class _ReservationDatePicker extends State<ReservationDatePicker>{
   final  controller = Get.put(BookDateController());
 
-
   @override
   void initState() {
     super.initState();
@@ -96,7 +95,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
+                 /*     Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Row(
                           children: [
@@ -112,15 +111,25 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                               ),
                             ),
                             const SizedBox(width: 10,),
-                            Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 30,
-                              color: PsColors.mainColor,
+                            InkWell(
+                              onTap: (){
+
+                                if(currentPage>0){
+                                  pageController.jumpToPage(currentPage+1);
+                                }
+
+                              },
+                              child: Icon(
+                                Icons.keyboard_arrow_right,
+                                size: 30,
+                                color: PsColors.mainColor,
+                              ),
                             )
                           ],
                         ),
-                      ),
+                      ),*/
                      CalendarCarousel<Event>(
+
                   onDayPressed: (date, events) {
                     this.setState(() => currentDate = date);
                     controller.clearSlot();
@@ -149,16 +158,27 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
                       fontWeight: FontWeight.w600,
                       color: PsColors.black
                   ),
+                       headerTextStyle: GoogleFonts.notoSans(
+                           fontWeight: FontWeight.w700,
+                           fontSize: 16,
+                           color: PsColors.mainColor
+                       ),
+                       iconColor: Color(0xffABE237),
+                       leftButtonIcon: Icon(
+                         Icons.keyboard_arrow_left,
+                         size: 25,
+                         color: Color(0xff86C502),
+                       ),
                   thisMonthDayBorderColor: Colors.grey,
                   weekDayFormat: WeekdayFormat.narrow,
                   markedDatesMap: getEvent(),
-                  height: 280.0,
+                  height: 320.0,
                   selectedDateTime: currentDate,
                   showIconBehindDayText: true,
                   customGridViewPhysics: NeverScrollableScrollPhysics(),
                   markedDateShowIcon: false,
                   markedDateIconMaxShown: 2,
-                  showHeader: false,
+                  showHeader: true,
                   selectedDayTextStyle: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -179,6 +199,9 @@ class _ReservationDatePicker extends State<ReservationDatePicker>{
 
                   markedDateMoreShowTotal: true,
               ),
+                      const SizedBox(
+                        height: 25,
+                      ),
                       Expanded(
                         child:GridView.builder(
                           itemCount: controller.arrSlot.length,

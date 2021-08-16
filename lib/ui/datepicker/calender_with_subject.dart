@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -88,31 +89,6 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: const SizedBox(),
-                            ),
-                            Text(
-                              DateFormat.LLLL().format(currentMonth),
-                              style: GoogleFonts.notoSans(
-                                  fontWeight: FontWeight.w500,
-                                  color: PsColors.mainColor,
-                                  fontSize: 17
-                              ),
-                            ),
-                            const SizedBox(width: 10,),
-                            Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 25,
-                              color: PsColors.mainColor,
-                            )
-                          ],
-                        ),
-                      ),
                       CalendarCarousel<Event>(
                         onDayPressed: (date, events) {
                           this.setState(() => currentDate = date);
@@ -144,17 +120,29 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                         thisMonthDayBorderColor: Colors.grey,
                         weekDayFormat: WeekdayFormat.narrow,
                         markedDatesMap: getEvent(),
-                        height: 280.0,
+                        height: 320.0,
                         selectedDateTime: currentDate,
                         showIconBehindDayText: true,
                         customGridViewPhysics: NeverScrollableScrollPhysics(),
                         markedDateShowIcon: false,
                         markedDateIconMaxShown: 2,
-                        showHeader: false,
+                        pageSnapping: true,
+                        showHeader: true,
                         selectedDayTextStyle: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
+                        ),
+                        headerTextStyle: GoogleFonts.notoSans(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: PsColors.mainColor
+                        ),
+                        iconColor: Color(0xffABE237),
+                        leftButtonIcon: Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 25,
+                          color: Color(0xff86C502),
                         ),
                         selectedDayButtonColor: Color(0xffABE237),
                         todayTextStyle: TextStyle(
@@ -173,7 +161,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.only(left:10.0,right:10),
+                        padding: const EdgeInsets.only(left:10.0,right:10,top: 15),
                         child: Wrap(
                           children:  List.generate(widget.controller.arrSubjectList.length, (index){
                             var time=Utils.convertTime(widget.controller.arrSubjectList[index].schedule.startDate).split(' ');
@@ -272,7 +260,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
             children: [
               const SizedBox(height: 20,),
               Text(
-                'Select a child to see this child bookings',
+                'Select a child to see its bookings',
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -292,9 +280,9 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                           'id':widget.controller.arrStudent[index].id
                         };
                         var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
-                        if(value!=null){
+                        // if(value!=null){
                           widget.controller.getChildList();
-                        }
+                        // }
                       },
                       child:ChildView(widget.controller.arrStudent[index],
                           isSelected:widget.controller.index.value == index

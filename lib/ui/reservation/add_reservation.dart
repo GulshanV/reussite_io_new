@@ -119,9 +119,7 @@ class _AddNewReservation extends State<AddNewReservation>{
                           InkWell(
                             onTap: () async {
                               var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
-                              if(value!=null){
-
-                              }
+                              controller.getChildList();
                             },
                             child: Text(
                               'add_child'.tr,
@@ -164,9 +162,9 @@ class _AddNewReservation extends State<AddNewReservation>{
                                   'id':controller.arrStudent[index].id
                                 };
                                var value=await Get.toNamed(Routes.EDIT_CHILD,arguments: map);
-                                if(value!=null){
+                                // if(value!=null){
                                   controller.getChildList();
-                                }
+                                // }
                               },
                               child:ChildView(controller.arrStudent[index],
                                isSelected:controller.index.value == index
@@ -221,8 +219,8 @@ class _AddNewReservation extends State<AddNewReservation>{
                             Utils.errorToast('select_reservation_course');
                           }else{
                             var map={
-                              'id':'8a0080547b1c0554017b1c10839d0002'
-                              // 'id':course.id
+                              // 'id':'8a0081817b3f28af017b4f1c54ec004c'
+                              'id':course.id
                             };
                            var value=await Get.offNamedUntil(Routes.RESERVATION_DATETIME, (route) => true,arguments: map);
                            if(value!=null){

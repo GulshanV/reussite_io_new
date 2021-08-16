@@ -139,9 +139,9 @@ class AuthController extends SuperController<AuthModel>{
   }
 
   static bool validateEmail(String value) {
-
+   var email=value.trim();
     String emailPattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(emailPattern);
-    return regExp.hasMatch(value);
+    return regExp.hasMatch(email);
   }
 }
