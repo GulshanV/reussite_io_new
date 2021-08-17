@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:reussite_io_new/model/booking_model.dart';
+import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
 
@@ -19,10 +20,63 @@ class HomeController extends GetxController{
           id: '8a0081917b3f334d017b3f4cbe480023'
       );
       arrStudent(value);
+      if(value.length>0){
+        getSlot();
+      }
     } finally {
       isLoading(false);
     }
+
+
   }
+
+
+  var arrAvailableSlot=List<ScheduleModel>().obs;
+  var arrAllSchedule=List<ScheduleModel>().obs;
+
+
+
+  Future<void> getSlot() async {
+    var value = await CQAPI.getScheduleAll();
+
+    List<ScheduleModel> data=[];
+    for(var model in value){
+      int isIndex=-1;
+
+      for(int index=0;index<data.length;index++){
+        String parent=model.startDate.toString().split(' ')[0];
+        String child=data[index].startDate.toString().split(' ')[0];
+        if(parent==child){
+          isIndex=index;
+        }
+      }
+      if(isIndex==-1){
+        ScheduleModel m = ScheduleModel.empty();
+        m.startDate= model.startDate;
+        m.arrMultiTime.add(model);
+        data.add(m);
+      }else{
+        data[isIndex].arrMultiTime.add(model);
+      }
+    }
+
+    arrAllSchedule(data);
+    isLoading(false);
+  }
+
+  clearSlot(){
+    List<ScheduleModel> arrMultiTime=[];
+    arrAvailableSlot(arrMultiTime);
+  }
+
+  selectAvalibleSlot(String index){
+    int i=int.parse(index);
+    var model=arrAllSchedule[i].arrMultiTime;
+
+    arrAvailableSlot(model);
+
+  }
+
 
   var isLoadingSlot=false.obs;
   getBookingListChildId() async {

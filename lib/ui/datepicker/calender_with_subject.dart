@@ -58,6 +58,37 @@ class _BookListWithCalender extends State<BookListWithCalender>{
   }
 
 
+  EventList<Event> getAvailable(){
+    var map=Map<DateTime,List<Event>>();
+    for(int i=0;i<widget.controller.arrAllSchedule.length;i++){
+      var d= widget.controller.arrAllSchedule[i].startDate.toString().split(' ')[0];
+      var format = DateFormat('MM/dd/yyyy').parse(d);
+      List<Event> list =[];
+      list.add(Event(
+        date: format,
+        title: '$i',
+        dot: Container(
+          margin: EdgeInsets.symmetric(horizontal: 1.0),
+          height: 5.0,
+          width: 5.0,
+          decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(2.5)
+          ),
+        ),
+      ));
+      map[format]=list;
+    }
+    EventList<Event> event=EventList<Event>(
+        events:map
+    );
+
+    return event;
+
+  }
+
+
+
 
 
 
@@ -89,7 +120,76 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CalendarCarousel<Event>(
+                      widget.controller.index.value==10001?CalendarCarousel<Event>(
+                        onDayPressed: (date, events) {
+                          this.setState(() => currentDate = date);
+                          widget.controller.clearSlot();
+                          events.forEach((event){
+                            widget.controller.selectAvalibleSlot(event.title);
+                          });
+                        },
+                        onCalendarChanged: (d){
+                          setState(() {
+                            currentMonth=d;
+                          });
+                        },
+                        weekdayTextStyle:  TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: PsColors.weekendColor
+                        ),
+                        weekendTextStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: PsColors.dark_textcolor
+                        ),
+                        daysTextStyle: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: PsColors.black
+                        ),
+                        thisMonthDayBorderColor: Colors.grey,
+                        weekDayFormat: WeekdayFormat.narrow,
+                        markedDatesMap: getAvailable(),
+                        height: 320.0,
+                        selectedDateTime: currentDate,
+                        showIconBehindDayText: true,
+                        customGridViewPhysics: NeverScrollableScrollPhysics(),
+                        markedDateShowIcon: false,
+                        markedDateIconMaxShown: 2,
+                        pageSnapping: true,
+                        showHeader: true,
+                        selectedDayTextStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                        headerTextStyle: GoogleFonts.notoSans(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: PsColors.mainColor
+                        ),
+                        iconColor: Colors.grey,
+                        leftButtonIcon: Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 25,
+                          color: Color(0xff86C502),
+                        ),
+                        selectedDayButtonColor: Color(0xffABE237),
+                        todayTextStyle: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+
+                        minSelectedDate:DateTime.now().add(Duration(days: -90)),
+                        maxSelectedDate: DateTime.now().add(Duration(days: 360)),
+                        todayButtonColor: Colors.transparent,
+                        todayBorderColor: Color(0xffABE237),
+                        childAspectRatio: 1.2,
+
+                        markedDateMoreShowTotal: true,
+                      ):CalendarCarousel<Event>(
                         onDayPressed: (date, events) {
                           this.setState(() => currentDate = date);
                           widget.controller.clearSubject();
@@ -134,9 +234,9 @@ class _BookListWithCalender extends State<BookListWithCalender>{
                           color: Colors.white,
                         ),
                         headerTextStyle: GoogleFonts.notoSans(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                          color: PsColors.mainColor
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: PsColors.mainColor
                         ),
                         iconColor: Color(0xffABE237),
                         leftButtonIcon: Icon(

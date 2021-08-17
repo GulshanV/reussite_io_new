@@ -87,10 +87,14 @@ class AddReservationController extends SuperController<AuthModel>{
     }else if(schedule==null){
       Utils.errorToast('select_booking_schedule'.tr);
     }else{
+      var subject={
+        'id':course.subject.id,
+        'name':course.subject.name
+      };
       var courseMap={
         'name':course.name,
         'description':descripton??'',
-        'subject':course.subject.name,
+        'subject':subject,
       };
       var scheduleMap={
         'course':courseMap,

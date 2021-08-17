@@ -49,6 +49,21 @@ class CQAPI {
     return list;
   }
 
+
+  static Future<List<ScheduleModel>> getScheduleAll() async {
+    var response = await RequestApi.get('schedule');
+    print(response);
+    List<ScheduleModel> list = [];
+    if (response != null) {
+      var js = json.decode(response);
+      list = (js['content'] as List)
+          .map((e) => ScheduleModel.fromJSON(e))
+          .toList();
+    }
+
+    return list;
+  }
+
   static Future<ParentModel> getParentProfile({dynamic id}) async {
     var response = await RequestApi.get('parent/$id');
 

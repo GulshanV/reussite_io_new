@@ -35,7 +35,6 @@ class BookDateController  extends GetxController{
        }else{
          data[isIndex].arrMultiTime.add(model);
        }
-
     }
 
     arrSchedule(data);
