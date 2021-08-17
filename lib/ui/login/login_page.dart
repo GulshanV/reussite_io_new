@@ -86,7 +86,8 @@ class _LoginPage extends State<LoginPage> {
                   onPressed: () async {
                     if (phoneNumberController.text.length < 9) {
                       Get.defaultDialog(
-                          title: "invalid!", middleText: 'invalid_mobile_no');
+                          title: "invalid!",
+                          middleText: 'invalid_mobile_no'.tr);
                     } else {
                       Get.toNamed(Routes.OTP_VERIFY_nav);
                       // String error = await controller.login(

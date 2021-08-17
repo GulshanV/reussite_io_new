@@ -25,7 +25,7 @@ class _EditChild extends State<EditChild> {
   var phone = TextEditingController();
   var email = TextEditingController();
 
-  bool isLoading=false;
+  bool isLoading = false;
 
   _updateProfile() {
     RegExp regExp = RegExp(
@@ -46,9 +46,10 @@ class _EditChild extends State<EditChild> {
       Utils.errorToast('email_invalid'.tr);
     } else {
       setState(() {
-        isLoading=true;
+        isLoading = true;
       });
-      controller.updateChildInformation(
+      controller
+          .updateChildInformation(
               controller.student.value.id,
               controller.student.value.parentId,
               fullName.text,
@@ -58,14 +59,15 @@ class _EditChild extends State<EditChild> {
               phone.text,
               email.text)
           .then((value) {
-            setState(() {
-              isLoading=false;
-            });
+        setState(() {
+          isLoading = false;
+        });
         controller.edit();
         controller.getChildInformation();
       });
     }
   }
+
   String level;
 
   @override
@@ -73,7 +75,7 @@ class _EditChild extends State<EditChild> {
     super.initState();
     controller.getChildInformation().then((value) {
       setState(() {
-        level=controller.student.value.grade;
+        level = controller.student.value.grade;
         fullName.text = controller.student.value.firstName +
             " " +
             controller.student.value.lastName;
@@ -105,19 +107,20 @@ class _EditChild extends State<EditChild> {
               Expanded(child: const SizedBox()),
               Obx(
                 () => controller.isEdit.value
-                    ? isLoading?CircularProgressIndicator():InkWell(
-                        onTap: () {
-                          // print("School ==========> $school");
-                          _updateProfile();
-                        },
-                        child: Text(
-                          "save".tr,
-                          style: GoogleFonts.notoSans(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: PsColors.mainColor),
-                        ),
-                      )
+                    ? isLoading
+                        ? CircularProgressIndicator()
+                        : InkWell(
+                            onTap: () {
+                              _updateProfile();
+                            },
+                            child: Text(
+                              "save".tr,
+                              style: GoogleFonts.notoSans(
+                                  // fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: PsColors.mainColor),
+                            ),
+                          )
                     : InkWell(
                         onTap: () {
                           controller.edit();
@@ -167,33 +170,39 @@ class _EditChild extends State<EditChild> {
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                'meet.appui.io/${controller.student.value.conferenceUrl ?? ''}',
-                                style: GoogleFonts.roboto(
-                                    fontWeight: FontWeight.w500,
-                                    color: PsColors.meetLinkColor,
-                                    fontSize: 12,
-                                    decoration: TextDecoration.underline),
-                              )),
-                              Container(
-                                height: 24,
-                                width: 24,
-                                decoration: BoxDecoration(
-                                    color: PsColors.mainColor,
-                                    borderRadius: BorderRadius.circular(12)),
-                                padding: const EdgeInsets.all(5),
-                                child: Image.asset('assets/images/link.png'),
-                              )
-                            ],
-                          ),
+                          controller.isEdit.value
+                              ? Container()
+                              : const SizedBox(
+                                  height: 15,
+                                ),
+                          controller.isEdit.value
+                              ? Container()
+                              : Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      'meet.appui.io/${controller.student.value.conferenceUrl ?? ''}',
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.w500,
+                                          color: PsColors.meetLinkColor,
+                                          fontSize: 12,
+                                          decoration: TextDecoration.underline),
+                                    )),
+                                    Container(
+                                      height: 24,
+                                      width: 24,
+                                      decoration: BoxDecoration(
+                                          color: PsColors.mainColor,
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      padding: const EdgeInsets.all(5),
+                                      child:
+                                          Image.asset('assets/images/link.png'),
+                                    )
+                                  ],
+                                ),
                           const SizedBox(
                             height: 30,
                           ),
@@ -258,56 +267,62 @@ class _EditChild extends State<EditChild> {
                             height: 15,
                           ),
                           SelectionDropdown(
+                            subLevelValue: 'level_of_study'.tr,
                             hint: 'level_of_study'.tr,
-                            levelValue: '${level?? ''}',
+                            levelValue: '${level ?? ''}',
                             onTap: () async {
-                              var ind=await  showModalBottomSheet(context: context, builder:(context)=>ListView(
-                                padding: const EdgeInsets.all(15),
-                                children: [
-                                  Text(
-                                    'Select your Study Level',
-                                    style: GoogleFonts.notoSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
-                                        color: Colors.black
-                                    ),
-                                  ),
-                                  Wrap(
-                                    children: List.generate(12, (index) => InkWell(
-                                      onTap: (){
-
-                                        Navigator.pop(context,index);
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color: PsColors.light_grey,
-                                                    width: 1
-                                                )
-                                            )
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              '${index+1}',
-                                              style: GoogleFonts.notoSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                  color: Colors.black
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                                  )
-                                ],
-                              ));
-                              if(ind!=null){
+                              var ind = await showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => ListView(
+                                        padding: const EdgeInsets.all(15),
+                                        children: [
+                                          Text(
+                                            'Select your Study Level',
+                                            style: GoogleFonts.notoSans(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18,
+                                                color: Colors.black),
+                                          ),
+                                          Wrap(
+                                            children: List.generate(
+                                                12,
+                                                (index) => InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(
+                                                            context, index);
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        decoration: BoxDecoration(
+                                                            border: Border(
+                                                                bottom: BorderSide(
+                                                                    color: PsColors
+                                                                        .light_grey,
+                                                                    width: 1))),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              '${index + 1}',
+                                                              style: GoogleFonts.notoSans(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 18,
+                                                                  color: Colors
+                                                                      .black),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )),
+                                          )
+                                        ],
+                                      ));
+                              if (ind != null) {
                                 setState(() {
-                                  level = '${ind+1}';
+                                  level = '${ind + 1}';
                                 });
                               }
                             },
@@ -384,21 +399,23 @@ class _EditChild extends State<EditChild> {
                           const SizedBox(
                             height: 20,
                           ),
-                          controller.isEdit.value?const SizedBox():Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context, 1);
-                              },
-                              child: Text(
-                                'remove_child'.tr,
-                                style: GoogleFonts.notoSans(
-                                    fontWeight: FontWeight.w600,
-                                    color: PsColors.hintColor,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
+                          controller.isEdit.value
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context, 1);
+                                    },
+                                    child: Text(
+                                      'remove_child'.tr,
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          color: PsColors.hintColor,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                ),
                           const SizedBox(
                             height: 20,
                           ),
