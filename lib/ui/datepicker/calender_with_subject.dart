@@ -72,7 +72,7 @@ class _BookListWithCalender extends State<BookListWithCalender>{
           height: 5.0,
           width: 5.0,
           decoration: BoxDecoration(
-              color: Colors.green,
+              color: Colors.grey,
               borderRadius: BorderRadius.circular(2.5)
           ),
         ),
@@ -262,7 +262,60 @@ class _BookListWithCalender extends State<BookListWithCalender>{
 
                       Padding(
                         padding: const EdgeInsets.only(left:10.0,right:10,top: 15),
-                        child: Wrap(
+                        child:widget.controller.index.value==10001? Wrap(
+                          children:  List.generate(widget.controller.arrAvailableSlot.length, (index){
+                            var time=Utils.convertTime(widget.controller.arrAvailableSlot[index].startDate).split(' ');
+                            return  Row(
+                              children: [
+                                Text.rich(
+                                  TextSpan(
+                                      text: '${time[0]}',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w300,
+                                          color: PsColors.meetLinkColor,
+                                          fontSize: 22
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                            text: time.length>1?time[1]:'',
+                                            style: GoogleFonts.notoSans(
+                                                fontWeight: FontWeight.w500,
+                                                color: PsColors.meetLinkColor,
+                                                fontSize: 11
+                                            )
+                                        )
+                                      ]
+                                  ),
+                                  // textAlign: TextAlign.start,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Expanded(child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: (index>0 && widget.controller.arrAvailableSlot[index-1].course.name==widget.controller.arrAvailableSlot[index].course.name)?null:PsColors.mainColor,
+                                      border: Border.all(
+                                          color: PsColors.hintColor.withOpacity(0.5),
+                                          width: 0.5
+                                      )
+                                  ),
+                                  child: (index>0 && widget.controller.arrAvailableSlot[index-1].course.name==widget.controller.arrAvailableSlot[index].course.name)?null:Center(
+                                    child: Text(
+                                      widget.controller.arrAvailableSlot[index].course.name??'',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          color: PsColors.white
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                              ],
+                            );
+                          }
+                          ),
+                        ): Wrap(
                           children:  List.generate(widget.controller.arrSubjectList.length, (index){
                             var time=Utils.convertTime(widget.controller.arrSubjectList[index].schedule.startDate).split(' ');
                             return  Row(
