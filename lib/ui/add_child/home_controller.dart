@@ -37,7 +37,11 @@ class HomeController extends GetxController{
 
 
   Future<void> getSlot() async {
-    var value = await CQAPI.getScheduleAll();
+    var grade=[];
+    arrStudent.map((element) => grade.add(element.grade));
+    final newList = grade.toSet().toList();
+    final gr=newList.join(',');
+    var value = await CQAPI.getScheduleAll(gr);
 
     List<ScheduleModel> data=[];
     for(var model in value){

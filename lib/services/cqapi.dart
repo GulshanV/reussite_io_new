@@ -50,8 +50,12 @@ class CQAPI {
   }
 
 
-  static Future<List<ScheduleModel>> getScheduleAll() async {
-    var response = await RequestApi.get('schedule');
+  static Future<List<ScheduleModel>> getScheduleAll(String grade) async {
+    var url ='schedule?size=300';
+    if(grade.length>0){
+      url=url+'&grades=$grade';
+    }
+    var response = await RequestApi.get(url);
     print(response);
     List<ScheduleModel> list = [];
     if (response != null) {
