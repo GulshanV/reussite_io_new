@@ -26,10 +26,13 @@ class SupportPage extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                      color: PsColors.white,
+                    child: Container(
+                      height: 13.29,
+                      width: 16.75,
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: PsColors.white,
+                      ),
                     ),
                   ),
                   Expanded(child: const SizedBox()),

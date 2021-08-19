@@ -61,7 +61,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                     'let_get_acquanted'.tr,
                     style: GoogleFonts.notoSans(
                         fontWeight: FontWeight.bold,
-                        fontSize: 33,
+                        fontSize: 34,
                         color: PsColors.white),
                   ),
                   const SizedBox(
@@ -124,7 +124,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                             color: PsColors.hidebtnColor,
                             margin: const EdgeInsets.all(0),
                             onPressed: () {},
-                            width: 150,
+                            width: 120,
                             child: Text(
                               'next'.tr.toUpperCase(),
                               style: GoogleFonts.roboto(
@@ -139,7 +139,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                             onPressed: () {
                               Get.offNamedUntil(Routes.HOME, (route) => true);
                             },
-                            width: 150,
+                            width: 120,
                             child: Text(
                               'next'.tr.toUpperCase(),
                               style: GoogleFonts.roboto(

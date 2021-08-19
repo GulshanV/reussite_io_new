@@ -32,26 +32,33 @@ class _MenuPage extends State<MenuPage> {
             padding:
                 const EdgeInsets.only(top: 45, left: 15, right: 15, bottom: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                    color: PsColors.mainColor,
+                  child: Container(
+                    height: 13.29,
+                    width: 16.75,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: PsColors.mainColor,
+                    ),
                   ),
                 ),
-                Expanded(child: const SizedBox()),
                 InkWell(
                   onTap: () {
                     Get.offNamedUntil(Routes.EDIT_PROFIE, (route) => true);
                   },
-                  child: Icon(
-                    Icons.edit,
-                    size: 30,
-                    color: PsColors.mainColor,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    height: 14,
+                    width: 14,
+                    child: Icon(
+                      Icons.edit,
+                      color: PsColors.mainColor,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),

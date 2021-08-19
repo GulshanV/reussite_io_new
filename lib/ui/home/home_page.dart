@@ -40,25 +40,31 @@ class _HomePage extends State<HomePage> {
                       },
                       child: Image.asset(
                         'assets/icons/nav_profile.png',
-                        height: 25,
+                        height: 18,
+                        width: 16.42,
                       ),
                     ),
                     Expanded(child: const SizedBox()),
-                    Obx(()=>controller.arrStudent.length == 0
-                        ? const SizedBox()
-                        : InkWell(
-                      onTap: () async {
-                        var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
-                        if (value != null) {
-                          Utils.successToast('booking_create_successfully');
-                        }
-                        controller.getChildList();
-                      },
-                      child: SvgPicture.asset(
-                        'assets/images/plus.svg',
-                        height: 25,
-                      ),
-                    )),
+                    Obx(
+                      () => controller.arrStudent.length == 0
+                          ? const SizedBox()
+                          : InkWell(
+                              onTap: () async {
+                                var value = await Get.offNamedUntil(
+                                    Routes.ADD_RESERVATION, (route) => true);
+                                if (value != null) {
+                                  Utils.successToast(
+                                      'booking_create_successfully');
+                                }
+                                controller.getChildList();
+                              },
+                              child: SvgPicture.asset(
+                                'assets/images/plus.svg',
+                                height: 18,
+                                width: 18,
+                              ),
+                            ),
+                    ),
                     const SizedBox(
                       width: 20,
                     ),
@@ -68,7 +74,8 @@ class _HomePage extends State<HomePage> {
                       },
                       child: Image.asset(
                         'assets/icons/nav_notification.png',
-                        height: 25,
+                        height: 18,
+                        width: 14,
                       ),
                     ),
                   ],
