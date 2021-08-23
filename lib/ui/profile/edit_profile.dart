@@ -47,7 +47,6 @@ class _EditProfile extends State<EditProfile> {
   }
 
   _updateProfile() {
-    print(emailId);
     if (name.isEmpty) {
       Utils.errorToast('full_name_required'.tr);
     } else if (name.length < 3) {

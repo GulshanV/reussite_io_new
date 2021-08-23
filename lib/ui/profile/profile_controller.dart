@@ -28,11 +28,27 @@ class ProfileController extends GetxController{
     var value = await CQAPI.updateParent(
       '8a0081917b3f334d017b3f4cbe480023',
         name,
+      email,
         'en',
-        phone, email);
+        phone);
     if(value!=null){
+      var m = model.value;
+      String fName = '';
+      String lastName = '';
+      var arr = name.split(' ');
+      if (arr.length > 1) {
+        fName = arr[0];
+        lastName = arr[1];
+      } else {
+        fName = name;
+      }
+      m.firstName=fName;
+      m.lastName = lastName;
+      m.email=email;
+      m.phoneNumber=phone;
+      model(m);
       Utils.successToast('Profile update successfully');
-      // Get.back(result: true);
+      Get.back(result: true);
     }
 
   }

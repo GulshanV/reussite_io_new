@@ -78,7 +78,7 @@ class _EditChild extends State<EditChild> {
     super.initState();
     controller.getChildInformation().then((value) {
       setState(() {
-        level = controller.student.value.grade;
+        level = '${controller.student.value.grade}';
         fullName.text = controller.student.value.firstName +
             " " +
             controller.student.value.lastName;

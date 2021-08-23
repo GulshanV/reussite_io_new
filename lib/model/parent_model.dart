@@ -23,7 +23,6 @@ class ParentModel{
      deleteDate=map['deleteDate'];
      createDate=map['createDate'];
      firstName=map['firstName'];
-     firstName=map['firstName'];
      lastName=map['lastName'];
      language=map['language'];
      countryCode=map['countryCode'];
