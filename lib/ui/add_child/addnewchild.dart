@@ -38,10 +38,13 @@ class _AddNewChild extends State<AddNewChild> {
               children: [
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                    color: PsColors.mainColor,
+                  child: Container(
+                    height: 13.29,
+                    width: 16.75,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: PsColors.mainColor,
+                    ),
                   ),
                 ),
                 Expanded(child: const SizedBox()),
@@ -69,15 +72,19 @@ class _AddNewChild extends State<AddNewChild> {
                     Row(
                       children: [
                         Container(
-                          height: 60,
-                          width: 60,
+                          height: 50,
+                          width: 50,
                           margin: const EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
-                              color: PsColors.light_green,
-                              borderRadius: BorderRadius.circular(7)),
+                            borderRadius: BorderRadius.circular(7),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/icons/profile_pic_icon.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                           padding: const EdgeInsets.all(10),
-                          child:
-                              Image.asset('assets/icons/profile_pic_icon.png'),
+                          // child: Image.asset('assets/icons/profile_pic_icon.png'),
                         ),
                         Text(
                           'add_child_avater'.tr,

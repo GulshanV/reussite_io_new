@@ -202,13 +202,13 @@ class _EditProfile extends State<EditProfile> {
                       const SizedBox(
                         height: 30,
                       ),
-                      SelectionDropdown(
-                        hint: 'change_phone_no'.tr,
-                        onTap: () {},
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      // SelectionDropdown(
+                      //   hint: 'change_phone_no'.tr,
+                      //   onTap: () {},
+                      // ),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
                     ],
                   ),
                 ),
