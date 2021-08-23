@@ -103,14 +103,39 @@ class _CourseSelection extends State<CourseSelection>{
                                 ),
                                 child: Row(
                                   children: [
+                                    Text(
+                                      'Grade (${e.arrGrades.join(',')}) ',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          color: PsColors.textColor,
+                                          fontSize: 15
+                                      ),
+                                    ),
+                                    Text(
+                                      e.language,
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          color: PsColors.mainColor,
+                                          fontSize: 15
+                                      ),
+                                    ),
                                     Expanded(
-                                      child: Text(
-                                        'Grade (${e.arrGrades.join(',')})',
-                                        style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.w600,
-                                            color: PsColors.textColor,
-                                            fontSize: 15
-                                        ),
+                                      child: const SizedBox(),
+                                    ),
+                                    Text(
+                                      e.prices.length==0?'':'${e.prices[0].currencyCode} ',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          color: PsColors.mainColor,
+                                          fontSize: 15
+                                      ),
+                                    ),
+                                    Text(
+                                      e.prices.length==0?'':'${e.prices[0].amount}',
+                                      style: GoogleFonts.notoSans(
+                                          fontWeight: FontWeight.w600,
+                                          color: PsColors.btnColor,
+                                          fontSize: 15
                                       ),
                                     ),
                                   ],

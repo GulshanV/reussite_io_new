@@ -8,6 +8,7 @@ class Course{
   dynamic language;
   dynamic imageUrl;
   List<Grades> arrGrades = [];
+  List<Prices> prices = [];
   Subject subject;
 
   Course.fromJSON(Map<String,dynamic> map){
@@ -21,6 +22,7 @@ class Course{
     if(map.containsKey(imageUrl))
        imageUrl = map['imageUrl'];
     arrGrades=(map['grades'] as List).map((e) => Grades.fromJSON(e)).toList();
+    prices=(map['prices'] as List).map((e) => Prices.fromJSON(e)).toList();
   }
 
   Course.fromBooking(Map<String,dynamic> map){
@@ -54,7 +56,9 @@ class Prices{
     currencyCode =map['currencyCode'];
   }
 
+
 }
+
 class Subject{
   dynamic id;
   dynamic name;
