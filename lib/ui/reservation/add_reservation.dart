@@ -142,44 +142,46 @@ class _AddNewReservation extends State<AddNewReservation> {
                                             fontSize: 16),
                                       ),
                                     )
-                                  : Wrap(
-                                      children: List.generate(
-                                          controller.arrStudent.length,
-                                          (index) {
-                                        return InkWell(
-                                            onTap: () {
-                                              controller.changeIndex(index);
-                                            },
-                                            onLongPress: () async {
-                                              var map = {
-                                                'id': controller
-                                                    .arrStudent[index].id
-                                              };
-                                              var value = await Get.toNamed(
-                                                  Routes.EDIT_CHILD,
-                                                  arguments: map);
-                                              // if(value!=null){
-                                              controller.getChildList();
-                                              // }
-                                            },
-                                            child: ChildView(
-                                                controller.arrStudent[index],
-                                                isSelected:
-                                                    controller.index.value ==
-                                                        index));
-                                      }),
+                                  : SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Wrap(
+                                        // direction: Axis.horizontal,
+                                        children: List.generate(
+                                            controller.arrStudent.length,
+                                            (index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                controller.changeIndex(index);
+                                              },
+                                              onLongPress: () async {
+                                                var map = {
+                                                  'id': controller
+                                                      .arrStudent[index].id
+                                                };
+                                                var value = await Get.toNamed(
+                                                    Routes.EDIT_CHILD,
+                                                    arguments: map);
+                                                // if(value!=null){
+                                                controller.getChildList();
+                                                // }
+                                              },
+                                              child: ChildView(
+                                                  controller.arrStudent[index],
+                                                  isSelected:
+                                                      controller.index.value ==
+                                                          index));
+                                        }),
+                                      ),
                                     ),
-                          Row(
-                            children: [],
-                          ),
                           const SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
                           SelectionDropdown(
                               hint: 'subject'.tr,
                               levelValue:
                                   course == null ? null : course.subject.name,
-                              subLevelValue: course == null ?null:'subject'.tr,
+                              subLevelValue:
+                                  course == null ? null : 'subject'.tr,
                               onTap: () async {
                                 if (controller.arrCourseList.value.isNotEmpty) {
                                   var value = await showModalBottomSheet(

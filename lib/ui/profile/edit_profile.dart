@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/auth_controller.dart';
 import 'package:reussite_io_new/ui/profile/profile_controller.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
-import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 import '../../utils.dart';
 
@@ -135,7 +137,9 @@ class _EditProfile extends State<EditProfile> {
                       Row(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              _showPicker(context);
+                            },
                             child: Container(
                               height: 50,
                               width: 50,
@@ -217,5 +221,44 @@ class _EditProfile extends State<EditProfile> {
         ));
   }
 
+  /// Image Picker ///
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
+                    onTap: () {
+                      _imgFromSource(source: ImageSource.gallery);
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () {
+                    _imgFromSource(source: ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   var _pickImage;
+
+  _imgFromSource({ImageSource source}) async {
+    final XFile photo = await ImagePicker().pickImage(source: source);
+    setState(() {
+      _pickImage = File(photo.path);
+    });
+    Navigator.of(context).pop();
+  }
 }
