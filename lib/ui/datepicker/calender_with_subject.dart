@@ -169,6 +169,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     todayBorderColor: Color(0xffABE237),
                                     childAspectRatio: 1.2,
                                     markedDateMoreShowTotal: true,
+                                 // markedDateIconMargin:10,
                                     markedDateCustomShapeBorder:
                                         ContinuousRectangleBorder(
                                             borderRadius:
@@ -207,7 +208,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     selectedDateTime: currentDate,
                                     showIconBehindDayText: true,
                                     customGridViewPhysics:
-                                        NeverScrollableScrollPhysics(),
+                                    NeverScrollableScrollPhysics(),
                                     markedDateShowIcon: false,
                                     markedDateIconMaxShown: 2,
                                     pageSnapping: true,
@@ -235,16 +236,16 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     ),
                                     minSelectedDate:
                                         DateTime.now().add(Duration(days: -90)),
-                                    maxSelectedDate:
-                                        DateTime.now().add(Duration(days: 360)),
+                                    maxSelectedDate: DateTime.now().add(Duration(days: 360)),
                                     todayButtonColor: Colors.transparent,
                                     todayBorderColor: Color(0xffABE237),
                                     childAspectRatio: 1.2,
                                     markedDateMoreShowTotal: true,
+
                                     markedDateCustomShapeBorder:
                                         ContinuousRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(25)),
+                                                BorderRadius.circular(40)),
                                   ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -254,10 +255,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                       children: List.generate(
                                           widget.controller.arrAvailableSlot
                                               .length, (index) {
-                                        var time = Utils.convertTime(widget
-                                                .controller
-                                                .arrAvailableSlot[index]
-                                                .startDate)
+                                        var time = Utils.convertTime(widget.controller.arrAvailableSlot[index].startDate)
                                             .split(' ');
                                         return Row(
                                           children: [

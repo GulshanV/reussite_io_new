@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/model/comment_model.dart';
 
+import '../../utils.dart';
+
 class NotificationView extends StatelessWidget{
   final CommentModel model;
   final String subject;
@@ -29,7 +31,7 @@ class NotificationView extends StatelessWidget{
                  ),
                ),
                Text(
-                 '21.05.18',
+                 Utils.convertChatTime(model.createDate),
                  style: GoogleFonts.notoSans(
                      fontWeight: FontWeight.w500,
                      color: PsColors.hintColor,

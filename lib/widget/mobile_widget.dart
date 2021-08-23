@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,8 @@ import 'input.dart';
 
 class MobileWidget extends StatelessWidget{
   final TextEditingController phoneNumberController;
-  MobileWidget({this.phoneNumberController});
+  final Function(CountryCode) onTapCountry;
+  MobileWidget({this.phoneNumberController,this.onTapCountry});
 
   @override
   Widget build(BuildContext context) {
@@ -16,30 +18,28 @@ class MobileWidget extends StatelessWidget{
       return Row(
         children: [
           Container(
-            width: 70,
+            width: 80,
             decoration: BoxDecoration(
               color: PsColors.white,
               borderRadius: BorderRadius.circular(10)
             ),
             margin: const EdgeInsets.only(right: 20),
-            padding: const EdgeInsets.only(
-              top: 12,
-              bottom: 12,
-              right: 7,
-              left: 7
-            ),
+            padding: const EdgeInsets.only(right: 5),
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    '+123',
-                     style: GoogleFonts.notoSans(
-                       fontSize: 16,
-                       color: PsColors.black,
-                       fontWeight: FontWeight.w600
-                     ),
-                    maxLines: 1,
-                  ),
+                  child: CountryCodePicker(
+                    onChanged: (e) =>  onTapCountry(e),
+                    initialSelection: 'TF',
+                    showCountryOnly: false,
+                    flagWidth: 20,
+                    showFlag: false,
+                    showFlagDialog: true,
+                    showFlagMain: false,
+                    padding: const EdgeInsets.all(0),
+                    showOnlyCountryWhenClosed: false,
+                    favorite: ['+39', 'FR'],
+                  )
                 ),
 
                 Icon(

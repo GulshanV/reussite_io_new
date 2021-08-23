@@ -176,7 +176,7 @@ class _AddNewReservation extends State<AddNewReservation> {
                               hint: 'subject'.tr,
                               levelValue:
                                   course == null ? null : course.subject.name,
-                              subLevelValue: 'material'.tr,
+                              subLevelValue: course == null ?null:'subject'.tr,
                               onTap: () async {
                                 if (controller.arrCourseList.value.isNotEmpty) {
                                   var value = await showModalBottomSheet(

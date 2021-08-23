@@ -175,6 +175,10 @@ class _ReservationDatePicker extends State<ReservationDatePicker> {
                           todayBorderColor: Color(0xffABE237),
                           childAspectRatio: 1.2,
                           markedDateMoreShowTotal: true,
+                          markedDateCustomShapeBorder:
+                          ContinuousRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(40)),
                         ),
                         const SizedBox(
                           height: 25,
