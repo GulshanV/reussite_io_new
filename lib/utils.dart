@@ -50,4 +50,17 @@ class Utils {
 
     return time;
   }
+
+  static String convertChatTime(String arrSlot) {
+    String time = arrSlot;
+    try {
+      var d = time.toString().split('+')[0].trim();
+      var format = DateFormat('MM/dd/yyyy HH:mm:ss').parse(d).toLocal();
+      time = DateFormat('dd.MM.yy').format(format);
+    } catch (_) {
+      time = arrSlot;
+    }
+
+    return time;
+  }
 }
