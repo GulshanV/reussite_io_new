@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/ui/add_child/update_child_controller.dart';
@@ -86,6 +89,47 @@ class _EditChild extends State<EditChild> {
     });
   }
 
+  /// Image Picker ///
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
+                    onTap: () {
+                      _imgFromSource(source: ImageSource.gallery);
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () {
+                    _imgFromSource(source: ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  var _pickImage;
+
+  _imgFromSource({ImageSource source}) async {
+    final XFile photo = await ImagePicker().pickImage(source: source);
+    setState(() {
+      _pickImage = File(photo.path);
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,10 +142,13 @@ class _EditChild extends State<EditChild> {
             child: Row(children: [
               InkWell(
                 onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 30,
-                  color: PsColors.mainColor,
+                child: Container(
+                  height: 13.29,
+                  width: 16.75,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: PsColors.mainColor,
+                  ),
                 ),
               ),
               Expanded(child: const SizedBox()),
@@ -125,10 +172,14 @@ class _EditChild extends State<EditChild> {
                         onTap: () {
                           controller.edit();
                         },
-                        child: Icon(
-                          Icons.edit,
-                          size: 30,
-                          color: PsColors.mainColor,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          height: 14,
+                          width: 14,
+                          child: Icon(
+                            Icons.edit,
+                            color: PsColors.mainColor,
+                          ),
                         ),
                       ),
               )
@@ -159,15 +210,46 @@ class _EditChild extends State<EditChild> {
                                     color: PsColors.mainColor),
                               ),
                               Expanded(child: const SizedBox()),
-                              Container(
-                                height: 60,
-                                width: 60,
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                    color: PsColors.light_grey,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset('assets/dummy/squircle.png'),
-                              )
+                              controller.isEdit.value
+                                  ? InkWell(
+                                      onTap: () {
+                                        _showPicker(context);
+                                      },
+                                      child: Container(
+                                        height: 60,
+                                        width: 60,
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                          color: PsColors.light_grey,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: _pickImage != null
+                                                ? FileImage(_pickImage)
+                                                : AssetImage(
+                                                    'assets/dummy/squircle.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        // child: Image.asset(),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: 60,
+                                      width: 60,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        color: PsColors.light_grey,
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                              'assets/dummy/squircle.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // child: Image.asset(),
+                                    )
                             ],
                           ),
                           controller.isEdit.value

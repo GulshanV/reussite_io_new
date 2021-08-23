@@ -71,20 +71,20 @@ class _MenuPage extends State<MenuPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'add_your_full_name'.tr,
+                      'settings'.tr,
                       style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.bold,
                           fontSize: 33,
                           color: PsColors.mainColor),
                     ),
                     const SizedBox(
-                      height: 55,
+                      height: 30,
                     ),
                     Row(
                       children: [
                         InkWell(
                           onTap: () {
-                            // _showPicker(context);
+                            _showPicker(context);
                           },
                           child: Container(
                             height: 50,

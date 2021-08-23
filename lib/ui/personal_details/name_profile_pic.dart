@@ -71,7 +71,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                     children: [
                       InkWell(
                         onTap: () {
-                          // _showPicker(context);
+                          _showPicker(context);
                         },
                         child: Container(
                           height: 50,
