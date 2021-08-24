@@ -118,6 +118,7 @@ class _MobileWidget extends State<MobileWidget> {
                 autovalidateMode: AutovalidateMode.always,
                 decoration: InputDecoration(
                     hintText: 'mobile_number'.tr,
+                    counterText: '',
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: PsColors.hintColor,

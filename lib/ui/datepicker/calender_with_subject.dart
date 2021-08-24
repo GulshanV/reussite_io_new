@@ -302,15 +302,10 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                       offset: const Offset(
                                                           0.0, -7.0),
                                                       child: Text(
-                                                        time.length > 1
-                                                            ? time[1]
-                                                            : '',
-                                                        style: GoogleFonts
-                                                            .notoSans(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: PsColors
-                                                              .meetLinkColor,
+                                                        time.length > 1 ? time[1] : '',
+                                                        style: GoogleFonts.notoSans(
+                                                          fontWeight:FontWeight.w500,
+                                                          color: PsColors.meetLinkColor,
                                                           fontSize: 08,
                                                         ),
                                                       ),
@@ -327,19 +322,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                 child: Container(
                                               height: 40,
                                               decoration: BoxDecoration(
-                                                color: (index > 0 &&
-                                                        widget
-                                                                .controller
-                                                                .arrAvailableSlot[
-                                                                    index - 1]
-                                                                .course
-                                                                .name ==
-                                                            widget
-                                                                .controller
-                                                                .arrAvailableSlot[
-                                                                    index]
-                                                                .course
-                                                                .name)
+                                                color: (index > 0 && widget.controller.arrAvailableSlot[index - 1].course.name == widget.controller.arrAvailableSlot[index].course.name)
                                                     ? null
                                                     : PsColors.mainColor,
                                                 border: Border.all(
@@ -376,7 +359,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
-                                                                fontSize: 14,
+                                                                fontSize: 13,
                                                                 color: PsColors
                                                                     .white),
                                                       ),
@@ -408,18 +391,18 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                           .meetLinkColor,
                                                       fontSize: 22),
                                                   children: [
-                                                    TextSpan(
-                                                        text: time.length > 1
-                                                            ? time[1]
-                                                            : '',
-                                                        style: GoogleFonts
-                                                            .notoSans(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: PsColors
-                                                                    .meetLinkColor,
-                                                                fontSize: 11))
+                                                    WidgetSpan(
+                                                        child: Transform.translate(
+                                                          offset: const Offset(0, -7),
+                                                       child: Text(
+                                                            time.length > 1 ? time[1] : '',
+                                                           style: GoogleFonts.notoSans(
+                                                               fontWeight: FontWeight.w500,
+                                                               color: PsColors.meetLinkColor,
+                                                               fontSize: 11
+                                                           )),
+                                                    ))
+
                                                   ]),
                                               // textAlign: TextAlign.start,
                                             ),
@@ -464,25 +447,13 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                     Routes.COMMENT,
                                                     arguments: map);
                                               },
+
                                               child: Container(
                                                 height: 50,
                                                 decoration: BoxDecoration(
                                                     color: (index > 0 &&
-                                                            widget
-                                                                    .controller
-                                                                    .arrSubjectList[
-                                                                        index -
-                                                                            1]
-                                                                    .schedule
-                                                                    .course
-                                                                    .name ==
-                                                                widget
-                                                                    .controller
-                                                                    .arrSubjectList[
-                                                                        index]
-                                                                    .schedule
-                                                                    .course
-                                                                    .name)
+                                                            widget.controller.arrSubjectList[index - 1].schedule.course.name ==
+                                                                widget.controller.arrSubjectList[index].schedule.course.name)
                                                         ? null
                                                         : PsColors.mainColor,
                                                     border: Border.all(
@@ -491,27 +462,17 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                             .withOpacity(0.5),
                                                         width: 0.5)),
                                                 child: (index > 0 &&
-                                                        widget
-                                                                .controller
-                                                                .arrSubjectList[
-                                                                    index - 1]
-                                                                .schedule
-                                                                .course
-                                                                .name ==
-                                                            widget
-                                                                .controller
-                                                                .arrSubjectList[
-                                                                    index]
+                                                        widget.controller.arrSubjectList[index - 1].schedule.course.name ==
+                                                            widget.controller
+                                                                .arrSubjectList[index]
                                                                 .schedule
                                                                 .course
                                                                 .name)
                                                     ? null
                                                     : Center(
                                                         child: Text(
-                                                          widget
-                                                                  .controller
-                                                                  .arrSubjectList[
-                                                                      index]
+                                                          widget.controller
+                                                                  .arrSubjectList[index]
                                                                   .schedule
                                                                   .course
                                                                   .name ??
@@ -519,9 +480,8 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                           style: GoogleFonts
                                                               .notoSans(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 16,
+                                                                      FontWeight.w600,
+                                                                  fontSize: 13,
                                                                   color: PsColors
                                                                       .white),
                                                         ),
@@ -570,28 +530,31 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Wrap(
-                      children: List.generate(
-                          widget.controller.arrStudent.length, (index) {
-                        return InkWell(
-                            onTap: () {
-                              widget.controller.changeIndex(index);
-                            },
-                            onLongPress: () async {
-                              var map = {
-                                'id': widget.controller.arrStudent[index].id
-                              };
-                              var value = await Get.toNamed(Routes.EDIT_CHILD,
-                                  arguments: map);
-                              // if(value!=null){
-                              widget.controller.getChildList();
-                              // }
-                            },
-                            child: ChildView(
-                                widget.controller.arrStudent[index],
-                                isSelected:
-                                    widget.controller.index.value == index));
-                      }),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(
+                            widget.controller.arrStudent.length, (index) {
+                          return InkWell(
+                              onTap: () {
+                                widget.controller.changeIndex(index);
+                              },
+                              onLongPress: () async {
+                                var map = {
+                                  'id': widget.controller.arrStudent[index].id
+                                };
+                                var value = await Get.toNamed(Routes.EDIT_CHILD,
+                                    arguments: map);
+                                // if(value!=null){
+                                widget.controller.getChildList();
+                                // }
+                              },
+                              child: ChildView(
+                                  widget.controller.arrStudent[index],
+                                  isSelected:
+                                      widget.controller.index.value == index));
+                        }),
+                      ),
                     )
                   ],
                 )
