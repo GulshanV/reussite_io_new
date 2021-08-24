@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
@@ -57,9 +56,7 @@ class _LoginPage extends State<LoginPage> {
               ),
               MobileWidget(
                 phoneNumberController: phoneNumberController,
-                onTapCountry: (v){
-
-                },
+                onTapCountry: (v) {},
               ),
               const SizedBox(
                 height: 25,

@@ -71,5 +71,6 @@ const Map<String, String> en_US = {
   'select_booking_course': 'Select booking course',
   'select_booking_schedule': 'Select booking schedule',
   'child_update_msg': 'Child Update successfully',
-  'settings': 'Settings'
+  'settings': 'Settings',
+  'subjects': 'Subjects'
 };
