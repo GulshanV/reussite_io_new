@@ -144,7 +144,7 @@ class _AddNewReservation extends State<AddNewReservation> {
                                     )
                                   : SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Wrap(
+                                      child: Row(
                                         // direction: Axis.horizontal,
                                         children: List.generate(
                                             controller.arrStudent.length,

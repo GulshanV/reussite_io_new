@@ -112,7 +112,7 @@ class _VerificationPage extends State<VerificationPage> {
                         padding: const EdgeInsets.only(left: 0, right: 0),
                         child: PinCodeTextField(
                           appContext: context,
-                          length: 6,
+                          length: 4,
                           obscureText: true,
                           animationType: AnimationType.fade,
                           pinTheme: PinTheme(

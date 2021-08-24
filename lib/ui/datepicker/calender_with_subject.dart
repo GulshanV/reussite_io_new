@@ -28,9 +28,9 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
   EventList<Event> getEvent() {
     var map = Map<DateTime, List<Event>>();
+
     for (int i = 0; i < widget.controller.arrBooking.length; i++) {
-      var d =
-          widget.controller.arrBooking[i].startDate.toString().split(' ')[0];
+      var d = widget.controller.arrBooking[i].startDate.toString().split(' ')[0];
       var format = DateFormat('MM/dd/yyyy').parse(d);
       List<Event> list = [];
       list.add(Event(
@@ -44,13 +44,41 @@ class _BookListWithCalender extends State<BookListWithCalender> {
               color: Colors.green, borderRadius: BorderRadius.circular(2.5)),
         ),
       ));
+
       map[format] = list;
+
+
     }
+    // for (int i = 0; i < widget.controller.arrAllSchedule.length; i++) {
+    //   var d = widget.controller.arrAllSchedule[i].startDate.toString().split(' ')[0];
+    //   var format = DateFormat('dd/MM/yyyy').parse(d);
+    //   List<Event> list = [];
+    //   list.add(Event(
+    //     date: format,
+    //     title: '$i',
+    //     dot: Container(
+    //       margin: EdgeInsets.symmetric(horizontal: 1.0),
+    //       height: 5.0,
+    //       width: 5.0,
+    //       decoration: BoxDecoration(
+    //           color: Colors.grey, borderRadius: BorderRadius.circular(2.5)),
+    //     ),
+    //   ));
+    //   map[format] = list;
+    // }
+
+
+
+
+
+
     EventList<Event> event = EventList<Event>(events: map);
 
+    // event.addAll(date, events)
     print(event);
     return event;
   }
+
 
   EventList<Event> getAvailable() {
     var map = Map<DateTime, List<Event>>();
