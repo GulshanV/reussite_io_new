@@ -8,6 +8,7 @@ class BookingModel{
   Student student;
   ScheduleModel schedule;
   dynamic lastUpdateDate;
+  bool isBooking=true;
 
   BookingModel.empty(){
 

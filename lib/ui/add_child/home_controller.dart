@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:reussite_io_new/model/booking_model.dart';
+import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
@@ -46,23 +47,29 @@ class HomeController extends GetxController{
     List<ScheduleModel> data=[];
     for(var model in value){
       int isIndex=-1;
-
+      bool alreadyExists=false;
       for(int index=0;index<data.length;index++){
         String parent=model.startDate.toString().split(' ')[0];
         String child=data[index].startDate.toString().split(' ')[0];
-        if(parent==child){
+        if(parent==child &&
+           model.startDate== data[index].startDate &&
+            model.course.name== data[index].course.name
+        ){
           isIndex=index;
+          alreadyExists=true;
         }
       }
+      if(!alreadyExists){
       if(isIndex==-1){
         ScheduleModel m = ScheduleModel.empty();
         m.startDate= model.startDate;
+        m.course= model.course;
         m.arrMultiTime.add(model);
         data.add(m);
       }else{
         data[isIndex].arrMultiTime.add(model);
       }
-    }
+    }}
 
     arrAllSchedule(data);
     isLoading(false);
@@ -110,6 +117,41 @@ class HomeController extends GetxController{
         }
       }
 
+      for(var model in arrAllSchedule){
+        int isIndex=-1;
+        String parent=model.startDate.toString().split(' ')[0];
+        for(int index=0;index<list.length;index++){
+
+          String child=list[index].startDate.toString().split(' ')[0];
+          if(parent==child){
+            isIndex=index;
+          }
+        }
+
+        for(var mmm in model.arrMultiTime){
+          BookingModel nbModel=BookingModel.empty();
+          var sM=ScheduleModel.empty();
+          sM.startDate=mmm.startDate;
+          sM.course=mmm.course;
+          sM.course.name=mmm.course.subject.name;
+          nbModel.schedule=sM;
+          nbModel.isBooking=false;
+
+          if(isIndex==-1){
+            BookingModel mm=BookingModel.empty();
+            mm.isBooking=false;
+            mm.compareDate=parent;
+            mm.startDate=mmm.startDate;
+            mm.arrAllBooking.add(nbModel);
+            list.add(mm);
+          }else{
+            list[isIndex].arrAllBooking.add(nbModel);
+          }
+        }
+
+
+      }
+
       arrBooking(list);
 
     } finally {
@@ -143,7 +185,24 @@ class HomeController extends GetxController{
 
   void selectEvent(String position) {
     int index=int.parse(position);
-    arrSubjectList(arrBooking[index].arrAllBooking);
+    List<BookingModel> arrList=[];
+
+    for(var m in arrBooking[index].arrAllBooking){
+       bool isExists=false;
+       for(int i =0;i<arrList.length;i++){
+         if(
+         m.startDate== arrList[i].startDate &&
+         m.schedule.course.name== arrList[i].schedule.course.name){
+           isExists=true;
+         }
+       }
+
+       if(!isExists){
+         arrList.add(m);
+       }
+    }
+
+    arrSubjectList(arrList);
   }
 //  booking?profileId=
 // page=0&size=20&startDate=01%2F01%2F2010%2000%3A00%3A00%20-0500

@@ -11,6 +11,10 @@ class Course{
   List<Prices> prices = [];
   Subject subject;
 
+  Course.empty(){
+
+  }
+
   Course.fromJSON(Map<String,dynamic> map){
     id = map['id'];
     createDate = map['createDate'];

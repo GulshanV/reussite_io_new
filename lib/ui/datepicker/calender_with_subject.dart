@@ -31,6 +31,8 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
     for (int i = 0; i < widget.controller.arrBooking.length; i++) {
       var d = widget.controller.arrBooking[i].startDate.toString().split(' ')[0];
+      bool isBooking = widget.controller.arrBooking[i].isBooking;
+      print(isBooking);
       var format = DateFormat('MM/dd/yyyy').parse(d);
       List<Event> list = [];
       list.add(Event(
@@ -41,7 +43,8 @@ class _BookListWithCalender extends State<BookListWithCalender> {
           height: 5.0,
           width: 5.0,
           decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(2.5)),
+              color: isBooking?Colors.green:Colors.grey,
+              borderRadius: BorderRadius.circular(2.5)),
         ),
       ));
 
@@ -49,24 +52,6 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
 
     }
-    // for (int i = 0; i < widget.controller.arrAllSchedule.length; i++) {
-    //   var d = widget.controller.arrAllSchedule[i].startDate.toString().split(' ')[0];
-    //   var format = DateFormat('dd/MM/yyyy').parse(d);
-    //   List<Event> list = [];
-    //   list.add(Event(
-    //     date: format,
-    //     title: '$i',
-    //     dot: Container(
-    //       margin: EdgeInsets.symmetric(horizontal: 1.0),
-    //       height: 5.0,
-    //       width: 5.0,
-    //       decoration: BoxDecoration(
-    //           color: Colors.grey, borderRadius: BorderRadius.circular(2.5)),
-    //     ),
-    //   ));
-    //   map[format] = list;
-    // }
-
 
 
 
@@ -332,11 +317,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                 ),
                                               ),
                                               child: (index > 0 &&
-                                                      widget
-                                                              .controller
-                                                              .arrAvailableSlot[
-                                                                  index - 1]
-                                                              .course
+                                                      widget.controller.arrAvailableSlot[index - 1].course
                                                               .name ==
                                                           widget
                                                               .controller
@@ -379,33 +360,39 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                 .schedule
                                                 .startDate)
                                             .split(' ');
+
+
                                         return Row(
                                           children: [
                                             Text.rich(
                                               TextSpan(
-                                                  text: '${time[0]}',
-                                                  style: GoogleFonts.notoSans(
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: PsColors
-                                                          .meetLinkColor,
-                                                      fontSize: 22),
-                                                  children: [
-                                                    WidgetSpan(
-                                                        child: Transform.translate(
-                                                          offset: const Offset(0, -7),
-                                                       child: Text(
-                                                            time.length > 1 ? time[1] : '',
-                                                           style: GoogleFonts.notoSans(
-                                                               fontWeight: FontWeight.w500,
-                                                               color: PsColors.meetLinkColor,
-                                                               fontSize: 11
-                                                           )),
-                                                    ))
-
-                                                  ]),
+                                                text:
+                                                '${time[0].replaceAll(new RegExp(r'^0+(?=.)'), '')}',
+                                                style: GoogleFonts.notoSans(
+                                                  fontWeight: FontWeight.w300,
+                                                  color: PsColors.meetLinkColor,
+                                                  fontSize: 15,
+                                                ),
+                                                children: [
+                                                  WidgetSpan(
+                                                    child: Transform.translate(
+                                                      offset: const Offset(
+                                                          0.0, -7.0),
+                                                      child: Text(
+                                                        time.length > 1 ? time[1] : '',
+                                                        style: GoogleFonts.notoSans(
+                                                          fontWeight:FontWeight.w500,
+                                                          color: PsColors.meetLinkColor,
+                                                          fontSize: 08,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                               // textAlign: TextAlign.start,
                                             ),
+
                                             const SizedBox(
                                               width: 8,
                                             ),
@@ -480,7 +467,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                           style: GoogleFonts
                                                               .notoSans(
                                                                   fontWeight:
-                                                                      FontWeight.w600,
+                                                                      FontWeight.w500,
                                                                   fontSize: 13,
                                                                   color: PsColors
                                                                       .white),
@@ -512,7 +499,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
             ),
             color: PsColors.btnColor,
           ),
-          padding: const EdgeInsets.only(left: 25),
+          padding: const EdgeInsets.only(left: 25,right: 25),
           child: widget.controller.index.value == 10001
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
