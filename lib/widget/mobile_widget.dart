@@ -70,8 +70,7 @@ class _MobileWidget extends State<MobileWidget> {
               Expanded(
                   child: CountryCodePicker(
                 onChanged: (e) {
-                  selectedCountry =
-                      e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
+                  selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
                   _phoneNumberFormatter =
                       _NumberTextInputFormatter(int.parse(selectedCountry));
                   print("country code ==========> $selectedCountry");

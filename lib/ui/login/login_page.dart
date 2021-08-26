@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +16,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   final AuthController controller = Get.put(AuthController());
 
+  CountryCode country=CountryCode(
+    code: 'IO',
+    dialCode: '+246'
+  );
   TextEditingController phoneNumberController = TextEditingController();
 
   @override
@@ -56,7 +61,11 @@ class _LoginPage extends State<LoginPage> {
               ),
               MobileWidget(
                 phoneNumberController: phoneNumberController,
-                onTapCountry: (v) {},
+                onTapCountry: (v) {
+                 setState(() {
+                   country=v;
+                 });
+                },
               ),
               const SizedBox(
                 height: 25,
@@ -90,15 +99,13 @@ class _LoginPage extends State<LoginPage> {
                           title: "invalid!",
                           middleText: 'invalid_mobile_no'.tr);
                     } else {
-                      Get.toNamed(Routes.OTP_VERIFY_nav);
-                      // String error = await controller.login(
-                      //     phone: phoneNumberController.text
-                      // );
-                      // if(error != "") {
-                      //   Get.defaultDialog(title: "Oop!", middleText: error);
-                      //   } else {
-                      //     Get.toNamed(Routes.OTP_VERIFY_nav);
-                      //  }
+
+                      String error = await controller.login(phone: phoneNumberController.text,dialCode:country.dialCode);
+                      if(error != "") {
+                        Get.defaultDialog(title: "Oop!", middleText: error);
+                        } else {
+                          Get.toNamed(Routes.OTP_VERIFY_nav);
+                       }
                     }
                   },
                   width: 175,

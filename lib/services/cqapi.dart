@@ -11,13 +11,17 @@ import 'package:reussite_io_new/services/request_api.dart';
 class CQAPI {
   static var client = http.Client();
 
-  static Future<String> login({String mobile}) async {
+  static Future<String> login({String mobile,String dialCode}) async {
     String phone = mobile
         .replaceAll('-', '')
         .replaceAll(' ', '')
         .replaceAll('(', '')
         .replaceAll(')', '');
-    var response = await RequestApi.get('parent/phoneNumber/$phone');
+    var map={
+      'phoneNumber':mobile,
+      'countryCode':dialCode
+    };
+    var response = await RequestApi.postAsync('parent',body: map);
     print(response);
 
     return response;
@@ -51,6 +55,10 @@ class CQAPI {
 
 
   static Future<List<ScheduleModel>> getScheduleAll(String grade) async {
+    // DateTime currnt=DateTime.now().add(Duration(days: -1));
+    // var s=DateFormat('MM/dd/yyyy').parse(d);
+    // 01/01/2010 00:00:00 -0500
+
     var url ='schedule?size=300';
     if(grade.length>0){
       url=url+'&grades=$grade';

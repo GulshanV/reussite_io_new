@@ -46,7 +46,9 @@ class _HomePage extends State<HomePage> {
                     ),
                     Expanded(child: const SizedBox()),
                     Obx(
-                      () => controller.arrStudent.length == 0
+                      () => controller.index.value == 10001
+                          ? const SizedBox()
+                          : controller.arrStudent.length == 0
                           ? const SizedBox()
                           : InkWell(
                               onTap: () async {

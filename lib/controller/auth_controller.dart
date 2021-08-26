@@ -14,6 +14,7 @@ class AuthController extends SuperController<AuthModel>{
 
   var otpInvalid=false.obs;
 
+
  String otpValid(String otp){
    print(otp);
    if(otp.length<4){
@@ -30,11 +31,11 @@ class AuthController extends SuperController<AuthModel>{
 
   }
 
-  Future<String> login({String phone}) async {
+  Future<String> login({String phone,String dialCode}) async {
     error = "";
     try {
       loginProcess(true);
-      dynamic loginResp = await CQAPI.login(mobile: phone);
+      dynamic loginResp = await CQAPI.login(mobile: phone,dialCode:dialCode);
 
     } finally {
       loginProcess(false);
