@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:get/get.dart';
+import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget{
   @override
@@ -21,11 +24,34 @@ class _Splash extends State<Splash>{
     timer();
   }
 
-  timer(){
-    Timer(Duration(seconds: 3), (){
-      Get.offNamedUntil(Routes.WELCOME, (route) => true);
-    });
+  timer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response= prefs.getString('login');
+
+    if(response!=null && response!=''){
+      var js=json.decode(response);
+      var user = AuthModel.fromJson(js);
+      Timer(Duration(seconds: 3), (){
+        if(user.firstName==null){
+          // Get.offAndToNamed(Routes.ADD_NAME_PIC_LOGIN);
+          Get.offNamedUntil(Routes.ADD_NAME_PIC_LOGIN, (route) => true);
+        }else{
+          Get.offNamedUntil(Routes.HOME, (route) => true);
+        }
+
+      });
+    }else{
+
+      Timer(Duration(seconds: 3), (){
+        Get.offNamedUntil(Routes.WELCOME, (route) => true);
+      });
+
+    }
+
+
   }
+
+  //(647) 8475602
 
 
   @override

@@ -15,16 +15,15 @@ class HelpListPage extends StatelessWidget {
                 const EdgeInsets.only(top: 45, left: 15, right: 15, bottom: 10),
             child: Row(
               children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 13.29,
-                    width: 16.75,
-                    child: Icon(
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+
+                    },
+                    icon: Icon(
                       Icons.arrow_back,
                       color: PsColors.mainColor,
-                    ),
-                  ),
+                    )
                 ),
                 Expanded(child: const SizedBox()),
               ],

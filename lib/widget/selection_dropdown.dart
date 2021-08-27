@@ -7,7 +7,8 @@ class SelectionDropdown extends StatelessWidget{
   final String levelValue;
   final String subLevelValue;
   final Function onTap;
-  SelectionDropdown({this.hint,this.onTap,this.levelValue,this.subLevelValue});
+  final bool hideArrow;
+  SelectionDropdown({this.hint,this.onTap,this.hideArrow=false,this.levelValue,this.subLevelValue});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +47,7 @@ class SelectionDropdown extends StatelessWidget{
                   fontSize: 10
               ),
             ),
-            Icon(
+            hideArrow?const SizedBox():Icon(
               Icons.keyboard_arrow_right,
               size: 20,
               color: PsColors.mainColor,

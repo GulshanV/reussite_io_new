@@ -34,6 +34,7 @@ class _ReservationDatePicker extends State<ReservationDatePicker> {
     for (int i = 0; i < controller.arrSchedule.length; i++) {
       var d = controller.arrSchedule[i].startDate.toString().split(' ')[0];
       var format = DateFormat('MM/dd/yyyy').parse(d);
+
       List<Event> list = [];
       list.add(Event(
         date: format,

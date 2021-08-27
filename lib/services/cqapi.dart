@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:reussite_io_new/model/booking_model.dart';
 import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/model/parent_model.dart';
@@ -13,12 +14,12 @@ class CQAPI {
 
   static Future<String> login({String mobile,String dialCode}) async {
     String phone = mobile
-        .replaceAll('-', '')
-        .replaceAll(' ', '')
-        .replaceAll('(', '')
-        .replaceAll(')', '');
+        .replaceAll('-', '');
+        // .replaceAll(' ', '')
+        // .replaceAll('(', '')
+        // .replaceAll(')', '');
     var map={
-      'phoneNumber':mobile,
+      'phoneNumber':phone,
       'countryCode':dialCode
     };
     var response = await RequestApi.postAsync('parent',body: map);
@@ -39,6 +40,23 @@ class CQAPI {
     return student;
   }
 
+  static Future<String> verifyOTP(String parentId,String code) async {
+    String res;
+   try{
+
+     var url = 'parent/activate/$parentId?activationCode=$code';
+     // var url = 'parent/activation/$parentId?activationCode=$code';
+     var response = await RequestApi.get(url);
+     Map js=json.decode(response);
+     if(js.containsKey('access_token')){
+       res=response;
+     }
+   }catch(_){
+     print(_);
+   }
+    return res;
+  }
+
   static Future<List<ScheduleModel>> getScheduleCourseId(String id) async {
     var response = await RequestApi.get('schedule?courseId=$id');
     print(response);
@@ -55,11 +73,12 @@ class CQAPI {
 
 
   static Future<List<ScheduleModel>> getScheduleAll(String grade) async {
-    // DateTime currnt=DateTime.now().add(Duration(days: -1));
-    // var s=DateFormat('MM/dd/yyyy').parse(d);
-    // 01/01/2010 00:00:00 -0500
+    DateTime currnt=DateTime.now().add(Duration(days: -1));
+    var s=DateFormat('MM/dd/yyyy').format(currnt);
+    var startSch='&startDate=$s 00:00:00 -0500';
+    // 01/01/2010
 
-    var url ='schedule?size=300';
+    var url ='schedule?size=300$startSch';
     if(grade.length>0){
       url=url+'&grades=$grade';
     }

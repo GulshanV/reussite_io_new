@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/ui/add_child/home_controller.dart';
+import 'package:reussite_io_new/ui/reservation/add_reservation.dart';
+import 'package:reussite_io_new/ui/reservation/description_popu.dart';
 import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/child_view.dart';
 
@@ -40,6 +42,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
       bool isBooking = widget.controller.arrBooking[i].isBooking;
       var format = DateFormat('MM/dd/yyyy').parse(d);
 
+
       List<Event> list = [];
       list.add(Event(
         date: format,
@@ -59,8 +62,8 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
     EventList<Event> event = EventList<Event>(events: map);
 
-    // event.addAll(date, events)
-    print(event);
+    widget.controller.clearSlot();
+    event.getEvents(currentDate).forEach((event) {widget.controller.selectAvalibleSlot(event.title);});
     return event;
   }
 
@@ -85,6 +88,10 @@ class _BookListWithCalender extends State<BookListWithCalender> {
       map[format] = list;
     }
     EventList<Event> event = EventList<Event>(events: map);
+
+
+    widget.controller.clearSlot();
+    event.getEvents(currentDate).forEach((event) {widget.controller.selectAvalibleSlot(event.title);});
 
     return event;
   }
@@ -142,7 +149,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     thisMonthDayBorderColor: Colors.grey,
                                     weekDayFormat: WeekdayFormat.narrow,
                                     markedDatesMap: getAvailable(),
-                                    height: 320.0,
+                                    height: 350.0,
                                     selectedDateTime: currentDate,
                                     showIconBehindDayText: true,
                                     customGridViewPhysics:
@@ -166,6 +173,11 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                       size: 25,
                                       color: Color(0xff86C502),
                                     ),
+                              rightButtonIcon: Icon(
+                                Icons.keyboard_arrow_right,
+                                size: 25,
+                                color: Color(0xff86C502),
+                              ),
                                     selectedDayButtonColor: Color(0xffABE237),
                                     todayTextStyle: TextStyle(
                                       color: Colors.blue,
@@ -215,7 +227,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     thisMonthDayBorderColor: Colors.grey,
                                     weekDayFormat: WeekdayFormat.narrow,
                                     markedDatesMap: getEvent(),
-                                    height: 320.0,
+                                    height: 350.0,
                                     selectedDateTime: currentDate,
                                     showIconBehindDayText: true,
                                     customGridViewPhysics:
@@ -239,6 +251,11 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                       size: 25,
                                       color: Color(0xff86C502),
                                     ),
+                              rightButtonIcon: Icon(
+                                Icons.keyboard_arrow_right,
+                                size: 25,
+                                color: Color(0xff86C502),
+                              ),
                                     selectedDayButtonColor: Color(0xffABE237),
                                     todayTextStyle: TextStyle(
                                       color: Colors.blue,
@@ -308,33 +325,38 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                               width: 8,
                                             ),
                                             Expanded(
-                                                child: Container(
+                                                child: InkWell(
+                                                  onTap:(){
+                                                    Utils.successToast('Please select a child to make a reservation');
+                                                  },
+                                                  child: Container(
                                               height: 45,
                                               decoration: BoxDecoration(
                                               /*  color: (index > 0 &&
-                                                        widget.controller.arrAvailableSlot[index - 1].course.name == widget.controller.arrAvailableSlot[index].course.name)
-                                                    ? null
-                                                    : PsColors.mainColor,*/
-                                                border: Border.all(
-                                                  color: PsColors.hintColor
-                                                      .withOpacity(0.5),
-                                                  width: 0.3,
-                                                ),
+                                                          widget.controller.arrAvailableSlot[index - 1].course.name == widget.controller.arrAvailableSlot[index].course.name)
+                                                      ? null
+                                                      : PsColors.mainColor,*/
+                                                  border: Border.all(
+                                                    color: PsColors.hintColor
+                                                        .withOpacity(0.5),
+                                                    width: 0.3,
+                                                  ),
                                               ),
                                               child: (index > 0 &&
-                                                      widget.controller.arrAvailableSlot[index - 1].course.name == widget.controller.arrAvailableSlot[index].course.name)
-                                                  ? null
-                                                  : Center(
-                                                      child: Text(
-                                                        widget.controller.arrAvailableSlot[index].course.name ?? '',
-                                                        style: GoogleFonts
-                                                            .notoSans(
-                                                                fontWeight: FontWeight.w500,
-                                                                fontSize: 13,
-                                                                color:Colors.black54),
+                                                        widget.controller.arrAvailableSlot[index - 1].course.name == widget.controller.arrAvailableSlot[index].course.name)
+                                                    ? null
+                                                    : Center(
+                                                        child: Text(
+                                                          widget.controller.arrAvailableSlot[index].course.name ?? '',
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 13,
+                                                                  color:Colors.black54),
+                                                        ),
                                                       ),
-                                                    ),
-                                            ))
+                                            ),
+                                                ))
                                           ],
                                         );
                                       }),
@@ -385,41 +407,48 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                             Expanded(
                                                 child: InkWell(
                                               onTap: () async {
-                                                var map = {
-                                                  'id': widget.controller
-                                                      .arrSubjectList[index].id,
-                                                  'subject': widget
-                                                      .controller
-                                                      .arrSubjectList[index]
-                                                      .schedule
-                                                      .course
-                                                      .name,
-                                                  'stdId': widget
-                                                      .controller
-                                                      .arrStudent[widget
-                                                          .controller
-                                                          .index
-                                                          .value]
-                                                      .id,
-                                                  'stdFirstName': widget
-                                                      .controller
-                                                      .arrStudent[widget
-                                                          .controller
-                                                          .index
-                                                          .value]
-                                                      .firstName,
-                                                  'stdLastName': widget
-                                                      .controller
-                                                      .arrStudent[widget
-                                                          .controller
-                                                          .index
-                                                          .value]
-                                                      .lastName,
-                                                };
-                                                var value = await Get.toNamed(
-                                                    Routes.COMMENT,
-                                                    arguments: map);
-                                              },
+                                                if(widget.controller.arrSubjectList[index].isBooking){
+                                                  var map = {
+                                                    'id': widget.controller.arrSubjectList[index].id,
+                                                    'subject': widget.controller.arrSubjectList[index].schedule.course.name,
+                                                    'stdId': widget.controller.arrStudent[widget.controller.index.value].id,
+                                                    'stdFirstName': widget.controller.arrStudent[widget.controller.index.value].firstName,
+                                                    'stdLastName': widget.controller.arrStudent[widget.controller.index.value].lastName,
+                                                  };
+                                                  var value = await Get.toNamed(
+                                                      Routes.COMMENT,
+                                                      arguments: map);
+                                                }else{
+                                                 var sch = widget.controller.arrSubjectList[index].schedule;
+
+                                                 var value = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddNewReservation(
+                                                   course:  sch.course,
+                                                   scheduleModel: sch,
+                                                   student: widget.controller.arrStudent[widget.controller.index.value],
+                                                 )));
+
+                                                  if (value != null) {
+                                                    Utils.successToast('booking_create_successfully');
+                                                  }
+                                                 widget.controller.getChildList();
+
+    //AddNewReservation
+
+                                                  /*var value = await showDialog(context: context,
+                                                      builder:(context)=> AlertDialog(
+                                                        content: DescriptionPopup(),
+                                                      ));
+
+                                                  if(value!=null){
+                                                    var sch = widget.controller.arrSubjectList[index].schedule;
+                                                    widget.controller.addReservation(
+                                                        sch.course,
+                                                        sch,
+                                                        value
+                                                    );
+                                                  }
+                                                }*/
+                                              }},
                                               child: Container(
                                                 height: 45,
                                                 decoration: BoxDecoration(
@@ -489,27 +518,74 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(
-                            widget.controller.arrStudent.length, (index) {
-                          return InkWell(
-                              onTap: () {
-                                widget.controller.changeIndex(index);
-                              },
-                              onLongPress: () async {
-                                var map = {
-                                  'id': widget.controller.arrStudent[index].id
-                                };
-                                var value = await Get.toNamed(Routes.EDIT_CHILD,
-                                    arguments: map);
-                                // if(value!=null){
-                                widget.controller.getChildList();
-                                // }
-                              },
-                              child: ChildView(
-                                  widget.controller.arrStudent[index],
-                                  isSelected:
-                                      widget.controller.index.value == index));
-                        }),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ...List.generate(
+                              widget.controller.arrStudent.length, (index) {
+                            return InkWell(
+                                onTap: () {
+                                  widget.controller.changeIndex(index);
+                                },
+                                onLongPress: () async {
+                                  var map = {
+                                    'id': widget.controller.arrStudent[index].id
+                                  };
+                                  var value = await Get.toNamed(Routes.EDIT_CHILD,
+                                      arguments: map);
+                                  // if(value!=null){
+                                  widget.controller.getChildList();
+                                  // }
+                                },
+                                child: ChildView(
+                                    widget.controller.arrStudent[index],
+                                    isSelected:
+                                    widget.controller.index.value == index
+                                )
+                            );
+                          }),
+
+                          InkWell(
+                            onTap: () async {
+                              var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
+                              widget.controller.getChildList();
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  margin: const EdgeInsets.only(
+                                      right: 10
+                                  ),
+                                  decoration: BoxDecoration(
+                                      color: PsColors.mainColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                          color: PsColors.mainColor,
+                                          width: 3
+                                      )
+                                  ),
+                                  padding: const EdgeInsets.all(5),
+                                  child:Icon(
+                                    Icons.add,
+                                    size: 40,
+                                    color:Colors.white
+                                  )
+                                ),
+                                Text(
+                                  'Add child',
+                                  style: GoogleFonts.notoSans(
+                                      fontWeight: FontWeight.w400,
+                                      color: PsColors.black,
+                                      fontSize: 12
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+
+                        ],
                       ),
                     )
                   ],

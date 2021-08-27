@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reussite_io_new/model/auth_model.dart';
@@ -5,6 +8,7 @@ import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/repositry/repository_adapter.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthController extends SuperController<AuthModel>{
@@ -15,13 +19,51 @@ class AuthController extends SuperController<AuthModel>{
   var otpInvalid=false.obs;
 
 
- String otpValid(String otp){
+
+  AuthModel auth;
+
+  void resendOTP() {
+    if(auth==null){
+      var res = Get.arguments['data'];
+      print(res);
+      var js=json.decode(res);
+      auth=AuthModel.fromJson(js);
+    }
+    login(phone:auth.phoneNumber,dialCode:'${auth.countryCode}');
+
+
+  }
+
+ Future<String> otpValid(String otp) async {
    print(otp);
-   if(otp.length<4){
-     otpInvalid(true);
-     return 'otp is required';
-   }else if(otp=='3232'){
-      otpInvalid(false);
+
+     var res = Get.arguments['data'];
+     print(res);
+     var js=json.decode(res);
+   auth=AuthModel.fromJson(js);
+
+     if(otp.length<4){
+           otpInvalid(true);
+           return 'otp is required';
+   }else if(otp.length==4){
+       loginProcess(true);
+       var value = await CQAPI.verifyOTP(auth.id, otp);
+       if(value!=null){
+         var js =json.decode(value);
+         var token=js['access_token'];
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+         await prefs.setString('login', res);
+         await prefs.setString('token', token);
+         if(auth.firstName==null){
+           Get.offAndToNamed(Routes.ADD_NAME_PIC_LOGIN);
+         }else{
+           Get.offAndToNamed(Routes.HOME);
+         }
+       }else{
+         otpInvalid(true);
+         return "invalid OTP";
+       }
+       loginProcess(false);
       return null;
     }else{
       otpInvalid(true);
@@ -35,8 +77,8 @@ class AuthController extends SuperController<AuthModel>{
     error = "";
     try {
       loginProcess(true);
-      dynamic loginResp = await CQAPI.login(mobile: phone,dialCode:dialCode);
-
+      error = await CQAPI.login(mobile: phone,dialCode:dialCode);
+      loginProcess(false);
     } finally {
       loginProcess(false);
     }
@@ -83,7 +125,7 @@ class AuthController extends SuperController<AuthModel>{
 
 
   validationCreateStudent(String name,String school,String board,String level,String phone,String email) async {
-    print('fullname: $name');
+
     if(name.isEmpty){
       errorMsg('full_name_required'.tr);
     }else if(name.length<3){
@@ -107,8 +149,12 @@ class AuthController extends SuperController<AuthModel>{
       error = "";
       try {
         loginProcess(true);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var response= prefs.getString('login');
+        var js=json.decode(response);
+        var user = AuthModel.fromJson(js);
         Student loginResp = await CQAPI.addNewChild(
-          '8a0081917b3f334d017b3f4cbe480023',
+           user.id,
             name,
             school,
             board,
@@ -145,4 +191,5 @@ class AuthController extends SuperController<AuthModel>{
     RegExp regExp = new RegExp(emailPattern);
     return regExp.hasMatch(email);
   }
+
 }

@@ -1,7 +1,11 @@
 
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/model/parent_model.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils.dart';
 
@@ -10,12 +14,19 @@ class ProfileController extends GetxController{
   var childLoadProcess=true.obs;
 
   var model=ParentModel.empty().obs;
+  AuthModel user;
+
 
   Future<void> getParentDetails() async {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var response= prefs.getString('login');
+      var js=json.decode(response);
+      user = AuthModel.fromJson(js);
     try {
       childLoadProcess(true);
       var value = await CQAPI.getParentProfile(
-          id: '8a0081917b3f334d017b3f4cbe480023'
+          id:  user.id
       );
       model(value);
     } finally {
@@ -26,7 +37,7 @@ class ProfileController extends GetxController{
   Future<void> updateProfile(var name,var phone, var email) async {
 
     var value = await CQAPI.updateParent(
-      '8a0081917b3f334d017b3f4cbe480023',
+       user.id,
         name,
       email,
         'en',

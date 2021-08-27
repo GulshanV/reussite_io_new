@@ -71,13 +71,15 @@ class _NotificationPage extends State<NotificationPage>{
             padding: const EdgeInsets.only(top: 45,left: 15,right: 15,bottom: 10),
             child: Row(
               children: [
-                InkWell(
-                  onTap: ()=>Navigator.pop(context),
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                    color: PsColors.mainColor,
-                  ),
+                IconButton(
+                    onPressed: () {
+                        Navigator.pop(context);
+
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: PsColors.mainColor,
+                    )
                 ),
                 Expanded(child:const SizedBox()),
 

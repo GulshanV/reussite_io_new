@@ -17,16 +17,17 @@ class BookDateController  extends GetxController{
     List<ScheduleModel> data=[];
     for(var model in value){
        int isIndex=-1;
-
+       String parent=model.startDate.toString().split(' ')[0];
        for(int index=0;index<data.length;index++){
-          String parent=model.startDate.toString().split(' ')[0];
+
           String child=data[index].startDate.toString().split(' ')[0];
           if(parent==child){
             isIndex=index;
           }
        }
-
+       print(parent);
        print(isIndex);
+
        if(isIndex==-1){
          ScheduleModel m = ScheduleModel.empty();
          m.startDate= model.startDate;

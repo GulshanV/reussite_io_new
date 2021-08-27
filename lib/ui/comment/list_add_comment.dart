@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
+import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/model/comment_model.dart';
 import 'package:reussite_io_new/services/request_api.dart';
 import 'package:reussite_io_new/ui/notification/notification_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentSection extends StatefulWidget{
 
@@ -33,12 +35,22 @@ class _CommentSection extends State<CommentSection>{
   @override
   void initState() {
     super.initState();
+    getLoginData();
+
+  }
+  AuthModel user;
+
+  getLoginData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response= prefs.getString('login');
+    var js=json.decode(response);
+    user = AuthModel.fromJson(js);
     getData();
   }
 
   getData(){
     var arg=Get.arguments;
-    parentId='8a0081917b3f334d017b3f4cbe480023';
+    parentId= user.id;
     bookingId=arg['id'];
     subject=arg['subject'];
     stdId=arg['stdId'];
@@ -116,14 +128,17 @@ class _CommentSection extends State<CommentSection>{
              padding: const EdgeInsets.only(top: 40,left: 15,right: 15,bottom: 10),
              child: Row(
                children: [
-                 InkWell(
-                   onTap: ()=>Navigator.pop(context),
-                   child: Icon(
-                     Icons.arrow_back,
-                     size: 30,
-                     color: PsColors.mainColor,
-                   ),
+                 IconButton(
+                     onPressed: () {
+                         Navigator.pop(context);
+
+                     },
+                     icon: Icon(
+                       Icons.arrow_back,
+                       color: PsColors.mainColor,
+                     )
                  ),
+
                  Expanded(child:const SizedBox()),
                ],
              ),

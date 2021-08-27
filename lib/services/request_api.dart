@@ -104,6 +104,12 @@ class RequestApi {
       HttpClientResponse response = await request.close();
 
       String reply = await response.transform(utf8.decoder).join();
+      print(response.statusCode);
+      print(reply);
+
+      if(response.statusCode==500){
+        return null;
+      }
 
       return reply;
     } catch(_) {

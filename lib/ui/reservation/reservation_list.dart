@@ -44,11 +44,13 @@ class ReservationList extends StatelessWidget{
           child: RaisedGradientButtonGreen(
             margin: const EdgeInsets.all(0),
             onPressed: () async {
-               var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
-               if(value!=null){
-                 Utils.successToast('booking_create_successfully');
-               }
-               controller.getChildList();
+              var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
+              controller.getChildList();
+               // var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
+               // if(value!=null){
+               //   Utils.successToast('booking_create_successfully');
+               // }
+               // controller.getChildList();
             },
             width: 130,
             child:Row(
@@ -56,7 +58,7 @@ class ReservationList extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'add'.tr.toUpperCase(),
+                  'Add Child',
                   style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,

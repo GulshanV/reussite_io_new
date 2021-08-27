@@ -8,6 +8,8 @@ import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/widget/button.dart';
 import 'package:reussite_io_new/widget/mobile_widget.dart';
 
+import '../../utils.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPage createState() => _LoginPage();
@@ -89,9 +91,11 @@ class _LoginPage extends State<LoginPage> {
               const SizedBox(
                 height: 50,
               ),
-              Align(
+              Obx(() => Align(
                 alignment: Alignment.topLeft,
-                child: RaisedGradientButton(
+                child:controller.loginProcess.value?Center(
+                  child: CircularProgressIndicator(),
+                ): RaisedGradientButton(
                   margin: const EdgeInsets.all(0),
                   onPressed: () async {
                     if (phoneNumberController.text.length < 9) {
@@ -101,11 +105,16 @@ class _LoginPage extends State<LoginPage> {
                     } else {
 
                       String error = await controller.login(phone: phoneNumberController.text,dialCode:country.dialCode);
-                      if(error != "") {
-                        Get.defaultDialog(title: "Oop!", middleText: error);
-                        } else {
-                          Get.toNamed(Routes.OTP_VERIFY_nav);
-                       }
+
+                      if(error == null) {
+                        Utils.errorMsg("Oop! something is wrong");
+
+                      } else {
+                        var map={
+                          'data':error
+                        };
+                      Get.offNamedUntil(Routes.OTP_VERIFY_nav, (route) => true,arguments: map);
+                      }
                     }
                   },
                   width: 175,
@@ -118,7 +127,7 @@ class _LoginPage extends State<LoginPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              )
+              ))
             ],
           ),
         ),

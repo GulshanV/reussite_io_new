@@ -40,6 +40,7 @@ dependencies:
   flutter_svg:
   image_picker:
   country_code_picker:
+  shared_preferences:
   flutter_libphonenumber:
 
 dev_dependencies:

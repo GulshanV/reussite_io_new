@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/widget/manu_tile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -34,16 +35,15 @@ class _MenuPage extends State<MenuPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 13.29,
-                    width: 16.75,
-                    child: Icon(
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+
+                    },
+                    icon: Icon(
                       Icons.arrow_back,
                       color: PsColors.mainColor,
-                    ),
-                  ),
+                    )
                 ),
                 InkWell(
                   onTap: () {
@@ -137,6 +137,12 @@ class _MenuPage extends State<MenuPage> {
                     ),
                     MenuLevel(
                       levelValue: 'logout'.tr,
+                      onTap:() async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                             prefs.setString('login', '');
+                             prefs.setString('token', '');
+                            Get.offAndToNamed(Routes.LOGIN);
+                      }
                     ),
                   ],
                 ),

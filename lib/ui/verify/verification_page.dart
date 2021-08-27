@@ -23,6 +23,12 @@ class _VerificationPage extends State<VerificationPage> {
   Timer _timer;
   int _start = 60;
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
@@ -169,8 +175,29 @@ class _VerificationPage extends State<VerificationPage> {
                                           color: PsColors.white)),
                                 ],
                               ),
-                            )
-                          : Align(
+                            ):const SizedBox(),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      _start == 0?Align(
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap:(){
+                            controller.resendOTP();
+                            _start = 60;
+                            startTimer();
+                          },
+                          child: Text(
+                              'resend_code'.tr,
+                              style: GoogleFonts.notoSans(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 15,
+                                  color: PsColors.white)
+                          ),
+                        ),
+                      ): Align(
                               alignment: Alignment.center,
                               child: Text.rich(TextSpan(
                                   text: 'resend_code'.tr,
@@ -196,14 +223,14 @@ class _VerificationPage extends State<VerificationPage> {
 
                       Align(
                         alignment: Alignment.center,
-                        child: RaisedGradientButton(
+                        child: controller.loginProcess.value?Center(
+                          child: CircularProgressIndicator(),
+                        ):RaisedGradientButton(
                           margin: const EdgeInsets.all(0),
-                          onPressed: () {
-                            var value =
-                                controller.otpValid(textEditingController.text);
+                          onPressed: () async {
+                            var value = await controller.otpValid(textEditingController.text);
                             if (value == null) {
-                              Get.offNamedUntil(
-                                  Routes.ADD_NAME_PIC_LOGIN, (route) => true);
+
                             } else {
                               setState(() {
                                 error = value;

@@ -35,9 +35,9 @@ class ChildView extends StatelessWidget{
         Text(
           model.firstName??'',
           style: GoogleFonts.notoSans(
-            fontWeight: FontWeight.w600,
-            color: PsColors.black,
-            fontSize: 12
+              fontWeight: FontWeight.w400,
+              color: PsColors.black,
+              fontSize: 12
           ),
         )
       ],

@@ -5,6 +5,7 @@ import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/add_reservation_controller.dart';
 import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
+import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/ui/selection/course_selection.dart';
 import 'package:reussite_io_new/utils.dart';
@@ -14,6 +15,11 @@ import 'package:reussite_io_new/widget/hide_button.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 class AddNewReservation extends StatefulWidget {
+  final  Course course;
+  final ScheduleModel scheduleModel;
+  final Student student;
+  AddNewReservation({this.course,this.scheduleModel,this.student});
+
   @override
   _AddNewReservation createState() => _AddNewReservation();
 }
@@ -22,8 +28,7 @@ class _AddNewReservation extends State<AddNewReservation> {
   final AddReservationController controller =
       Get.put(AddReservationController());
 
-  Course course;
-  ScheduleModel scheduleModel;
+
   String description;
 
   @override
@@ -45,20 +50,17 @@ class _AddNewReservation extends State<AddNewReservation> {
                       top: 45, left: 15, right: 15, bottom: 10),
                   child: Row(
                     children: [
-                      InkWell(
-                        onTap: () {
-                          if (!controller.isBack.value) {
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: Container(
-                          height: 13.29,
-                          width: 16.75,
-                          child: Icon(
+                      IconButton(
+                          onPressed: () {
+
+                            if (!controller.isBack.value) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          icon: Icon(
                             Icons.arrow_back,
                             color: PsColors.mainColor,
-                          ),
-                        ),
+                          )
                       ),
                       Expanded(
                           child: Text(
@@ -97,133 +99,32 @@ class _AddNewReservation extends State<AddNewReservation> {
                           const SizedBox(
                             height: 30,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                'select_child'.tr,
-                                style: GoogleFonts.notoSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    color: PsColors.black),
-                              ),
-                              Expanded(child: const SizedBox()),
-                              InkWell(
-                                onTap: () async {
-                                  var value = await Get.offNamedUntil(
-                                      Routes.ADD_NEW_CHILD, (route) => true);
-                                  controller.getChildList();
-                                },
-                                child: Text(
-                                  'add_child'.tr,
-                                  style: GoogleFonts.notoSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      color: PsColors.mainColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          controller.childLoadProcess.value
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : controller.childLoadProcess.value &&
-                                      controller.arrStudent.length == 0
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text(
-                                        'not_child_found',
-                                        style: GoogleFonts.notoSans(
-                                            fontWeight: FontWeight.w400,
-                                            color: PsColors.hintColor,
-                                            fontSize: 16),
-                                      ),
-                                    )
-                                  : SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        // direction: Axis.horizontal,
-                                        children: List.generate(
-                                            controller.arrStudent.length,
-                                            (index) {
-                                          return InkWell(
-                                              onTap: () {
-                                                controller.changeIndex(index);
-                                              },
-                                              onLongPress: () async {
-                                                var map = {
-                                                  'id': controller
-                                                      .arrStudent[index].id
-                                                };
-                                                var value = await Get.toNamed(
-                                                    Routes.EDIT_CHILD,
-                                                    arguments: map);
-                                                // if(value!=null){
-                                                controller.getChildList();
-                                                // }
-                                              },
-                                              child: ChildView(
-                                                  controller.arrStudent[index],
-                                                  isSelected:
-                                                      controller.index.value ==
-                                                          index));
-                                        }),
-                                      ),
-                                    ),
+
+                          ChildView(
+                              widget.student,
+                              isSelected:false
+                            ),
+
+
                           const SizedBox(
                             height: 20,
                           ),
                           SelectionDropdown(
                               hint: 'subject'.tr,
-                              levelValue:
-                                  course == null ? null : course.subject.name,
-                              subLevelValue:
-                                  course == null ? null : 'subject'.tr,
+                              levelValue:widget.course.name,
+                              hideArrow:true,
+                              subLevelValue: widget.course == null ? null : 'subject'.tr,
                               onTap: () async {
-                                if (controller.arrCourseList.value.isNotEmpty) {
-                                  var value = await showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (context) => CourseSelection(
-                                          controller.arrCourseList.value));
-                                  if (value != null) {
-                                    setState(() {
-                                      course = value;
-                                    });
-                                  }
-                                }
+
                               }),
                           const SizedBox(
                             height: 15,
                           ),
                           SelectionDropdown(
                             hint: 'date_time'.tr,
-                            levelValue: scheduleModel == null
-                                ? null
-                                : Utils.convertBookingTime(
-                                    scheduleModel.startDate),
+                            hideArrow:true,
+                            levelValue: Utils.convertBookingTime(widget.scheduleModel.startDate),
                             onTap: () async {
-                              if (course == null) {
-                                Utils.errorToast('select_reservation_course');
-                              } else {
-                                var map = {
-                                  // 'id':'8a0081817b3f28af017b4f1c54ec004c'
-                                  'id': course.id
-                                };
-                                var value = await Get.offNamedUntil(
-                                    Routes.RESERVATION_DATETIME,
-                                    (route) => true,
-                                    arguments: map);
-                                if (value != null) {
-                                  setState(() {
-                                    scheduleModel = value;
-                                  });
-                                }
-                              }
                             },
                           ),
                           const SizedBox(
@@ -291,10 +192,9 @@ class _AddNewReservation extends State<AddNewReservation> {
                                         margin: const EdgeInsets.all(0),
                                         onPressed: () {
                                           controller.addReservation(
-                                              controller.arrStudent[
-                                                  controller.index.value],
-                                              course,
-                                              scheduleModel,
+                                              widget.student,
+                                              widget.course,
+                                              widget.scheduleModel,
                                               description);
                                         },
                                         width: 200,

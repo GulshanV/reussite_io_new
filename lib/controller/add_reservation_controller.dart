@@ -10,12 +10,13 @@ import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/repositry/repository_adapter.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
 import 'package:reussite_io_new/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddReservationController extends SuperController<AuthModel>{
 
 
-  var arrStudent = List<Student>().obs;
-  var arrCourseList =List<CourseSelectionModel>().obs;
+  // var arrStudent = List<Student>().obs;
+  // var arrCourseList =List<CourseSelectionModel>().obs;
 
   var index=0.obs;
 
@@ -24,27 +25,37 @@ class AddReservationController extends SuperController<AuthModel>{
   @override
   void onInit() {
     super.onInit();
-    getChildList();
-    getAllCoure();
+    getLoginData();
+  }
+  AuthModel user;
+
+  getLoginData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response= prefs.getString('login');
+    var js=json.decode(response);
+    user = AuthModel.fromJson(js);
+
+    // getChildList();
+    // getAllCoure();
   }
 
 
-   getChildList() async {
+  //  getChildList() async {
+  //
+  //   try {
+  //     childLoadProcess(true);
+  //     var value = await CQAPI.getMyChild(
+  //       id:  user.id
+  //     );
+  //     arrStudent(value);
+  //   } finally {
+  //     childLoadProcess(false);
+  //   }
+  //   // notifyChildrens();
+  // }
 
-    try {
-      childLoadProcess(true);
-      var value = await CQAPI.getMyChild(
-        id: '8a0081917b3f334d017b3f4cbe480023'
-      );
-      arrStudent(value);
-    } finally {
-      childLoadProcess(false);
-    }
-    // notifyChildrens();
-  }
 
-
-   getAllCoure() async {
+  /* getAllCoure() async {
 
     try {
       childLoadProcess(true);
@@ -73,7 +84,7 @@ class AddReservationController extends SuperController<AuthModel>{
       childLoadProcess(false);
     }
     // notifyChildrens();
-  }
+  }*/
 
 
    var isBack=false.obs;

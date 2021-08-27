@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,10 +6,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
+import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
+import 'package:reussite_io_new/services/cqapi.dart';
 import 'package:reussite_io_new/widget/button.dart';
 import 'package:reussite_io_new/widget/hide_button.dart';
 import 'package:reussite_io_new/widget/input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNameandProfilePicture extends StatefulWidget {
   @override
@@ -18,6 +22,23 @@ class AddNameandProfilePicture extends StatefulWidget {
 
 class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
   TextEditingController fullName = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    getLoginData();
+  }
+  AuthModel user;
+
+  getLoginData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response= prefs.getString('login');
+    var js=json.decode(response);
+    user = AuthModel.fromJson(js);
+    print(user.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +140,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                   ),
                   Align(
                     alignment: Alignment.topLeft,
-                    child: fullName.text == null || fullName.text == ''
+                    child: fullName.text == null || fullName.text.length<3
                         ? RaisedGradientHideButton(
                             color: PsColors.hidebtnColor,
                             margin: const EdgeInsets.all(0),
@@ -137,7 +158,9 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                         : RaisedGradientButton(
                             margin: const EdgeInsets.all(0),
                             onPressed: () {
-                              Get.offNamedUntil(Routes.HOME, (route) => true);
+                              if(fullName.text.length>3) {
+                                updateProfile(fullName.text);
+                              }
                             },
                             width: 120,
                             child: Text(
@@ -201,5 +224,21 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
       _pickImage = File(photo.path);
     });
     Navigator.of(context).pop();
+  }
+
+  Future<void> updateProfile(var name) async {
+
+
+    var value = await CQAPI.updateParent(
+        user.id,
+        name,
+        user.email,
+        user.language,
+        user.phoneNumber);
+    if(value!=null){
+
+      Get.offAndToNamed(Routes.HOME);
+    }
+
   }
 }

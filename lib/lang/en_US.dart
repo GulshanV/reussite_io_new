@@ -17,7 +17,7 @@ const Map<String, String> en_US = {
   'add_an_avater': 'Add an avatar (optional)',
   'full_name': 'Full Name',
   'next': 'Next',
-  'there_is_no_reservations': 'There are no booking yet.',
+  'there_is_no_reservations': 'There are no child yet.',
   'add': 'Add',
   'add_reservation': 'Make\na booking',
   'select_child': 'Select  Child',
@@ -72,5 +72,6 @@ const Map<String, String> en_US = {
   'select_booking_schedule': 'Select booking schedule',
   'child_update_msg': 'Child Update successfully',
   'settings': 'Settings',
-  'subjects': 'Subjects'
+  'subjects': 'Subjects',
+  'book_now': 'Book Now'
 };
