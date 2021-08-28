@@ -205,7 +205,7 @@ class _AddNewChild extends State<AddNewChild> {
                                   inputFormatters: [
                                     const UpperCaseTextFormatter(),
                                     MaskTextInputFormatter(
-                                        mask: "(###) ###-##-##")
+                                        mask: "(###) ###-####")
                                   ],
                                   autocorrect: false,
                                   onChanged: (v) {

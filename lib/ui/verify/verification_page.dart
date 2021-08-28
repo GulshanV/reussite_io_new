@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/auth_controller.dart';
+import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/widget/button.dart';
 
@@ -49,9 +51,16 @@ class _VerificationPage extends State<VerificationPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    getUser();
     super.initState();
     startTimer();
+  }
+  AuthModel auth;
+  getUser(){
+    var res = Get.arguments['data'];
+    print(res);
+    var js=json.decode(res);
+    auth=AuthModel.fromJson(js);
   }
 
   @override
@@ -104,7 +113,7 @@ class _VerificationPage extends State<VerificationPage> {
                         height: 7,
                       ),
                       Text(
-                        'verification_msg'.tr,
+                        auth==null?'':'verification_msg'.tr.replaceAll('+18634223910', '+${auth.phoneNumber}'),
                         style: GoogleFonts.notoSans(
                             fontWeight: FontWeight.w500,
                             fontSize: 14,

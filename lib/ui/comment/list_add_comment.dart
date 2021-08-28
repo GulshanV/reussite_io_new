@@ -179,7 +179,7 @@ class _CommentSection extends State<CommentSection>{
              ),
            ),
 
-           Container(
+     /*      Container(
              color:Colors.white,
              padding: const EdgeInsets.all(10),
              child: Container(
@@ -225,7 +225,7 @@ class _CommentSection extends State<CommentSection>{
                    )
                ),
              ),
-           )
+           )*/
          ],
        ),
      );

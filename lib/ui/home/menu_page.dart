@@ -45,20 +45,7 @@ class _MenuPage extends State<MenuPage> {
                       color: PsColors.mainColor,
                     )
                 ),
-                InkWell(
-                  onTap: () {
-                    Get.offNamedUntil(Routes.EDIT_PROFIE, (route) => true);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    height: 14,
-                    width: 14,
-                    child: Icon(
-                      Icons.edit,
-                      color: PsColors.mainColor,
-                    ),
-                  ),
-                ),
+
               ],
             ),
           ),
@@ -116,6 +103,12 @@ class _MenuPage extends State<MenuPage> {
                     ),
                     const SizedBox(
                       height: 30,
+                    ),
+                    MenuLevel(
+                      levelValue: 'my_profile'.tr,
+                      onTap: () {
+                        Get.offNamedUntil(Routes.EDIT_PROFIE, (route) => true);
+                      },
                     ),
                     MenuLevel(
                       levelValue: 'help'.tr,

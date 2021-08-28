@@ -40,10 +40,14 @@ class _HomePage extends State<HomePage> {
                         onTap: () {
                           Get.offNamedUntil(Routes.MENU, (route) => true);
                         },
-                        child: Image.asset(
-                          'assets/icons/nav_profile.png',
-                          height: 18,
-                          width: 16.42,
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          padding: const EdgeInsets.all(8),
+                          child:  Image.asset(
+                              'assets/icons/nav_profile.png',
+                            ),
+                          
                         ),
                       ),
                       Expanded(child: const SizedBox()),

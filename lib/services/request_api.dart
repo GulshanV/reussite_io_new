@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:reussite_io_new/config/ps_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestApi {
 
@@ -91,14 +92,22 @@ class RequestApi {
     HttpClient client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
+
     String fullUrl=PsConfig.baseUrl+endPoint;
     print('post:$fullUrl');
     print(body);
 
     try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token= prefs.getString('token');
       HttpClientRequest request = await client.postUrl(Uri.parse(fullUrl));
 
       request.headers.set('content-type', 'application/json');
+
+      if(token!=null)
+      request.headers.set('Authorization', 'Bearer $token');
+
+
       request.add(utf8.encode(json.encode(body)));
 
       HttpClientResponse response = await request.close();
@@ -125,14 +134,16 @@ class RequestApi {
     String fullUrl=PsConfig.baseUrl+endPoint;
     print(fullUrl);
     print(body);
-    var header = Map<String,String>();
 
 
     try{
-
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token= prefs.getString('token');
       var headers = {
         'Content-Type': 'application/json'
       };
+      if(token!=null)
+        headers['Authorization']='Bearer $token';
       var request = http.Request('PATCH', Uri.parse(fullUrl));
       request.body = json.encode(body);
       request.headers.addAll(headers);
@@ -159,8 +170,11 @@ class RequestApi {
 
     String fullUrl=PsConfig.baseUrl+endPoint;
     print(fullUrl);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token= prefs.getString('token');
     var header = Map<String,String>();
-
+    if(token!=null)
+      header['Authorization']='Bearer $token';
 
     try{
       return http.put(Uri.parse(fullUrl),headers: header, body:body).then((http.Response response) {
@@ -202,9 +216,12 @@ class RequestApi {
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
 
     try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token= prefs.getString('token');
       HttpClientRequest request = await client.getUrl(Uri.parse(fullUrl));
-
       request.headers.set('content-type', 'application/json');
+      if(token!=null)
+        request.headers.set('Authorization', 'Bearer $token');
       HttpClientResponse response = await request.close();
 
       String reply = await response.transform(utf8.decoder).join();
