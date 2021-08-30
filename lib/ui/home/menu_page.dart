@@ -38,14 +38,11 @@ class _MenuPage extends State<MenuPage> {
                 IconButton(
                     onPressed: () {
                       Navigator.pop(context);
-
                     },
                     icon: Icon(
                       Icons.arrow_back,
                       color: PsColors.mainColor,
-                    )
-                ),
-
+                    )),
               ],
             ),
           ),
@@ -129,14 +126,14 @@ class _MenuPage extends State<MenuPage> {
                       levelValue: 'tc'.tr,
                     ),
                     MenuLevel(
-                      levelValue: 'logout'.tr,
-                      onTap:() async {
-                            SharedPreferences prefs = await SharedPreferences.getInstance();
-                             prefs.setString('login', '');
-                             prefs.setString('token', '');
-                            Get.offAndToNamed(Routes.LOGIN);
-                      }
-                    ),
+                        levelValue: 'logout'.tr,
+                        onTap: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString('login', '');
+                          prefs.setString('token', '');
+                          Get.offNamedUntil(Routes.LOGIN, (route) => false);
+                        }),
                   ],
                 ),
               ),
