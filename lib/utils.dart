@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/image_model.dart';
 
 class Utils {
   static errorToast(String msg) {
@@ -74,5 +80,26 @@ class Utils {
     }
 
     return time;
+  }
+
+  static Future<void> saveImage(id, File file) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var response= prefs.getString('image');
+    if(response != null){
+      var js=json.decode(response);
+      List<ImageModel> arrImage=(js as List).map((e) => ImageModel.fromJSON(e)).toList();
+
+      arrImage.add(ImageModel(
+        image: file.path,
+        childId: id
+      ));
+
+      List jsonList = List();
+      arrImage.map((item)=> jsonList.add(item.toMap())).toList();
+      var value = json.encode(jsonList);
+     await prefs.setString('image',value);
+    }
+
+
   }
 }

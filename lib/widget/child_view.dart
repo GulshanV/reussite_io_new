@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +30,10 @@ class ChildView extends StatelessWidget{
             ):null
           ),
           padding: const EdgeInsets.all(5),
-          child: Image.asset(
+          child:model.imagePath!=null?ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.file(File(model.imagePath)),
+          ): Image.asset(
               'assets/images/placeholder_girl.png'
           ),
         ),

@@ -80,11 +80,15 @@ class _HomePage extends State<HomePage> {
                         onTap: () {
                           Get.offNamedUntil(Routes.NOTIFICATION, (route) => true);
                         },
-                        child: Image.asset(
-                          'assets/icons/nav_notification.png',
-                          height: 18,
-                          width: 14,
-                        ),
+                        child:  Container(
+                          height: 35,
+                          width: 35,
+                          padding: const EdgeInsets.all(8),
+                          child:  Image.asset(
+                            'assets/icons/nav_notification.png',
+                          ),
+
+                        )
                       ),
                     ],
                   ),

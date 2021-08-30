@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/auth_controller.dart';
@@ -38,14 +41,17 @@ class _AddNewChild extends State<AddNewChild> {
               children: [
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 13.29,
-                    width: 16.75,
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: PsColors.mainColor,
-                    ),
+                  child:   IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: PsColors.mainColor,
+                      )
                   ),
+
                 ),
                 Expanded(child: const SizedBox()),
               ],
@@ -71,20 +77,30 @@ class _AddNewChild extends State<AddNewChild> {
                     ),
                     Row(
                       children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(7),
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/icons/profile_pic_icon.png'),
-                              fit: BoxFit.cover,
+                        InkWell(
+                          onTap:(){
+                            _showPicker(context);
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(7),
+                              color: PsColors.mainColor
+                            ),
+                            padding: const EdgeInsets.all(2),
+                            child: _pickImage==null?Image.asset('assets/icons/profile_pic_icon.png',height: 50,
+                              width: 50,)
+                            :ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Image.file(
+                                  _pickImage,
+                                height: 50,
+                                width: 50,
+                              ),
                             ),
                           ),
-                          padding: const EdgeInsets.all(10),
-                          // child: Image.asset('assets/icons/profile_pic_icon.png'),
                         ),
                         Text(
                           'add_child_avater'.tr,
@@ -284,6 +300,7 @@ class _AddNewChild extends State<AddNewChild> {
                                   level,
                                   phone,
                                   email,
+                                    _pickImage
                                 );
                               },
                               width: 200,
@@ -308,5 +325,45 @@ class _AddNewChild extends State<AddNewChild> {
         ],
       ),
     );
+  }
+
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
+                    onTap: () {
+                      _imgFromSource(source: ImageSource.gallery);
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () {
+                    _imgFromSource(source: ImageSource.camera);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  var _pickImage;
+
+  _imgFromSource({ImageSource source}) async {
+    final XFile photo = await ImagePicker().pickImage(source: source);
+    setState(() {
+      _pickImage = File(photo.path);
+    });
+    Navigator.of(context).pop();
   }
 }

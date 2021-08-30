@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:reussite_io_new/model/auth_model.dart';
 import 'package:reussite_io_new/model/booking_model.dart';
 import 'package:reussite_io_new/model/course_model.dart';
+import 'package:reussite_io_new/model/image_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
@@ -36,6 +37,23 @@ class HomeController extends GetxController{
       var value = await CQAPI.getMyChild(
           id:  user.id
       );
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var response= prefs.getString('image');
+      print(response);
+      if(response != null){
+        var js=json.decode(response);
+        List<ImageModel> arrImage=(js as List).map((e) => ImageModel.fromJSON(e)).toList();
+
+        for(var mmm in value){
+          for(int i=0;i<arrImage.length;i++){
+            if(mmm.id==arrImage[i].childId){
+              value[i].imagePath=arrImage[i].image;
+            }
+          }
+        }
+      }
+
       arrStudent(value);
       if(value.length>0){
         getSlot();
@@ -46,6 +64,7 @@ class HomeController extends GetxController{
 
 
   }
+
 
 
   var arrAvailableSlot=List<ScheduleModel>().obs;
@@ -99,6 +118,7 @@ class HomeController extends GetxController{
   }
 
   selectAvalibleSlot(String index){
+    print("Pavan $index");
     int i=int.parse(index);
     var model=arrAllSchedule[i].arrMultiTime;
 
@@ -108,7 +128,7 @@ class HomeController extends GetxController{
 
 
   var isLoadingSlot=false.obs;
-  getBookingListChildId() async {
+  getBookingListChildId({bool isCallBooking=false}) async {
 
     try {
       String id = arrStudent[index.value].id;
@@ -175,6 +195,10 @@ class HomeController extends GetxController{
 
     } finally {
       isLoadingSlot(false);
+    }
+
+    if(isCallBooking){
+      getChildList();
     }
   }
 

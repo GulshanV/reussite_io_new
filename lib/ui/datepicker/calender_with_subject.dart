@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ class BookListWithCalender extends StatefulWidget {
 class _BookListWithCalender extends State<BookListWithCalender> {
   int slotIndex = -1;
   var currentMonth = DateTime.now();
-  var currentDate = DateTime.now();
+  var currentDate=null; //= DateTime.now();
 
   // int diffInDays (DateTime date2) {
   //   DateTime date1 = DateTime.now().add(Duration(days: -1));
@@ -61,9 +62,10 @@ class _BookListWithCalender extends State<BookListWithCalender> {
     }
 
     EventList<Event> event = EventList<Event>(events: map);
+    widget.controller.clearSubject();
+    event.getEvents(currentDate).forEach((event) {widget.controller.selectEvent(event.title);});
 
-    widget.controller.clearSlot();
-    event.getEvents(currentDate).forEach((event) {widget.controller.selectAvalibleSlot(event.title);});
+
     return event;
   }
 
@@ -89,9 +91,8 @@ class _BookListWithCalender extends State<BookListWithCalender> {
     }
     EventList<Event> event = EventList<Event>(events: map);
 
-
-    widget.controller.clearSlot();
-    event.getEvents(currentDate).forEach((event) {widget.controller.selectAvalibleSlot(event.title);});
+     widget.controller.clearSlot();
+     event.getEvents(currentDate).forEach((event) {widget.controller.selectAvalibleSlot(event.title);});
 
     return event;
   }
@@ -125,8 +126,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                       this.setState(() => currentDate = date);
                                       widget.controller.clearSlot();
                                       events.forEach((event) {
-                                        widget.controller
-                                            .selectAvalibleSlot(event.title);
+                                        widget.controller.selectAvalibleSlot(event.title);
                                       });
                                     },
                                     onCalendarChanged: (d) {
@@ -202,10 +202,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     onDayPressed: (date, events) {
                                       this.setState(() => currentDate = date);
                                       widget.controller.clearSubject();
-                                      events.forEach((event) {
-                                        widget.controller
-                                            .selectEvent(event.title);
-                                      });
+                                      events.forEach((event) {widget.controller.selectEvent(event.title);});
                                     },
                                     onCalendarChanged: (d) {
                                       setState(() {
@@ -415,9 +412,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                     'stdFirstName': widget.controller.arrStudent[widget.controller.index.value].firstName,
                                                     'stdLastName': widget.controller.arrStudent[widget.controller.index.value].lastName,
                                                   };
-                                                  var value = await Get.toNamed(
-                                                      Routes.COMMENT,
-                                                      arguments: map);
+                                                  var value = await Get.toNamed(Routes.COMMENT, arguments: map);
                                                 }else{
                                                  var sch = widget.controller.arrSubjectList[index].schedule;
 
@@ -430,24 +425,9 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                                   if (value != null) {
                                                     Utils.successToast('booking_create_successfully');
                                                   }
-                                                 widget.controller.getChildList();
-
-    //AddNewReservation
-
-                                                  /*var value = await showDialog(context: context,
-                                                      builder:(context)=> AlertDialog(
-                                                        content: DescriptionPopup(),
-                                                      ));
-
-                                                  if(value!=null){
-                                                    var sch = widget.controller.arrSubjectList[index].schedule;
-                                                    widget.controller.addReservation(
-                                                        sch.course,
-                                                        sch,
-                                                        value
-                                                    );
-                                                  }
-                                                }*/
+                                                 widget.controller.getBookingListChildId(
+                                                   isCallBooking: true
+                                                 );
                                               }},
                                               child: Container(
                                                 height: 45,
@@ -548,7 +528,9 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                           InkWell(
                             onTap: () async {
                               var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
-                              widget.controller.getChildList();
+
+                              if(value!=null)
+                                 widget.controller.getChildList();
                             },
                             child: Column(
                               children: [
@@ -606,7 +588,12 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                           decoration: BoxDecoration(
                               color: PsColors.mainColor,
                               borderRadius: BorderRadius.circular(15)),
-                          child: Image.asset('assets/images/link.png'),
+                          child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.file(File(widget.controller.arrStudent[widget.controller.index.value].imagePath)),
+                          ): Image.asset(
+                              'assets/images/placeholder_girl.png'
+                          ),
                         ),
                         Expanded(
                           child: Text(

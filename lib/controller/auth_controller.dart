@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:reussite_io_new/repositry/repository_adapter.dart';
 import 'package:reussite_io_new/services/cqapi.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils.dart';
 
 
 class AuthController extends SuperController<AuthModel>{
@@ -124,7 +127,7 @@ class AuthController extends SuperController<AuthModel>{
 
 
 
-  validationCreateStudent(String name,String school,String board,String level,String phone,String email) async {
+  validationCreateStudent(String name,String school,String board,String level,String phone,String email,File file) async {
 
     if(name.isEmpty){
       errorMsg('full_name_required'.tr);
@@ -163,6 +166,7 @@ class AuthController extends SuperController<AuthModel>{
             email
         );
         if(loginResp!=null){
+          Utils.saveImage(loginResp.id,file);
           Get.back(result: loginResp);
         }
       } finally {

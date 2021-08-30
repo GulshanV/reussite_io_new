@@ -12,6 +12,8 @@ class Student {
   dynamic onlineStatus;
   dynamic termCondionApproved;
 
+  String imagePath;
+
   Student.empty() {}
 
   Student.fromJSON(Map<String, dynamic> map) {
