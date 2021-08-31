@@ -41,6 +41,7 @@ dependencies:
   image_picker:
   country_code_picker:
   shared_preferences:
+  alt_http:
   flutter_libphonenumber:
 
 dev_dependencies:
