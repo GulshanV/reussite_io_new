@@ -6,8 +6,6 @@ import 'package:reussite_io_new/controller/add_reservation_controller.dart';
 import 'package:reussite_io_new/model/course_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
-import 'package:reussite_io_new/routes/app_routes.dart';
-import 'package:reussite_io_new/ui/selection/course_selection.dart';
 import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/button_green.dart';
 import 'package:reussite_io_new/widget/child_view.dart';
@@ -15,10 +13,10 @@ import 'package:reussite_io_new/widget/hide_button.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 class AddNewReservation extends StatefulWidget {
-  final  Course course;
+  final Course course;
   final ScheduleModel scheduleModel;
   final Student student;
-  AddNewReservation({this.course,this.scheduleModel,this.student});
+  AddNewReservation({this.course, this.scheduleModel, this.student});
 
   @override
   _AddNewReservation createState() => _AddNewReservation();
@@ -27,7 +25,6 @@ class AddNewReservation extends StatefulWidget {
 class _AddNewReservation extends State<AddNewReservation> {
   final AddReservationController controller =
       Get.put(AddReservationController());
-
 
   String description;
 
@@ -52,7 +49,6 @@ class _AddNewReservation extends State<AddNewReservation> {
                     children: [
                       IconButton(
                           onPressed: () {
-
                             if (!controller.isBack.value) {
                               Navigator.pop(context);
                             }
@@ -60,8 +56,7 @@ class _AddNewReservation extends State<AddNewReservation> {
                           icon: Icon(
                             Icons.arrow_back,
                             color: PsColors.mainColor,
-                          )
-                      ),
+                          )),
                       Expanded(
                           child: Text(
                         '',
@@ -99,33 +94,26 @@ class _AddNewReservation extends State<AddNewReservation> {
                           const SizedBox(
                             height: 30,
                           ),
-
-                          ChildView(
-                              widget.student,
-                              isSelected:false
-                            ),
-
-
+                          ChildView(widget.student, isSelected: false),
                           const SizedBox(
                             height: 20,
                           ),
                           SelectionDropdown(
                               hint: 'subject'.tr,
-                              levelValue:widget.course.name,
-                              hideArrow:true,
-                              subLevelValue: widget.course == null ? null : 'subject'.tr,
-                              onTap: () async {
-
-                              }),
+                              levelValue: widget.course.name,
+                              hideArrow: true,
+                              subLevelValue:
+                                  widget.course == null ? null : 'subject'.tr,
+                              onTap: () async {}),
                           const SizedBox(
                             height: 15,
                           ),
                           SelectionDropdown(
                             hint: 'date_time'.tr,
-                            hideArrow:true,
-                            levelValue: Utils.convertBookingTime(widget.scheduleModel.startDate),
-                            onTap: () async {
-                            },
+                            hideArrow: true,
+                            levelValue: Utils.convertBookingTime(
+                                widget.scheduleModel.startDate),
+                            onTap: () async {},
                           ),
                           const SizedBox(
                             height: 30,

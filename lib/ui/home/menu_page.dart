@@ -20,7 +20,6 @@ class _MenuPage extends State<MenuPage> {
   @override
   void initState() {
     super.initState();
-    // controller.getParentDetails();
   }
 
   @override
@@ -176,12 +175,28 @@ class _MenuPage extends State<MenuPage> {
   }
 
   var _pickImage;
-
+  String img64;
   _imgFromSource({ImageSource source}) async {
-    final XFile photo = await ImagePicker().pickImage(source: source);
+    final XFile photo = await ImagePicker().pickImage(
+        source: source, maxWidth: 500, maxHeight: 500, imageQuality: 50);
     setState(() {
       _pickImage = File(photo.path);
+      // img64 = base64Encode(_pickImage.readAsBytesSync());
+      // fileName = _pickImage.path.split('/').last;
     });
+    // sp.putString(SpUtil.UserImage, img64);
+    // print("Image path ======> ${img64}");
+    // _convertImage();
     Navigator.of(context).pop();
   }
+
+  // var file;
+  // _convertImage() {
+  //   dynamic byteImage;
+  //   setState(() {
+  //     byteImage = base64Decode(sp.getString(SpUtil.UserImage));
+  //     file = Io.File("decodedBezkoder.png");
+  //     file.writeAsBytesSync(byteImage);
+  //   });
+  // }
 }

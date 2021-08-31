@@ -74,5 +74,6 @@ const Map<String, String> en_US = {
   'child_update_msg': 'Child Update successfully',
   'settings': 'Settings',
   'subjects': 'Subjects',
-  'book_now': 'Book Now'
+  'book_now': 'Book Now',
+  'booking_created_successfully': 'Booking created successfully'
 };

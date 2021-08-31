@@ -7,8 +7,9 @@ import 'package:reussite_io_new/routes/app_pages.dart';
 import 'lang/translation_service.dart';
 import 'logger/logger_utils.dart';
 
-void main() {
+void main() async {
   HttpOverrides.global = new MyHttpOverrides();
+
   runApp(MyApp());
 }
 

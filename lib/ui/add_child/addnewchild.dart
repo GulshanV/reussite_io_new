@@ -29,6 +29,11 @@ class _AddNewChild extends State<AddNewChild> {
   String level;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PsColors.white,
@@ -41,17 +46,14 @@ class _AddNewChild extends State<AddNewChild> {
               children: [
                 InkWell(
                   onTap: () => Navigator.pop(context),
-                  child:   IconButton(
+                  child: IconButton(
                       onPressed: () {
                         Navigator.pop(context);
-
                       },
                       icon: Icon(
                         Icons.arrow_back,
                         color: PsColors.mainColor,
-                      )
-                  ),
-
+                      )),
                 ),
                 Expanded(child: const SizedBox()),
               ],
@@ -78,7 +80,7 @@ class _AddNewChild extends State<AddNewChild> {
                     Row(
                       children: [
                         InkWell(
-                          onTap:(){
+                          onTap: () {
                             _showPicker(context);
                           },
                           child: Container(
@@ -86,20 +88,23 @@ class _AddNewChild extends State<AddNewChild> {
                             width: 50,
                             margin: const EdgeInsets.only(right: 10),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              color: PsColors.mainColor
-                            ),
+                                borderRadius: BorderRadius.circular(7),
+                                color: PsColors.mainColor),
                             padding: const EdgeInsets.all(2),
-                            child: _pickImage==null?Image.asset('assets/icons/profile_pic_icon.png',height: 50,
-                              width: 50,)
-                            :ClipRRect(
-                              borderRadius: BorderRadius.circular(7),
-                              child: Image.file(
-                                  _pickImage,
-                                height: 50,
-                                width: 50,
-                              ),
-                            ),
+                            child: _pickImage == null
+                                ? Image.asset(
+                                    'assets/icons/profile_pic_icon.png',
+                                    height: 50,
+                                    width: 50,
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(7),
+                                    child: Image.file(
+                                      _pickImage,
+                                      height: 50,
+                                      width: 50,
+                                    ),
+                                  ),
                           ),
                         ),
                         Text(
@@ -294,14 +299,13 @@ class _AddNewChild extends State<AddNewChild> {
                               margin: const EdgeInsets.all(0),
                               onPressed: () {
                                 controller.validationCreateStudent(
-                                  fullName,
-                                  school,
-                                  board,
-                                  level,
-                                  phone,
-                                  email,
-                                    _pickImage
-                                );
+                                    fullName,
+                                    school,
+                                    board,
+                                    level,
+                                    phone,
+                                    email,
+                                    _pickImage);
                               },
                               width: 200,
                               child: Text(
@@ -326,7 +330,6 @@ class _AddNewChild extends State<AddNewChild> {
       ),
     );
   }
-
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -360,10 +363,12 @@ class _AddNewChild extends State<AddNewChild> {
   var _pickImage;
 
   _imgFromSource({ImageSource source}) async {
-    final XFile photo = await ImagePicker().pickImage(source: source);
+    final XFile photo = await ImagePicker().pickImage(
+        source: source, maxWidth: 500, maxHeight: 500, imageQuality: 50);
     setState(() {
       _pickImage = File(photo.path);
     });
+
     Navigator.of(context).pop();
   }
 }

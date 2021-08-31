@@ -57,7 +57,7 @@ class Utils {
     return time;
   }
 
-  static errorMsg(String msg){
+  static errorMsg(String msg) {
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
@@ -65,8 +65,7 @@ class Utils {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
   }
 
   static String convertChatTime(String arrSlot) {
@@ -84,22 +83,18 @@ class Utils {
 
   static Future<void> saveImage(id, File file) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var response= prefs.getString('image');
-    if(response != null){
-      var js=json.decode(response);
-      List<ImageModel> arrImage=(js as List).map((e) => ImageModel.fromJSON(e)).toList();
+    var response = prefs.getString('image');
+    if (response != null) {
+      var js = json.decode(response);
+      List<ImageModel> arrImage =
+          (js as List).map((e) => ImageModel.fromJSON(e)).toList();
 
-      arrImage.add(ImageModel(
-        image: file.path,
-        childId: id
-      ));
+      arrImage.add(ImageModel(image: file.path, childId: id));
 
       List jsonList = List();
-      arrImage.map((item)=> jsonList.add(item.toMap())).toList();
+      arrImage.map((item) => jsonList.add(item.toMap())).toList();
       var value = json.encode(jsonList);
-     await prefs.setString('image',value);
+      await prefs.setString('image', value);
     }
-
-
   }
 }
