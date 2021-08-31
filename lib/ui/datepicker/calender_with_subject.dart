@@ -424,10 +424,10 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
                                                   if (value != null) {
                                                     Utils.successToast('booking_create_successfully');
+                                                    widget.controller.getBookingListChildId(isCallBooking: true
+                                                    );
                                                   }
-                                                 widget.controller.getBookingListChildId(
-                                                   isCallBooking: true
-                                                 );
+
                                               }},
                                               child: Container(
                                                 height: 45,
@@ -580,19 +580,31 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                     ),
                     Row(
                       children: [
-                        Container(
-                          height: 30,
-                          width: 30,
-                          margin: const EdgeInsets.only(right: 10),
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: PsColors.mainColor,
-                              borderRadius: BorderRadius.circular(15)),
-                          child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.file(File(widget.controller.arrStudent[widget.controller.index.value].imagePath)),
-                          ): Image.asset(
-                              'assets/images/placeholder_girl.png'
+                        InkWell(
+                          onTap:() async {
+                            var map = {
+                              'id': widget.controller.arrStudent[widget.controller.index.value].id
+                            };
+                            var value = await Get.toNamed(Routes.EDIT_CHILD,
+                                arguments: map);
+                            if(value!=null){
+                               widget.controller.getChildList();
+                            }
+                          },
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: PsColors.mainColor,
+                                borderRadius: BorderRadius.circular(15)),
+                            child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(File(widget.controller.arrStudent[widget.controller.index.value].imagePath)),
+                            ): Image.asset(
+                                'assets/images/placeholder_girl.png'
+                            ),
                           ),
                         ),
                         Expanded(
