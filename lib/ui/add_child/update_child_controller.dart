@@ -8,8 +8,12 @@ class UpdateChildController extends GetxController {
   var isLoadInformation = true.obs;
   var student = Student.empty().obs;
 
+  dynamic childId;
+
   Future<void> getChildInformation() async {
-    var childId = Get.arguments['id'];
+    if(childId==null)
+     childId = Get.arguments['id'];
+
     var value = await CQAPI.getChildInformation(childId);
     student(value);
     isLoadInformation(false);
@@ -21,9 +25,9 @@ class UpdateChildController extends GetxController {
     isEdit(!isEdit.value);
   }
 
-  Future<void> updateChildInformation(var studentId, var parentId, var name, var school, var board, var level, var phone, var email) async {
+  Future<void> updateChildInformation(var studentId, var parentId, var name, var school, var board, var level, var phone,var countryCode, var email) async {
 
-    var value = await CQAPI.updateChild(studentId, parentId, name, school, board, level, phone, email);
+    var value = await CQAPI.updateChild(studentId, parentId, name, school, board, level, phone,countryCode, email);
     if(value!=null){
       isEdit(false);
       student(value);

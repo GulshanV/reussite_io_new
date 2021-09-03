@@ -197,9 +197,9 @@ class HomeController extends GetxController{
       isLoadingSlot(false);
     }
 
-    if(isCallBooking){
-      getChildList();
-    }
+    // if(isCallBooking){
+    //   getChildList();
+    // }
   }
 
   var index=10001.obs;

@@ -424,6 +424,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
 
                                                   if (value != null) {
                                                     Utils.successToast('booking_created_successfully'.tr);
+                                                    currentDate=null;
                                                     widget.controller.getBookingListChildId(isCallBooking: true
                                                     );
                                                   }
@@ -505,6 +506,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                               widget.controller.arrStudent.length, (index) {
                             return InkWell(
                                 onTap: () {
+                                  currentDate=null;
                                   widget.controller.changeIndex(index);
                                 },
                                 onLongPress: () async {
@@ -606,6 +608,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                         ),
                         InkWell(
                           onTap: () {
+                            currentDate=null;
                             widget.controller.changeIndex(10001);
                           },
                           child: Container(

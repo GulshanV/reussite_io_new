@@ -127,7 +127,7 @@ class AuthController extends SuperController<AuthModel>{
 
 
 
-  validationCreateStudent(String name,String school,String board,String level,String phone,String email,File file) async {
+  validationCreateStudent(String name,String school,String board,String level,String phone,String email,File file,String dailCode) async {
 
     if(name.isEmpty){
       errorMsg('full_name_required'.tr);
@@ -163,7 +163,8 @@ class AuthController extends SuperController<AuthModel>{
             board,
             level,
             phone,
-            email
+            email,
+          dailCode,
         );
         if(loginResp!=null){
           Utils.saveImage(loginResp.id,file);

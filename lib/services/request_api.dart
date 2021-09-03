@@ -11,82 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RequestApi {
 
 
-/*  static Future<String> postAsync(String endPoint, {Map<String,dynamic> body}) async {
-
-    String fullUrl=PsConfig.baseUrl+endPoint;
-    print('post:$fullUrl');
-    print(body);
-    Map<String,String> header={
-      'content-type': 'application/json'
-    };
-
-    try{
-      var request = await http.post(Uri.parse(fullUrl),body: json.encode(body),headers: header);
-
-      print(request.body);
-        return request.body;
-    } catch(_) {
-      print(_);
-      return null;
-    }
-
-
-  }
-
-  static Future<String> putAsync(String endPoint, {Map<String,dynamic> body}) async {
-
-    String fullUrl=PsConfig.baseUrl+endPoint;
-    print(fullUrl);
-    var header = Map<String,String>();
-
-
-    try{
-      return http.put(Uri.parse(fullUrl),headers: header, body:body).then((http.Response response) {
-        final int statusCode = response.statusCode;
-        print(statusCode);
-        print(response.body);
-        if (statusCode < 200 || statusCode >= 400 || json == null) {
-          var js = json.decode(response.body);
-          String msg='';
-          final Map<String, dynamic> fruitItemMap = HashMap();
-          js.forEach((name, value) {
-            msg=value;
-          });
-          Get.showSnackbar(GetBar(message: msg,));
-          return null;
-        }else if(response.body==null){
-          return null;
-        }
-
-
-        return response.body;
-      });
-    } catch(_) {
-      print(_);
-      return null;
-    }
-
-
-  }
-
-
-  static Future<String> get(String endPoint) async {
-
-    String fullUrl=PsConfig.baseUrl+endPoint;
-    print(fullUrl);
-    var header = Map<String,String>();
-    var headers={
-      'content-type':'application/json'
-    };
-    try{
-      var request = await http.get(Uri.parse(fullUrl),headers: headers);
-      return request.body;
-    } catch(_) {
-      print(_);
-      return null;
-    }
-
-  }*/
 
   static Future<String> postAsync(String endPoint, {Map<String,dynamic> body}) async {
     HttpClient client = new HttpClient();
@@ -102,7 +26,7 @@ class RequestApi {
       var token= prefs.getString('token');
       HttpClientRequest request = await client.postUrl(Uri.parse(fullUrl));
 
-      request.headers.set('content-type', 'application/json');
+      request.headers.set('content-type', 'application/json; charset=UTF-8');
 
       if(token!=null)
       request.headers.set('Authorization', 'Bearer $token');
@@ -116,7 +40,9 @@ class RequestApi {
       print(response.statusCode);
       print(reply);
 
-      if(response.statusCode==500){
+      if (response.statusCode == 404) {
+        return null;
+      }else if(response.statusCode==500){
         return null;
       }
 
@@ -140,17 +66,22 @@ class RequestApi {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token= prefs.getString('token');
       var headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=UTF-8'
       };
       if(token!=null)
         headers['Authorization']='Bearer $token';
+
+      print(headers);
+
       var request = http.Request('PATCH', Uri.parse(fullUrl));
       request.body = json.encode(body);
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 404) {
+        return null;
+      }else if (response.statusCode == 200) {
         var res = await response.stream.bytesToString();
         print(res);
         return res;
@@ -173,6 +104,8 @@ class RequestApi {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var token= prefs.getString('token');
     var header = Map<String,String>();
+    header['content-type']='application/json; charset=UTF-8';
+
     if(token!=null)
       header['Authorization']='Bearer $token';
 
@@ -219,7 +152,7 @@ class RequestApi {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token= prefs.getString('token');
       HttpClientRequest request = await client.getUrl(Uri.parse(fullUrl));
-      request.headers.set('content-type', 'application/json');
+      request.headers.set('content-type', 'application/json; charset=UTF-8');
       if(token!=null)
         request.headers.set('Authorization', 'Bearer $token');
       HttpClientResponse response = await request.close();

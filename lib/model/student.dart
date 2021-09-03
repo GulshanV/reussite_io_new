@@ -29,7 +29,12 @@ class Student {
     createDate = map['createDate'];
     onlineStatus = map['onlineStatus'];
     termCondionApproved = map['termCondionApproved'];
+    phoneNumber = map['phoneNumber'];
+    countryCode = map['countryCode'];
   }
+
+  dynamic phoneNumber;
+  dynamic countryCode;
 
   dynamic studentParentId;
   Student.fromDetails(Map<String,dynamic> map){

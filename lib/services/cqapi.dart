@@ -161,7 +161,9 @@ class CQAPI {
       String board,
       String level,
       String phone,
-      String email) async {
+      String email,
+      String dailCode
+      ) async {
     String mobile = phone
         .replaceAll('-', '')
         .replaceAll(' ', '')
@@ -186,7 +188,8 @@ class CQAPI {
       "studentParentId": parentId,
       "schoolBoard": board,
       "schoolName": school,
-      "phone": mobile
+      "phoneNumber": mobile,
+      "countryCode": dailCode
     };
 
     var response = await RequestApi.postAsync('student', body: map);
@@ -215,6 +218,7 @@ class CQAPI {
       String board,
       String level,
       String phone,
+      String countryCode,
       String email) async {
     String mobile = phone
         .replaceAll('-', '')
@@ -237,6 +241,7 @@ class CQAPI {
       "firstName": fName,
       "grade": level,
       "lastName": lastName,
+      "countryCode": countryCode.replaceAll('+', ''),
       "phoneNumber": mobile,
       "studentParentId": parentId,
       "schoolBoard": board,

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +35,47 @@ class _AddNewChild extends State<AddNewChild> {
   void initState() {
     super.initState();
   }
+
+
+  CountryCode country=CountryCode(
+      code: 'IO',
+      dialCode: '+246'
+  );
+
+
+  var globalPhoneType = PhoneNumberType.mobile;
+  var globalPhoneFormat = PhoneNumberFormat.international;
+  var currentSelectedCountry = CountryWithPhoneCode.us();
+
+  var placeholderHint = '';
+
+  void updatePlaceholderHint() {
+    String newPlaceholder;
+
+    if (globalPhoneType == PhoneNumberType.mobile) {
+      if (globalPhoneFormat == PhoneNumberFormat.international) {
+        newPlaceholder =
+            currentSelectedCountry.exampleNumberMobileInternational ?? '';
+      } else {
+        newPlaceholder =
+            currentSelectedCountry.exampleNumberMobileNational ?? '';
+      }
+    } else {
+      if (globalPhoneFormat == PhoneNumberFormat.international) {
+        newPlaceholder =
+            currentSelectedCountry.exampleNumberFixedLineInternational ?? '';
+      } else {
+        newPlaceholder =
+            currentSelectedCountry.exampleNumberFixedLineNational ?? '';
+      }
+    }
+    setState(() => placeholderHint = newPlaceholder);
+  }
+
+  _NumberTextInputFormatter _phoneNumberFormatter =
+  _NumberTextInputFormatter(1);
+
+  String selectedCountry = '1';
 
   @override
   Widget build(BuildContext context) {
@@ -211,59 +255,62 @@ class _AddNewChild extends State<AddNewChild> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: PsColors.white,
-                          border: Border.all(
-                              color: PsColors.borderlineColor, width: 1)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                  inputFormatters: [
-                                    const UpperCaseTextFormatter(),
-                                    MaskTextInputFormatter(
-                                        mask: "(###) ###-####")
-                                  ],
-                                  autocorrect: false,
-                                  onChanged: (v) {
-                                    phone = v;
-                                  },
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FontStyle.normal,
-                                      color: PsColors.black,
-                                      fontSize: 16),
-                                  keyboardType: TextInputType.phone,
-                                  autovalidateMode: AutovalidateMode.always,
-                                  decoration: InputDecoration(
-                                      hintText: 'phone_number'.tr,
-                                      hintStyle: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: PsColors.hintColor,
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 15),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      errorMaxLines: 1)),
-                            ),
-                            // Text(
-                            //   'phone_number'.tr,
-                            //   style: GoogleFonts.notoSans(
-                            //       fontWeight: FontWeight.w500,
-                            //       color: PsColors.hintColor,
-                            //       fontSize: 10),
-                            // ),
-                            const SizedBox(
-                              width: 7,
-                            )
-                          ],
+                    Row(
+                      children: [
+                        Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: PsColors.white,
+                              borderRadius:
+                              BorderRadius.circular(10)),
+                          margin: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(
+                              top: 12,
+                              bottom: 12,
+                              right: 7,
+                              left: 7),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: CountryCodePicker(
+                                    onChanged: (e) {
+                                      selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
+                                      _phoneNumberFormatter =
+                                          _NumberTextInputFormatter(int.parse(selectedCountry));
+                                      updatePlaceholderHint();
+                                      setState(() {
+                                        country=e;
+                                      });
+                                    },
+                                    initialSelection: 'IO',
+                                    showCountryOnly: true,
+                                    flagWidth: 20,
+                                    showFlag: true,
+                                    padding: const EdgeInsets.all(0),
+                                    showOnlyCountryWhenClosed: false,
+                                    favorite: ['+1', 'US', '+246', 'IO', '+52', 'MX'],
+                                  )
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+
+                        Expanded(
+                          child: InputLevel(
+                            inputFormatters: [
+                              WhitelistingTextInputFormatter.digitsOnly,
+                              _phoneNumberFormatter,
+                            ],
+                            inputType: TextInputType.number,
+                            margin: const EdgeInsets.all(0),
+                            hint: 'phone_number'.tr,
+                            onChange: (v) {
+                              phone = v;
+                            },
+                          ),
+                        ),
+
+                      ],
                     ),
                     const SizedBox(
                       height: 15,
@@ -305,7 +352,9 @@ class _AddNewChild extends State<AddNewChild> {
                                     level,
                                     phone,
                                     email,
-                                    _pickImage);
+                                    _pickImage,
+                                  country.dialCode
+                                );
                               },
                               width: 200,
                               child: Text(
@@ -370,5 +419,62 @@ class _AddNewChild extends State<AddNewChild> {
     });
 
     Navigator.of(context).pop();
+  }
+}
+
+class _NumberTextInputFormatter extends TextInputFormatter {
+  int _whichNumber;
+  _NumberTextInputFormatter(this._whichNumber);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    final int newTextLength = newValue.text.length;
+    int selectionIndex = newValue.selection.end;
+    int usedSubstringIndex = 0;
+    final StringBuffer newText = StringBuffer();
+    switch (_whichNumber) {
+      case 1:
+        {
+          if (newTextLength >= 1) {
+            newText.write('(');
+            if (newValue.selection.end >= 1) selectionIndex++;
+          }
+          if (newTextLength >= 4) {
+            newText.write(
+                newValue.text.substring(0, usedSubstringIndex = 3) + ') ');
+            if (newValue.selection.end >= 3) selectionIndex += 2;
+          }
+          if (newTextLength >= 7) {
+            newText.write(
+                newValue.text.substring(3, usedSubstringIndex = 6) + '-');
+            if (newValue.selection.end >= 6) selectionIndex++;
+          }
+          if (newTextLength >= 11) {
+            newText.write(
+                newValue.text.substring(6, usedSubstringIndex = 10) + ' ');
+            if (newValue.selection.end >= 10) selectionIndex++;
+          }
+          break;
+        }
+      case 91:
+        {
+          if (newTextLength >= 5) {
+            newText.write(
+                newValue.text.substring(0, usedSubstringIndex = 5) + ' ');
+            if (newValue.selection.end >= 6) selectionIndex++;
+          }
+          break;
+        }
+    }
+    // Dump the rest.
+    if (newTextLength >= usedSubstringIndex)
+      newText.write(newValue.text.substring(usedSubstringIndex));
+    return TextEditingValue(
+      text: newText.toString(),
+      selection: TextSelection.collapsed(offset: selectionIndex),
+    );
   }
 }
