@@ -503,3 +503,4 @@ class _NumberTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+
