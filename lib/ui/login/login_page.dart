@@ -18,12 +18,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   final AuthController controller = Get.put(AuthController());
 
-  CountryCode country=CountryCode(
-    code: 'IO',
-    dialCode: '+246'
-  );
+  CountryCode country = CountryCode(code: 'IO', dialCode: '+246');
   TextEditingController phoneNumberController = TextEditingController();
-
+  String countryCode;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,15 +61,17 @@ class _LoginPage extends State<LoginPage> {
               MobileWidget(
                 phoneNumberController: phoneNumberController,
                 onTapCountry: (v) {
-                 setState(() {
-                   country=v;
-                 });
+                  setState(() {
+                    country = v;
+                    Utils.saveCountryCode(v.code);
+                  });
                 },
               ),
               const SizedBox(
                 height: 25,
               ),
-              Text.rich(TextSpan(
+              Text.rich(
+                TextSpan(
                   text: 'you_agree_to_our'.tr,
                   style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w500,
@@ -87,47 +86,51 @@ class _LoginPage extends State<LoginPage> {
                           color: PsColors.white,
                           decoration: TextDecoration.underline),
                     )
-                  ])),
+                  ],
+                ),
+              ),
               const SizedBox(
                 height: 50,
               ),
               Obx(() => Align(
-                alignment: Alignment.topLeft,
-                child:controller.loginProcess.value?Center(
-                  child: CircularProgressIndicator(),
-                ): RaisedGradientButton(
-                  margin: const EdgeInsets.all(0),
-                  onPressed: () async {
-                    if (phoneNumberController.text.length < 9) {
-                      Get.defaultDialog(
-                          title: "invalid!",
-                          middleText: 'invalid_mobile_no'.tr);
-                    } else {
+                    alignment: Alignment.topLeft,
+                    child: controller.loginProcess.value
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : RaisedGradientButton(
+                            margin: const EdgeInsets.all(0),
+                            onPressed: () async {
+                              if (phoneNumberController.text.length < 9) {
+                                Get.defaultDialog(
+                                    title: "invalid!",
+                                    middleText: 'invalid_mobile_no'.tr);
+                              } else {
+                                String error = await controller.login(
+                                    phone: phoneNumberController.text,
+                                    dialCode: country.dialCode);
 
-                      String error = await controller.login(phone: phoneNumberController.text,dialCode:country.dialCode);
-
-                      if(error == null) {
-                        Utils.errorMsg("Oop! something is wrong");
-
-                      } else {
-                        var map={
-                          'data':error
-                        };
-                      Get.offNamedUntil(Routes.OTP_VERIFY_nav, (route) => true,arguments: map);
-                      }
-                    }
-                  },
-                  width: 175,
-                  child: Text(
-                    'send_code'.tr.toUpperCase(),
-                    style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: PsColors.black),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ))
+                                if (error == null) {
+                                  Utils.errorMsg("Oop! something is wrong");
+                                } else {
+                                  var map = {'data': error};
+                                  Get.offNamedUntil(
+                                      Routes.OTP_VERIFY_nav, (route) => true,
+                                      arguments: map);
+                                }
+                              }
+                            },
+                            width: 175,
+                            child: Text(
+                              'send_code'.tr.toUpperCase(),
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: PsColors.black),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                  ))
             ],
           ),
         ),

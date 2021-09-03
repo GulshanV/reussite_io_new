@@ -2,6 +2,7 @@
     package="com.app.reussite_io_new">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <application
         android:label="Appui Scolaire"
         android:icon="@mipmap/ic_launcher"

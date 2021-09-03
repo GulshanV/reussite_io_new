@@ -29,7 +29,7 @@ const Map<String, String> en_US = {
   'select_day': 'Select Day',
   'last_name_required': 'Last name is required',
   'save': 'Save',
-  'add_you_child': 'Add\na child',
+  'add_a_child': 'Add\na child',
   'add_child_avater': 'Add an avatar (optional)',
   'edit_child_avater': 'Edit an avatar(optional)',
   'school_name': 'School Name',

@@ -8,12 +8,11 @@ import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/controller/auth_controller.dart';
+import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/button_green.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
-import 'package:reussite_io_new/widget/mobile_widget.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 class AddNewChild extends StatefulWidget {
@@ -34,14 +33,22 @@ class _AddNewChild extends State<AddNewChild> {
   @override
   void initState() {
     super.initState();
+    _getcountryCode();
+    _getSavedImage();
   }
 
+  String countryCode;
 
-  CountryCode country=CountryCode(
-      code: 'IO',
-      dialCode: '+246'
-  );
+  _getcountryCode() {
+    Utils.getCountryCode().then((v) {
+      setState(() {
+        countryCode = v;
+      });
+      print("Country Code ============> $countryCode");
+    });
+  }
 
+  CountryCode country = CountryCode(code: 'IO', dialCode: '+246');
 
   var globalPhoneType = PhoneNumberType.mobile;
   var globalPhoneFormat = PhoneNumberFormat.international;
@@ -73,7 +80,7 @@ class _AddNewChild extends State<AddNewChild> {
   }
 
   _NumberTextInputFormatter _phoneNumberFormatter =
-  _NumberTextInputFormatter(1);
+      _NumberTextInputFormatter(1);
 
   String selectedCountry = '1';
 
@@ -112,7 +119,7 @@ class _AddNewChild extends State<AddNewChild> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'add_you_child'.tr,
+                      'add_a_child'.tr,
                       style: GoogleFonts.notoSans(
                           fontWeight: FontWeight.bold,
                           fontSize: 33,
@@ -135,7 +142,7 @@ class _AddNewChild extends State<AddNewChild> {
                                 borderRadius: BorderRadius.circular(7),
                                 color: PsColors.mainColor),
                             padding: const EdgeInsets.all(2),
-                            child: _pickImage == null
+                            child: saveImage == null
                                 ? Image.asset(
                                     'assets/icons/profile_pic_icon.png',
                                     height: 50,
@@ -143,11 +150,12 @@ class _AddNewChild extends State<AddNewChild> {
                                   )
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(7),
-                                    child: Image.file(
-                                      _pickImage,
-                                      height: 50,
-                                      width: 50,
-                                    ),
+                                    child: saveImage,
+                                    // child: Image.file(
+                                    //   _pickImage,
+                                    //   height: 50,
+                                    //   width: 50,
+                                    // ),
                                   ),
                           ),
                         ),
@@ -261,40 +269,44 @@ class _AddNewChild extends State<AddNewChild> {
                           width: 100,
                           decoration: BoxDecoration(
                               color: PsColors.white,
-                              borderRadius:
-                              BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10)),
                           margin: const EdgeInsets.only(right: 10),
                           padding: const EdgeInsets.only(
-                              top: 12,
-                              bottom: 12,
-                              right: 7,
-                              left: 7),
+                              top: 12, bottom: 12, right: 7, left: 7),
                           child: Row(
                             children: [
                               Expanded(
                                   child: CountryCodePicker(
-                                    onChanged: (e) {
-                                      selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                      _phoneNumberFormatter =
-                                          _NumberTextInputFormatter(int.parse(selectedCountry));
-                                      updatePlaceholderHint();
-                                      setState(() {
-                                        country=e;
-                                      });
-                                    },
-                                    initialSelection: 'IO',
-                                    showCountryOnly: true,
-                                    flagWidth: 20,
-                                    showFlag: true,
-                                    padding: const EdgeInsets.all(0),
-                                    showOnlyCountryWhenClosed: false,
-                                    favorite: ['+1', 'US', '+246', 'IO', '+52', 'MX'],
-                                  )
-                              ),
+                                onChanged: (e) {
+                                  selectedCountry = e
+                                      .toString()
+                                      .replaceAll(new RegExp(r'[^\w\s]+'), '');
+                                  _phoneNumberFormatter =
+                                      _NumberTextInputFormatter(
+                                          int.parse(selectedCountry));
+                                  updatePlaceholderHint();
+                                  setState(() {
+                                    country = e;
+                                  });
+                                },
+                                initialSelection: countryCode ?? 'IO',
+                                showCountryOnly: true,
+                                flagWidth: 20,
+                                showFlag: true,
+                                padding: const EdgeInsets.all(0),
+                                showOnlyCountryWhenClosed: false,
+                                favorite: [
+                                  '+1',
+                                  'US',
+                                  '+246',
+                                  'IO',
+                                  '+52',
+                                  'MX'
+                                ],
+                              )),
                             ],
                           ),
                         ),
-
                         Expanded(
                           child: InputLevel(
                             inputFormatters: [
@@ -309,7 +321,6 @@ class _AddNewChild extends State<AddNewChild> {
                             },
                           ),
                         ),
-
                       ],
                     ),
                     const SizedBox(
@@ -353,8 +364,7 @@ class _AddNewChild extends State<AddNewChild> {
                                     phone,
                                     email,
                                     _pickImage,
-                                  country.dialCode
-                                );
+                                    country.dialCode);
                               },
                               width: 200,
                               child: Text(
@@ -417,8 +427,23 @@ class _AddNewChild extends State<AddNewChild> {
     setState(() {
       _pickImage = File(photo.path);
     });
-
+    Utils.saveAvatarImage(Utils.base64String(_pickImage.readAsBytesSync()));
+    _getSavedImage();
     Navigator.of(context).pop();
+  }
+
+  Image saveImage;
+  _getSavedImage() {
+    Utils.getAvatarImage().then(
+      (img) {
+        if (null == img) {
+          return;
+        }
+        setState(() {
+          saveImage = Utils.imageFromBase64String(img);
+        });
+      },
+    );
   }
 }
 
@@ -428,9 +453,9 @@ class _NumberTextInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final int newTextLength = newValue.text.length;
     int selectionIndex = newValue.selection.end;
     int usedSubstringIndex = 0;

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
-import 'package:reussite_io_new/controller/auth_controller.dart';
 import 'package:reussite_io_new/ui/profile/profile_controller.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
 
@@ -32,6 +31,7 @@ class _EditProfile extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
+
     controller.getParentDetails().then((value) {
       print(controller.model.value.phoneNumber);
       setState(() {
@@ -54,15 +54,17 @@ class _EditProfile extends State<EditProfile> {
     } else if (name.length < 3) {
       Utils.errorToast("full_name_min_length_error".tr);
     }
-    if (phone.isEmpty) {
-      Utils.errorToast('invalid_mobile_no'.tr);
-    } else if (phone.length < 9) {
-      Utils.errorToast('invalid_mobile_no'.tr);
-    } else if (emailId.isEmpty) {
-      Utils.errorToast('email_required'.tr);
-    } else if (!AuthController.validateEmail(emailId)) {
-      Utils.errorToast('email_invalid'.tr);
-    } else {
+    // if (phone.isEmpty) {
+    //   Utils.errorToast('invalid_mobile_no'.tr);
+    // } else if (phone.length < 9) {
+    //   Utils.errorToast('invalid_mobile_no'.tr);
+    // } else if (emailId.isEmpty) {
+    //   Utils.errorToast('email_required'.tr);
+    // } else if (!AuthController.validateEmail(emailId)) {
+    //   Utils.errorToast('email_invalid'.tr);
+    // }
+
+    else {
       setState(() {
         isLoading = true;
       });
@@ -89,13 +91,11 @@ class _EditProfile extends State<EditProfile> {
                   IconButton(
                       onPressed: () {
                         Navigator.pop(context);
-
                       },
                       icon: Icon(
                         Icons.arrow_back,
                         color: PsColors.mainColor,
-                      )
-                  ),
+                      )),
                   Expanded(child: const SizedBox()),
                   isLoading
                       ? CircularProgressIndicator()
@@ -139,6 +139,16 @@ class _EditProfile extends State<EditProfile> {
                             onTap: () {
                               _showPicker(context);
                             },
+                            // child: saveImage == null
+                            //     ? Icon(
+                            //         Icons.add,
+                            //         size: 25,
+                            //       )
+                            //     : Container(
+                            //         child: saveImage,
+                            //         height: 50,
+                            //         width: 50,
+                            //       ),
                             child: Container(
                               height: 50,
                               width: 50,
@@ -255,9 +265,11 @@ class _EditProfile extends State<EditProfile> {
 
   _imgFromSource({ImageSource source}) async {
     final XFile photo = await ImagePicker().pickImage(source: source);
+
     setState(() {
       _pickImage = File(photo.path);
     });
+
     Navigator.of(context).pop();
   }
 }

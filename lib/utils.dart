@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -79,6 +80,37 @@ class Utils {
     }
 
     return time;
+  }
+
+  static Future<void> saveCountryCode(String code) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('countryCode', code);
+  }
+
+  static getCountryCode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('countryCode');
+  }
+
+  static Future<bool> saveAvatarImage(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('avatarImage', value);
+  }
+
+  static Future<String> getAvatarImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('avatarImage');
+  }
+
+  static String base64String(Uint8List data) {
+    return base64Encode(data);
+  }
+
+  static Image imageFromBase64String(String base64String) {
+    return Image.memory(
+      base64Decode(base64String),
+      fit: BoxFit.fill,
+    );
   }
 
   static Future<void> saveImage(id, File file) async {

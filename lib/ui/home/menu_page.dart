@@ -131,6 +131,7 @@ class _MenuPage extends State<MenuPage> {
                               await SharedPreferences.getInstance();
                           prefs.setString('login', '');
                           prefs.setString('token', '');
+                          prefs.setString('countryCode', '');
                           Get.offNamedUntil(Routes.LOGIN, (route) => false);
                         }),
                   ],
