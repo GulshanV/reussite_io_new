@@ -592,7 +592,10 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                               borderRadius: BorderRadius.circular(15)),
                           child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Image.file(File(widget.controller.arrStudent[widget.controller.index.value].imagePath)),
+                            child: Image.file(
+                                File(widget.controller.arrStudent[widget.controller.index.value].imagePath),
+                              fit: BoxFit.cover,
+                            ),
                           ): Image.asset(
                               'assets/images/placeholder_girl.png'
                           ),
@@ -649,8 +652,15 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                 border: Border.all(
                                     color: PsColors.mainColor, width: 3)),
                             padding: const EdgeInsets.all(5),
-                            child:
-                                Image.asset('assets/images/placeholder_girl.png'),
+                            child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                File(widget.controller.arrStudent[widget.controller.index.value].imagePath),
+                                fit: BoxFit.cover,
+                                height: 60,
+                                width: 60,
+                              ),
+                            ): Image.asset('assets/images/placeholder_girl.png'),
                           ),
                         ),
                         Text(
