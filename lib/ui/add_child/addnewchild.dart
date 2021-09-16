@@ -277,6 +277,7 @@ class _AddNewChild extends State<AddNewChild> {
                             children: [
                               Expanded(
                                   child: CountryCodePicker(
+                                    enabled: false,
                                 onChanged: (e) {
                                   selectedCountry = e
                                       .toString()

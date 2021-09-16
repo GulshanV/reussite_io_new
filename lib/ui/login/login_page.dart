@@ -45,6 +45,7 @@ class _LoginPage extends State<LoginPage> {
     setState(() {
       country = CountryCode(code: details.alpha2Code, dialCode: '${details.dialCode}');
     });
+    Utils.saveCountryCode(details.alpha2Code);
   }
 
 

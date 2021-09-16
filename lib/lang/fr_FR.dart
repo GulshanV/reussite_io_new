@@ -29,13 +29,13 @@ const Map<String, String> fr_FR = {
   'select_day': 'Choisir un jour',
   'last_name_required': 'Nom de famille requit',
   'save': 'Sauvegarder',
-  'add_a_child': 'Ajouter\na un enfant',
+  'add_a_child': 'Ajouter\nun enfant',
   'add_child_avater': 'Ajouter une image (optionel)',
   'edit_child_avater': 'Changer votre image',
-  'school_name': 'Ecole d"Ecole',
+  'school_name': 'Nom de l\'Ecole',
   'school_board': 'Conseil Scolaire',
   'phone_number': 'Numero de Telephone',
-  'level_of_study': 'Niveau d"etude',
+  'level_of_study': 'Niveau d\'etude',
   'email': 'Addresse couriel',
   'edit_profile': 'Modifier votre \nProfil',
   'change_phone_no': 'Changer votre numero de telephone',
@@ -62,7 +62,7 @@ const Map<String, String> fr_FR = {
   'school_required': 'Nom de l"ecole est requit',
   'full_name_min_length_error': 'Votre nom est trop court',
   'board_required': 'Le conseil scholaire est requis',
-  'level_required': 'Niveau d"etude requis',
+  'level_required': 'Niveau d\'etude requis',
   'email_required': 'Addresse couriel requise',
   'email_invalid': 'Addresse couriel pas valide',
   'not_child_found': 'Enfant pas disponible',
@@ -78,7 +78,9 @@ const Map<String, String> fr_FR = {
   'booking_created_successfully': 'Reservation cree avec success',
   'language': 'Langue',
   'change_language': 'Changer de langue',
-  'select_study_level': 'Sélectionnez votre niveau d\'étude'
+  'select_study_level': 'Sélectionnez votre niveau d\'étude',
+  'select_child_to_see_booking': 'Sélectionnez un enfant pour voir ses réservations',
+  'add_child_a': 'Ajouter un enfant'
 };
 
 

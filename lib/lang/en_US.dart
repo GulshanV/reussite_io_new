@@ -78,5 +78,7 @@ const Map<String, String> en_US = {
   'booking_created_successfully': 'Booking created successfully',
   'language': 'Language',
   'change_language': 'Change Language',
-  'select_study_level': 'Select your Study Level'
+  'select_study_level': 'Select your Study Level',
+  'select_child_to_see_booking': 'Select a child to see its bookings',
+  'add_child_a': 'Add child'
 };

@@ -487,7 +487,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                       height: 20,
                     ),
                     Text(
-                      'Select a child to see its bookings',
+                      'select_child_to_see_booking'.tr,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 11,
@@ -558,7 +558,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                   )
                                 ),
                                 Text(
-                                  'Add child',
+                                  'add_child_a'.tr,
                                   style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.w400,
                                       color: PsColors.black,

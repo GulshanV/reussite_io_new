@@ -120,6 +120,7 @@ class _EditChild extends State<EditChild> {
 
   @override
   void initState() {
+    _getcountryCode();
     super.initState();
     controller.getChildInformation().then((value) {
       setState(() {
@@ -139,6 +140,17 @@ class _EditChild extends State<EditChild> {
         }
 
       });
+    });
+  }
+
+  String countryCode;
+
+  _getcountryCode() {
+    Utils.getCountryCode().then((v) {
+      setState(() {
+        countryCode = v;
+      });
+      print("Country Code ============> $countryCode");
     });
   }
 
@@ -407,7 +419,7 @@ class _EditChild extends State<EditChild> {
                                           padding: const EdgeInsets.all(15),
                                           children: [
                                             Text(
-                                              'Select your Study Level',
+                                              'select_study_level'.tr,
                                               style: GoogleFonts.notoSans(
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 18,
@@ -482,6 +494,7 @@ class _EditChild extends State<EditChild> {
                                         children: [
                                           Expanded(
                                             child: CountryCodePicker(
+                                              enabled:false,
                                               onChanged: (e) {
                                                 selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
                                                 _phoneNumberFormatter =
@@ -491,7 +504,7 @@ class _EditChild extends State<EditChild> {
                                                   country=e;
                                                 });
                                               },
-                                              initialSelection: 'IO',
+                                              initialSelection: countryCode??'IO',
                                               showCountryOnly: true,
                                               flagWidth: 20,
                                               showFlag: true,
@@ -541,7 +554,7 @@ class _EditChild extends State<EditChild> {
                           const SizedBox(
                             height: 20,
                           ),
-                          controller.isEdit.value
+                        /*  controller.isEdit.value
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -560,7 +573,7 @@ class _EditChild extends State<EditChild> {
                                 ),
                           const SizedBox(
                             height: 20,
-                          ),
+                          ),*/
                         ],
                       ),
                     )),
