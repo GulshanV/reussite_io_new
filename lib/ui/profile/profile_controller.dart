@@ -34,13 +34,13 @@ class ProfileController extends GetxController{
     }
   }
 
-  Future<void> updateProfile(var name,var phone, var email) async {
+  Future<void> updateProfile(var name,var phone, var email,String language) async {
 
     var value = await CQAPI.updateParent(
        user.id,
         name,
       email,
-        'en',
+        language,
         phone);
     if(value!=null){
       var m = model.value;

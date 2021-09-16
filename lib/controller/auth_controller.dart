@@ -63,6 +63,7 @@ class AuthController extends SuperController<AuthModel> {
       return null;
     } else {
       otpInvalid(true);
+      loginProcess(false);
       return "invalid";
     }
   }

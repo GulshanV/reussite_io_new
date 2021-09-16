@@ -75,5 +75,8 @@ const Map<String, String> en_US = {
   'settings': 'Settings',
   'subjects': 'Subjects',
   'book_now': 'Book Now',
-  'booking_created_successfully': 'Booking created successfully'
+  'booking_created_successfully': 'Booking created successfully',
+  'language': 'Language',
+  'change_language': 'Change Language',
+  'select_study_level': 'Select your Study Level'
 };

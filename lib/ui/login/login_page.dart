@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code.dart';
+import 'package:country_codes/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,32 @@ class _LoginPage extends State<LoginPage> {
   CountryCode country = CountryCode(code: 'IO', dialCode: '+246');
   TextEditingController phoneNumberController = TextEditingController();
   String countryCode;
+
+  @override
+  void initState() {
+    super.initState();
+    getLocalCountry();
+  }
+
+  getLocalCountry() async {
+    await CountryCodes.init(); // Optionally, you may provide a `Locale` to get countrie's localizadName
+
+    final Locale deviceLocale = CountryCodes.getDeviceLocale();
+    print(deviceLocale.languageCode); // Displays en
+    print(deviceLocale.countryCode); // Displays US
+
+    final CountryDetails details = CountryCodes.detailsForLocale();
+    print(details.alpha2Code); // Displays alpha2Code, for example US.
+    print(details.dialCode); // Displays the dial code, for example +1.
+    print(details.name); // Displays the extended name, for example United States.
+    print(details.localizedName);
+
+    setState(() {
+      country = CountryCode(code: details.alpha2Code, dialCode: '${details.dialCode}');
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +87,7 @@ class _LoginPage extends State<LoginPage> {
               ),
               MobileWidget(
                 phoneNumberController: phoneNumberController,
+                  countryCodeInitil:country.code,
                 onTapCountry: (v) {
                   setState(() {
                     country = v;
