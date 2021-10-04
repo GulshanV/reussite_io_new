@@ -114,7 +114,6 @@ class _EditChild extends State<EditChild> {
 
   @override
   void initState() {
-    _getcountryCode();
     super.initState();
     controller.getChildInformation().then((value) {
       setState(() {
@@ -132,17 +131,6 @@ class _EditChild extends State<EditChild> {
               CountryCode(dialCode: '+${controller.student.value.countryCode}');
         }
       });
-    });
-  }
-
-  String countryCode;
-
-  _getcountryCode() {
-    Utils.getCountryCode().then((v) {
-      setState(() {
-        countryCode = v;
-      });
-      print("Country Code ============> $countryCode");
     });
   }
 
@@ -394,7 +382,6 @@ class _EditChild extends State<EditChild> {
                             height: 15,
                           ),
                           SelectionDropdown(
-<<<<<<< HEAD
                               subLevelValue: 'level_of_study'.tr,
                               hint: 'level_of_study'.tr,
                               levelValue: '${level ?? ''}',
@@ -446,59 +433,6 @@ class _EditChild extends State<EditChild> {
                                                                 )
                                                               ],
                                                             ),
-=======
-                            subLevelValue: 'level_of_study'.tr,
-                            hint: 'level_of_study'.tr,
-                            levelValue: '${level ?? ''}',
-                            onTap: () async {
-                              if (controller.isEdit.value) {
-                                var ind = await showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) =>
-                                        ListView(
-                                          padding: const EdgeInsets.all(15),
-                                          children: [
-                                            Text(
-                                              'select_study_level'.tr,
-                                              style: GoogleFonts.notoSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                            ),
-                                            Wrap(
-                                              children: List.generate(
-                                                  12,
-                                                      (index) =>
-                                                      InkWell(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context, index);
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .all(8.0),
-                                                          decoration: BoxDecoration(
-                                                              border: Border(
-                                                                  bottom: BorderSide(
-                                                                      color: PsColors
-                                                                          .light_grey,
-                                                                      width: 1))),
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                '${index + 1}',
-                                                                style: GoogleFonts
-                                                                    .notoSans(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                    fontSize: 18,
-                                                                    color: Colors
-                                                                        .black),
-                                                              )
-                                                            ],
->>>>>>> 1faa5f97891f4de78ffecaf0301582ff83e6d698
                                                           ),
                                                         )),
                                               )
@@ -532,7 +466,6 @@ class _EditChild extends State<EditChild> {
                                       child: Row(
                                         children: [
                                           Expanded(
-<<<<<<< HEAD
                                               child: CountryCodePicker(
                                             onChanged: (e) {
                                               selectedCountry = e
@@ -564,28 +497,6 @@ class _EditChild extends State<EditChild> {
                                               'MX'
                                             ],
                                           )),
-=======
-                                            child: CountryCodePicker(
-                                              enabled:false,
-                                              onChanged: (e) {
-                                                selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                                _phoneNumberFormatter =
-                                                    _NumberTextInputFormatter(int.parse(selectedCountry));
-                                                updatePlaceholderHint();
-                                                setState(() {
-                                                  country=e;
-                                                });
-                                              },
-                                              initialSelection: countryCode??'IO',
-                                              showCountryOnly: true,
-                                              flagWidth: 20,
-                                              showFlag: true,
-                                              padding: const EdgeInsets.all(0),
-                                              showOnlyCountryWhenClosed: false,
-                                              favorite: ['+1', 'US', '+246', 'IO', '+52', 'MX'],
-                                            )
-                                          ),
->>>>>>> 1faa5f97891f4de78ffecaf0301582ff83e6d698
                                           // Icon(
                                           //   Icons.keyboard_arrow_down,
                                           //   size: 16,
@@ -627,7 +538,7 @@ class _EditChild extends State<EditChild> {
                           const SizedBox(
                             height: 20,
                           ),
-                        /*  controller.isEdit.value
+                          controller.isEdit.value
                               ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.all(10.0),
@@ -646,7 +557,7 @@ class _EditChild extends State<EditChild> {
                                 ),
                           const SizedBox(
                             height: 20,
-                          ),*/
+                          ),
                         ],
                       ),
                     )),
