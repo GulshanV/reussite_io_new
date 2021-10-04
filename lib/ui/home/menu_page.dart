@@ -8,6 +8,7 @@ import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/widget/manu_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -120,9 +121,15 @@ class _MenuPage extends State<MenuPage> {
                     ),
                     MenuLevel(
                       levelValue: 'privacy_policy'.tr,
+                      onTap: (){
+                        lunchWeb('https://appui.io/privacy');
+                      },
                     ),
                     MenuLevel(
                       levelValue: 'tc'.tr,
+                      onTap: (){
+                        lunchWeb('https://appui.io/terms');
+                      },
                     ),
                     MenuLevel(
                         levelValue: 'logout'.tr,
@@ -173,6 +180,19 @@ class _MenuPage extends State<MenuPage> {
         );
       },
     );
+  }
+
+  lunchWeb(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   var _pickImage;

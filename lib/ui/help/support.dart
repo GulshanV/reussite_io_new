@@ -141,7 +141,7 @@ class SupportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                '2021 - v.2.1',
+                '2021 - v.1.0.2',
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,

@@ -56,6 +56,7 @@ class AuthController extends SuperController<AuthModel> {
           Get.offAndToNamed(Routes.HOME);
         }
       } else {
+        loginProcess(false);
         otpInvalid(true);
         return "invalid OTP";
       }
@@ -63,6 +64,7 @@ class AuthController extends SuperController<AuthModel> {
       return null;
     } else {
       otpInvalid(true);
+      loginProcess(false);
       return "invalid";
     }
   }

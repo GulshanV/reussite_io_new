@@ -619,7 +619,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                       height: 20,
                     ),
                     Text(
-                      'Select a child to see its bookings',
+                      'select_child_to_see_booking'.tr,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 11,
@@ -681,7 +681,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                     child: Icon(Icons.add,
                                         size: 40, color: Colors.white)),
                                 Text(
-                                  'Add child',
+                                  'add_child_a'.tr,
                                   style: GoogleFonts.notoSans(
                                       fontWeight: FontWeight.w400,
                                       color: PsColors.black,
@@ -711,6 +711,7 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                           decoration: BoxDecoration(
                               color: PsColors.mainColor,
                               borderRadius: BorderRadius.circular(15)),
+<<<<<<< HEAD
                           child: widget
                                       .controller
                                       .arrStudent[widget.controller.index.value]
@@ -725,6 +726,17 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                 )
                               : Image.asset(
                                   'assets/images/placeholder_girl.png'),
+=======
+                          child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.file(
+                                File(widget.controller.arrStudent[widget.controller.index.value].imagePath),
+                              fit: BoxFit.cover,
+                            ),
+                          ): Image.asset(
+                              'assets/images/placeholder_girl.png'
+                          ),
+>>>>>>> 1faa5f97891f4de78ffecaf0301582ff83e6d698
                         ),
                         Expanded(
                           child: Text(
@@ -779,8 +791,20 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                 border: Border.all(
                                     color: PsColors.mainColor, width: 3)),
                             padding: const EdgeInsets.all(5),
+<<<<<<< HEAD
                             child: Image.asset(
                                 'assets/images/placeholder_girl.png'),
+=======
+                            child:widget.controller.arrStudent[widget.controller.index.value].imagePath!=null?ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                File(widget.controller.arrStudent[widget.controller.index.value].imagePath),
+                                fit: BoxFit.cover,
+                                height: 60,
+                                width: 60,
+                              ),
+                            ): Image.asset('assets/images/placeholder_girl.png'),
+>>>>>>> 1faa5f97891f4de78ffecaf0301582ff83e6d698
                           ),
                         ),
                         Text(

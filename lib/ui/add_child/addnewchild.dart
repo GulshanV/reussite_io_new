@@ -211,7 +211,7 @@ class _AddNewChild extends State<AddNewChild> {
                                   padding: const EdgeInsets.all(15),
                                   children: [
                                     Text(
-                                      'Select your Study Level',
+                                      'select_study_level'.tr,
                                       style: GoogleFonts.notoSans(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 18,
@@ -277,6 +277,7 @@ class _AddNewChild extends State<AddNewChild> {
                             children: [
                               Expanded(
                                   child: CountryCodePicker(
+                                    enabled: false,
                                 onChanged: (e) {
                                   selectedCountry = e
                                       .toString()
@@ -503,3 +504,4 @@ class _NumberTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+

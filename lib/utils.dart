@@ -116,17 +116,20 @@ class Utils {
   static Future<void> saveImage(id, File file) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var response = prefs.getString('image');
+    List<ImageModel> arrImage=[];
     if (response != null) {
       var js = json.decode(response);
-      List<ImageModel> arrImage =
-          (js as List).map((e) => ImageModel.fromJSON(e)).toList();
+      arrImage =(js as List).map((e) => ImageModel.fromJSON(e)).toList();
 
       arrImage.add(ImageModel(image: file.path, childId: id));
 
-      List jsonList = List();
-      arrImage.map((item) => jsonList.add(item.toMap())).toList();
-      var value = json.encode(jsonList);
-      await prefs.setString('image', value);
+
+    }else{
+     arrImage.add(ImageModel(image: file.path, childId: id));
     }
+    List jsonList = List();
+    arrImage.map((item) => jsonList.add(item.toMap())).toList();
+    var value = json.encode(jsonList);
+    await prefs.setString('image', value);
   }
 }

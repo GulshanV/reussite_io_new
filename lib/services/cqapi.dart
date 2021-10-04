@@ -8,6 +8,7 @@ import 'package:reussite_io_new/model/parent_model.dart';
 import 'package:reussite_io_new/model/schedule_model.dart';
 import 'package:reussite_io_new/model/student.dart';
 import 'package:reussite_io_new/services/request_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CQAPI {
   static var client = http.Client();
@@ -284,7 +285,13 @@ class CQAPI {
     ParentModel student;
     var response = await RequestApi.patch('parent/$parentId', body: map);
     print(response);
+<<<<<<< HEAD
     if (response != null) {
+=======
+    if(response!=null){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('login', response);
+>>>>>>> 1faa5f97891f4de78ffecaf0301582ff83e6d698
       var js = jsonDecode(response);
       student = ParentModel.fromJSON(js);
     }

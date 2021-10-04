@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/ui/profile/profile_controller.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
+import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 import '../../utils.dart';
 
@@ -27,6 +28,7 @@ class _EditProfile extends State<EditProfile> {
   String name;
   String phone;
   String emailId;
+  String language;
 
   @override
   void initState() {
@@ -44,6 +46,7 @@ class _EditProfile extends State<EditProfile> {
             '${controller.model.value.firstName} ${controller.model.value.lastName}';
         email.text = controller.model.value.email;
         emailId = controller.model.value.email;
+        language=controller.model.value.language;
       });
     });
   }
@@ -69,7 +72,7 @@ class _EditProfile extends State<EditProfile> {
         isLoading = true;
       });
       print(emailId);
-      controller.updateProfile(name, phone, emailId).then((value) {
+      controller.updateProfile(name, phone, emailId,language).then((value) {
         setState(() {
           isLoading = false;
         });
@@ -214,13 +217,119 @@ class _EditProfile extends State<EditProfile> {
                       const SizedBox(
                         height: 30,
                       ),
-                      // SelectionDropdown(
-                      //   hint: 'change_phone_no'.tr,
-                      //   onTap: () {},
-                      // ),
-                      // const SizedBox(
-                      //   height: 30,
-                      // ),
+
+                      SelectionDropdown(
+                        hint: 'language'.tr,
+                        levelValue: language,
+                        onTap: () async {
+                          var ind = await showModalBottomSheet(
+                              context: context,
+                              builder: (context) => Container(
+                                height: 200,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      color:PsColors.disableColor,
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: const EdgeInsets.all(7),
+                                      child: Text(
+                                        'change_language'.tr,
+                                        style: GoogleFonts.notoSans(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.pop(context,'EN');
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.language,
+                                              size: 35,
+                                              color: PsColors.mainColor,
+                                            ),
+                                            const SizedBox(
+                                              width:10
+                                            ),
+                                            Text(
+                                              'English',
+                                              style: GoogleFonts.notoSans(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(),
+
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.pop(context,'FR');
+                                      },
+                                      child:  Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.language,
+                                              size: 35,
+                                              color: PsColors.mainColor,
+                                            ),
+                                            const SizedBox(
+                                                width:10
+                                            ),
+                                            Text(
+                                              'French',
+                                              style: GoogleFonts.notoSans(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+
+
+
+                                  ],
+                                ),
+                              ));
+                          if (ind != null) {
+                            if(ind=='EN'){
+                              var locale = Locale('en', 'EN');
+                              Get.updateLocale(locale);
+                            }else{
+                              var locale = Locale('fr', 'FR');
+                              Get.updateLocale(locale);
+                            }
+                            setState(() {
+                              language = ind;
+                            });
+
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                     ],
                   ),
                 ),

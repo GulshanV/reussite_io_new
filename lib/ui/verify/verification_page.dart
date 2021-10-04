@@ -79,11 +79,10 @@ class _VerificationPage extends State<VerificationPage> {
                     Navigator.pop(context);
                   },
                   child: Container(
-                    width: 16.75,
-                    height: 13.29,
                     child: Icon(
                       Icons.arrow_back,
                       color: PsColors.white,
+                      size: 26,
                     ),
                   ),
                 ),

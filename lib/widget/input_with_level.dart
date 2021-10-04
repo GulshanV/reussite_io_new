@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 
-class InputLevel extends StatelessWidget {
+class InputLevel extends StatefulWidget {
   final String hint;
   final Function(String) onChange;
   final Widget prefix;
@@ -37,9 +37,15 @@ class InputLevel extends StatelessWidget {
   });
 
   @override
+  _InputLevel createState()=>_InputLevel();
+}
+class _InputLevel extends State<InputLevel>{
+  bool showLable=false;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin ??
+      margin: widget.margin ??
           const EdgeInsets.only(top: 15.0, bottom: 0, left: 20, right: 20),
       decoration: BoxDecoration(
           color: PsColors.white,
@@ -49,48 +55,51 @@ class InputLevel extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-              controller: controller == null
-                  ? controller
+              controller: widget.controller == null
+                  ? widget.controller
                   : new TextEditingController.fromValue(new TextEditingValue(
-                      text: controller.text,
+                      text: widget.controller.text,
                       selection: new TextSelection.collapsed(
-                          offset: controller.text.length))),
+                          offset: widget.controller.text.length))),
               onChanged: (v) {
-                if (onChange != null) {
-                  onChange(v);
+                if (widget.onChange != null) {
+                  widget.onChange(v);
                 }
+                setState(() {
+                  showLable=v.length>0;
+                });
               },
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.only(
                       left: 20, right: 0, top: 15, bottom: 15),
-                  hintText: hint ?? '',
-                  enabled: enable,
-                  prefixIcon: prefix,
-                  hintStyle: fontStyle ??
+                  hintText: showLable?'':widget.hint ?? '',
+                  enabled: widget.enable,
+                  prefixIcon: widget.prefix,
+                  hintStyle: widget.fontStyle ??
                       TextStyle(
                           fontWeight: FontWeight.w600,
                           color: PsColors.hintColor,
                           fontStyle: FontStyle.normal,
                           fontSize: 15),
                   counterText: ""),
-              obscureText: hideText,
-              style: fontStyle ??
+              obscureText: widget.hideText,
+              style: widget.fontStyle ??
                   TextStyle(
                       fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.normal,
                       color: PsColors.black,
                       fontSize: 16),
-              keyboardType: inputType ?? TextInputType.text,
+              keyboardType: widget.inputType ?? TextInputType.text,
               textCapitalization: TextCapitalization.words,
               // textCapitalization: textCapitalization ?? TextCapitalization.none,
-              inputFormatters: inputFormatters,
-              maxLength: maxLenth,
-              autofocus: atuoFocus,
+              inputFormatters: widget.inputFormatters,
+              maxLength: widget.maxLenth,
+              autofocus: widget.atuoFocus,
             ),
           ),
           Text(
-            hint ?? '',
+            showLable?widget.hint ?? '':'',
             style: GoogleFonts.notoSans(
                 fontWeight: FontWeight.w500,
                 color: PsColors.hintColor,

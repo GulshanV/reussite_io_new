@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpListPage extends StatelessWidget {
   @override
@@ -47,14 +48,34 @@ class HelpListPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  getView(
-                      'assets/images/help_girl.png', 'create_child_profile'.tr),
-                  getView('assets/images/help_calendar.png',
-                      'create_child_sreserve'.tr),
-                  getView('assets/images/help_link.png',
-                      'click_hyperlink_profile'.tr),
-                  getView('assets/images/help_book.png',
-                      'click_parenting_guide'.tr),
+                  InkWell(
+                    onTap: (){
+                      lunchWeb('https://appui.io/help1');
+                    },
+                    child: getView(
+                        'assets/images/help_girl.png', 'create_child_profile'.tr),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      lunchWeb('https://appui.io/help2');
+                    },
+                    child: getView('assets/images/help_calendar.png',
+                        'create_child_sreserve'.tr),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      lunchWeb('https://appui.io/help3');
+                    },
+                    child: getView('assets/images/help_link.png',
+                        'click_hyperlink_profile'.tr),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      lunchWeb('https://appui.io/help4');
+                    },
+                    child: getView('assets/images/help_book.png',
+                        'click_parenting_guide'.tr),
+                  ),
                 ],
               )),
             ),
@@ -62,6 +83,19 @@ class HelpListPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  lunchWeb(String url) async {
+    if (await canLaunch(url)) {
+    await launch(
+    url,
+    forceSafariVC: false,
+    forceWebView: false,
+    headers: <String, String>{'my_header_key': 'my_header_value'},
+    );
+    } else {
+    throw 'Could not launch $url';
+    }
   }
 
   Widget getView(String image, String title) {

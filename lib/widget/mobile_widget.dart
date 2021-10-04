@@ -8,7 +8,8 @@ import 'package:reussite_io_new/config/ps_color.dart';
 class MobileWidget extends StatefulWidget {
   final TextEditingController phoneNumberController;
   final Function(CountryCode) onTapCountry;
-  MobileWidget({this.phoneNumberController, this.onTapCountry});
+  final String countryCodeInitil;
+  MobileWidget({this.phoneNumberController, this.onTapCountry,this.countryCodeInitil});
 
   @override
   _MobileWidget createState() => _MobileWidget();
@@ -77,7 +78,7 @@ class _MobileWidget extends State<MobileWidget> {
                   updatePlaceholderHint();
                   widget.onTapCountry(e);
                 },
-                initialSelection: 'IO',
+                initialSelection: widget.countryCodeInitil??'US',
                 showCountryOnly: false,
                 flagWidth: 20,
                 showFlag: true,
