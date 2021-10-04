@@ -23,18 +23,18 @@ class AddNameandProfilePicture extends StatefulWidget {
 class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
   TextEditingController fullName = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
     getLoginData();
   }
+
   AuthModel user;
 
   getLoginData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var response= prefs.getString('login');
-    var js=json.decode(response);
+    var response = prefs.getString('login');
+    var js = json.decode(response);
     user = AuthModel.fromJson(js);
     print(user.id);
   }
@@ -140,7 +140,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                   ),
                   Align(
                     alignment: Alignment.topLeft,
-                    child: fullName.text == null || fullName.text.length<3
+                    child: fullName.text == null || fullName.text.length < 3
                         ? RaisedGradientHideButton(
                             color: PsColors.hidebtnColor,
                             margin: const EdgeInsets.all(0),
@@ -158,7 +158,7 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
                         : RaisedGradientButton(
                             margin: const EdgeInsets.all(0),
                             onPressed: () {
-                              if(fullName.text.length>3) {
+                              if (fullName.text.length > 3) {
                                 updateProfile(fullName.text);
                               }
                             },
@@ -227,18 +227,10 @@ class _AddNameandProfilePictureState extends State<AddNameandProfilePicture> {
   }
 
   Future<void> updateProfile(var name) async {
-
-
     var value = await CQAPI.updateParent(
-        user.id,
-        name,
-        user.email,
-        user.language,
-        user.phoneNumber);
-    if(value!=null){
-
+        user.id, name, user.email, user.language, user.phoneNumber);
+    if (value != null) {
       Get.offAndToNamed(Routes.HOME);
     }
-
   }
 }

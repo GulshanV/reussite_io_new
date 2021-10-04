@@ -12,20 +12,29 @@ import 'package:reussite_io_new/services/request_api.dart';
 class CQAPI {
   static var client = http.Client();
 
-  static Future<String> login({String mobile,String dialCode}) async {
-    String phone = mobile
-        .replaceAll('-', '');
-        // .replaceAll(' ', '')
-        // .replaceAll('(', '')
-        // .replaceAll(')', '');
-    var map={
-      'phoneNumber':phone,
-      'countryCode':dialCode
-    };
-    var response = await RequestApi.postAsync('parent',body: map);
+  static Future<String> login({String mobile, String dialCode}) async {
+    String phone = mobile.replaceAll('-', '');
+    var map = {'phoneNumber': phone, 'countryCode': dialCode};
+    var response = await RequestApi.postAsync('parent', body: map);
     print(response);
 
     return response;
+  }
+
+  static Future<String> verifyOTP(String parentId, String code) async {
+    String res;
+    try {
+      var url = 'parent/activate/$parentId?activationCode=$code';
+      // var url = 'parent/activation/$parentId?activationCode=$code';
+      var response = await RequestApi.get(url);
+      Map js = json.decode(response);
+      if (js.containsKey('access_token')) {
+        res = response;
+      }
+    } catch (_) {
+      print(_);
+    }
+    return res;
   }
 
   static Future<Student> getChildInformation(String studentId) async {
@@ -38,23 +47,6 @@ class CQAPI {
     }
 
     return student;
-  }
-
-  static Future<String> verifyOTP(String parentId,String code) async {
-    String res;
-   try{
-
-     var url = 'parent/activate/$parentId?activationCode=$code';
-     // var url = 'parent/activation/$parentId?activationCode=$code';
-     var response = await RequestApi.get(url);
-     Map js=json.decode(response);
-     if(js.containsKey('access_token')){
-       res=response;
-     }
-   }catch(_){
-     print(_);
-   }
-    return res;
   }
 
   static Future<List<ScheduleModel>> getScheduleCourseId(String id) async {
@@ -71,16 +63,15 @@ class CQAPI {
     return list;
   }
 
-
   static Future<List<ScheduleModel>> getScheduleAll(String grade) async {
-    DateTime currnt=DateTime.now().add(Duration(days: -1));
-    var s=DateFormat('MM/dd/yyyy').format(currnt);
-    var startSch='&startDate=$s 00:00:00 -0500';
+    DateTime currnt = DateTime.now().add(Duration(days: -1));
+    var s = DateFormat('MM/dd/yyyy').format(currnt);
+    var startSch = '&startDate=$s 00:00:00 -0500';
     // 01/01/2010
 
-    var url ='schedule?size=300$startSch';
-    if(grade.length>0){
-      url=url+'&grades=$grade';
+    var url = 'schedule?size=300$startSch';
+    if (grade.length > 0) {
+      url = url + '&grades=$grade';
     }
     var response = await RequestApi.get(url);
     print(response);
@@ -104,7 +95,7 @@ class CQAPI {
       print(response);
       if (response != null) {
         var js = json.decode(response);
-        parentModel= ParentModel.fromJSON(js);
+        parentModel = ParentModel.fromJSON(js);
       }
     } finally {}
     return parentModel;
@@ -124,7 +115,6 @@ class CQAPI {
     return list;
   }
 
-
   static Future<List<Course>> getAllCourseList() async {
     var response = await RequestApi.get('course?size=100');
     print(response);
@@ -136,13 +126,16 @@ class CQAPI {
 
     return list;
   }
-  static Future<List<BookingModel>> getBookingListChildId(String childId) async {
+
+  static Future<List<BookingModel>> getBookingListChildId(
+      String childId) async {
     var response = await RequestApi.get('booking?profileId=$childId');
     print(response);
     List<BookingModel> list = [];
     if (response != null) {
       var js = json.decode(response);
-      list = (js['content'] as List).map((e) => BookingModel.fromJSON(e)).toList();
+      list =
+          (js['content'] as List).map((e) => BookingModel.fromJSON(e)).toList();
     }
     return list;
   }
@@ -162,8 +155,7 @@ class CQAPI {
       String level,
       String phone,
       String email,
-      String dailCode
-      ) async {
+      String dailCode) async {
     String mobile = phone
         .replaceAll('-', '')
         .replaceAll(' ', '')
@@ -253,20 +245,16 @@ class CQAPI {
     var response = await RequestApi.patch('student/$studentId', body: map);
 
     print(response);
-    if(response!=null){
+    if (response != null) {
       var js = jsonDecode(response);
-      student= Student.fromJSON(js);
+      student = Student.fromJSON(js);
     }
 
     return student;
   }
 
-  static Future<ParentModel> updateParent(
-      String parentId,
-      String name,
-      String email,
-      String language,
-      String phone) async {
+  static Future<ParentModel> updateParent(String parentId, String name,
+      String email, String language, String phone) async {
     String mobile = phone
         .replaceAll('-', '')
         .replaceAll(' ', '')
@@ -290,16 +278,15 @@ class CQAPI {
       "phoneNumber": mobile,
       "id": parentId,
       "language": language,
-
     };
     print(map);
 
     ParentModel student;
     var response = await RequestApi.patch('parent/$parentId', body: map);
     print(response);
-    if(response!=null){
+    if (response != null) {
       var js = jsonDecode(response);
-      student= ParentModel.fromJSON(js);
+      student = ParentModel.fromJSON(js);
     }
 
     return student;

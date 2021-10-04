@@ -8,12 +8,10 @@ import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/ui/add_child/update_child_controller.dart';
 import 'package:reussite_io_new/utils.dart';
 import 'package:reussite_io_new/widget/input_with_level.dart';
-import 'package:reussite_io_new/widget/mobile_widget.dart';
 import 'package:reussite_io_new/widget/selection_dropdown.dart';
 
 class EditChild extends StatefulWidget {
@@ -63,8 +61,8 @@ class _EditChild extends State<EditChild> {
               school.text,
               board.text,
               '$level',
-          phone.text,
-          country.dialCode,
+              phone.text,
+              country.dialCode,
               email.text)
           .then((value) {
         setState(() {
@@ -78,11 +76,7 @@ class _EditChild extends State<EditChild> {
 
   String level;
 
-  CountryCode country=CountryCode(
-      code: 'IO',
-      dialCode: '+246'
-  );
-
+  CountryCode country = CountryCode(code: 'IO', dialCode: '+246');
 
   var globalPhoneType = PhoneNumberType.mobile;
   var globalPhoneFormat = PhoneNumberFormat.international;
@@ -114,7 +108,7 @@ class _EditChild extends State<EditChild> {
   }
 
   _NumberTextInputFormatter _phoneNumberFormatter =
-  _NumberTextInputFormatter(1);
+      _NumberTextInputFormatter(1);
 
   String selectedCountry = '1';
 
@@ -130,14 +124,12 @@ class _EditChild extends State<EditChild> {
         school.text = controller.student.value.schoolName;
         board.text = controller.student.value.schoolBoard;
         email.text = controller.student.value.email;
-        phone.text = controller.student.value.phoneNumber??'';
-        if(controller.student.value.countryCode!=null){
-          selectedCountry= '${controller.student.value.countryCode}';
-          country=CountryCode(
-              dialCode: '+${controller.student.value.countryCode}'
-          );
+        phone.text = controller.student.value.phoneNumber ?? '';
+        if (controller.student.value.countryCode != null) {
+          selectedCountry = '${controller.student.value.countryCode}';
+          country =
+              CountryCode(dialCode: '+${controller.student.value.countryCode}');
         }
-
       });
     });
   }
@@ -196,13 +188,11 @@ class _EditChild extends State<EditChild> {
               IconButton(
                   onPressed: () {
                     Navigator.pop(context);
-
                   },
                   icon: Icon(
                     Icons.arrow_back,
                     color: PsColors.mainColor,
-                  )
-              ),
+                  )),
               Expanded(child: const SizedBox()),
               Obx(
                 () => controller.isEdit.value
@@ -324,16 +314,27 @@ class _EditChild extends State<EditChild> {
                                           fontSize: 12,
                                           decoration: TextDecoration.underline),
                                     )),
-                                    Container(
-                                      height: 24,
-                                      width: 24,
-                                      decoration: BoxDecoration(
-                                          color: PsColors.mainColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      padding: const EdgeInsets.all(5),
-                                      child:
-                                          Image.asset('assets/images/link.png'),
+                                    InkWell(
+                                      onTap: () {
+                                        Clipboard.setData(ClipboardData(
+                                                text: controller.student.value
+                                                    .conferenceUrl))
+                                            .then((value) {
+                                          Utils.successToast(
+                                              "Copied ${controller.student.value.conferenceUrl}");
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 24,
+                                        width: 24,
+                                        decoration: BoxDecoration(
+                                            color: PsColors.mainColor,
+                                            borderRadius:
+                                                BorderRadius.circular(12)),
+                                        padding: const EdgeInsets.all(5),
+                                        child: Image.asset(
+                                            'assets/images/link.png'),
+                                      ),
                                     )
                                   ],
                                 ),
@@ -356,20 +357,6 @@ class _EditChild extends State<EditChild> {
                                   height: controller.isEdit.value ? 15 : 0,
                                 )
                               : Container(),
-                          // InputLevel(
-                          //   enable: controller.isEdit.value,
-                          //   controller: TextEditingController(
-                          //       text:
-                          //           controller.student.value.schoolName ?? ''),
-                          //   margin: const EdgeInsets.all(0),
-                          //   hint: 'school_name'.tr,
-                          //   onChange: (v) {
-                          //     fullName = v;
-                          //   },
-                          // ),
-                          // SizedBox(
-                          //   height: controller.isEdit.value ? 15 : 0,
-                          // ),
                           InputLevel(
                             enable: controller.isEdit.value,
                             controller: school,
@@ -395,71 +382,69 @@ class _EditChild extends State<EditChild> {
                             height: 15,
                           ),
                           SelectionDropdown(
-                            subLevelValue: 'level_of_study'.tr,
-                            hint: 'level_of_study'.tr,
-                            levelValue: '${level ?? ''}',
-                            onTap: () async {
-                              if (controller.isEdit.value) {
-                                var ind = await showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) =>
-                                        ListView(
-                                          padding: const EdgeInsets.all(15),
-                                          children: [
-                                            Text(
-                                              'Select your Study Level',
-                                              style: GoogleFonts.notoSans(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                            ),
-                                            Wrap(
-                                              children: List.generate(
-                                                  12,
-                                                      (index) =>
-                                                      InkWell(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context, index);
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                          const EdgeInsets
-                                                              .all(8.0),
-                                                          decoration: BoxDecoration(
-                                                              border: Border(
-                                                                  bottom: BorderSide(
-                                                                      color: PsColors
-                                                                          .light_grey,
-                                                                      width: 1))),
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                '${index + 1}',
-                                                                style: GoogleFonts
-                                                                    .notoSans(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                    fontSize: 18,
-                                                                    color: Colors
-                                                                        .black),
-                                                              )
-                                                            ],
+                              subLevelValue: 'level_of_study'.tr,
+                              hint: 'level_of_study'.tr,
+                              levelValue: '${level ?? ''}',
+                              onTap: () async {
+                                if (controller.isEdit.value) {
+                                  var ind = await showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => ListView(
+                                            padding: const EdgeInsets.all(15),
+                                            children: [
+                                              Text(
+                                                'Select your Study Level',
+                                                style: GoogleFonts.notoSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                    color: Colors.black),
+                                              ),
+                                              Wrap(
+                                                children: List.generate(
+                                                    12,
+                                                    (index) => InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context, index);
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            decoration: BoxDecoration(
+                                                                border: Border(
+                                                                    bottom: BorderSide(
+                                                                        color: PsColors
+                                                                            .light_grey,
+                                                                        width:
+                                                                            1))),
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  '${index + 1}',
+                                                                  style: GoogleFonts.notoSans(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          18,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      )),
-                                            )
-                                          ],
-                                        ));
-                                if (ind != null) {
-                                  setState(() {
-                                    level = '${ind + 1}';
-                                  });
+                                                        )),
+                                              )
+                                            ],
+                                          ));
+                                  if (ind != null) {
+                                    setState(() {
+                                      level = '${ind + 1}';
+                                    });
+                                  }
                                 }
-                              }
-                            }
-                          ),
+                              }),
                           const SizedBox(
                             height: 15,
                           ),
@@ -481,25 +466,37 @@ class _EditChild extends State<EditChild> {
                                       child: Row(
                                         children: [
                                           Expanded(
-                                            child: CountryCodePicker(
-                                              onChanged: (e) {
-                                                selectedCountry = e.toString().replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                                _phoneNumberFormatter =
-                                                    _NumberTextInputFormatter(int.parse(selectedCountry));
-                                                updatePlaceholderHint();
-                                                setState(() {
-                                                  country=e;
-                                                });
-                                              },
-                                              initialSelection: 'IO',
-                                              showCountryOnly: true,
-                                              flagWidth: 20,
-                                              showFlag: true,
-                                              padding: const EdgeInsets.all(0),
-                                              showOnlyCountryWhenClosed: false,
-                                              favorite: ['+1', 'US', '+246', 'IO', '+52', 'MX'],
-                                            )
-                                          ),
+                                              child: CountryCodePicker(
+                                            onChanged: (e) {
+                                              selectedCountry = e
+                                                  .toString()
+                                                  .replaceAll(
+                                                      new RegExp(r'[^\w\s]+'),
+                                                      '');
+                                              _phoneNumberFormatter =
+                                                  _NumberTextInputFormatter(
+                                                      int.parse(
+                                                          selectedCountry));
+                                              updatePlaceholderHint();
+                                              setState(() {
+                                                country = e;
+                                              });
+                                            },
+                                            initialSelection: 'IO',
+                                            showCountryOnly: true,
+                                            flagWidth: 20,
+                                            showFlag: true,
+                                            padding: const EdgeInsets.all(0),
+                                            showOnlyCountryWhenClosed: false,
+                                            favorite: [
+                                              '+1',
+                                              'US',
+                                              '+246',
+                                              'IO',
+                                              '+52',
+                                              'MX'
+                                            ],
+                                          )),
                                           // Icon(
                                           //   Icons.keyboard_arrow_down,
                                           //   size: 16,
@@ -571,15 +568,16 @@ class _EditChild extends State<EditChild> {
     );
   }
 }
+
 class _NumberTextInputFormatter extends TextInputFormatter {
   int _whichNumber;
   _NumberTextInputFormatter(this._whichNumber);
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final int newTextLength = newValue.text.length;
     int selectionIndex = newValue.selection.end;
     int usedSubstringIndex = 0;

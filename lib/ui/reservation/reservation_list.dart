@@ -6,11 +6,7 @@ import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:reussite_io_new/ui/add_child/home_controller.dart';
 import 'package:reussite_io_new/widget/button_green.dart';
 
-import '../../utils.dart';
-
-
-
-class ReservationList extends StatelessWidget{
+class ReservationList extends StatelessWidget {
   final HomeController controller;
   ReservationList(this.controller);
 
@@ -30,11 +26,10 @@ class ReservationList extends StatelessWidget{
         ),
         Text(
           'there_is_no_reservations'.tr,
-           style: GoogleFonts.notoSans(
-             fontWeight: FontWeight.w400,
-             color: PsColors.dark_textcolor,
-             fontSize: 16
-           ),
+          style: GoogleFonts.notoSans(
+              fontWeight: FontWeight.w400,
+              color: PsColors.dark_textcolor,
+              fontSize: 16),
         ),
         const SizedBox(
           height: 30,
@@ -44,16 +39,17 @@ class ReservationList extends StatelessWidget{
           child: RaisedGradientButtonGreen(
             margin: const EdgeInsets.all(0),
             onPressed: () async {
-              var value = await Get.offNamedUntil(Routes.ADD_NEW_CHILD, (route) => true);
+              var value = await Get.offNamedUntil(
+                  Routes.ADD_NEW_CHILD, (route) => true);
               controller.getChildList();
-               // var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
-               // if(value!=null){
-               //   Utils.successToast('booking_create_successfully');
-               // }
-               // controller.getChildList();
+              // var value = await Get.offNamedUntil(Routes.ADD_RESERVATION, (route) => true);
+              // if(value!=null){
+              //   Utils.successToast('booking_create_successfully');
+              // }
+              // controller.getChildList();
             },
             width: 130,
-            child:Row(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -62,8 +58,7 @@ class ReservationList extends StatelessWidget{
                   style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
-                      color: PsColors.white
-                  ),
+                      color: PsColors.white),
                 ),
               ],
             ),
@@ -75,7 +70,7 @@ class ReservationList extends StatelessWidget{
         Align(
           alignment: Alignment.center,
           child: InkWell(
-            onTap: (){
+            onTap: () {
               controller.getChildList();
             },
             child: Row(
@@ -91,15 +86,12 @@ class ReservationList extends StatelessWidget{
                   style: GoogleFonts.notoSans(
                       fontWeight: FontWeight.w400,
                       color: PsColors.dark_textcolor,
-                      fontSize: 16
-                  ),
+                      fontSize: 16),
                 )
               ],
             ),
           ),
-        )
-
-
+        ),
       ],
     );
   }

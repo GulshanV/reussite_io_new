@@ -10,9 +10,6 @@ import 'package:reussite_io_new/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddReservationController extends SuperController<AuthModel> {
-  // var arrStudent = List<Student>().obs;
-  // var arrCourseList =List<CourseSelectionModel>().obs;
-
   var index = 0.obs;
 
   var childLoadProcess = false.obs;
@@ -34,51 +31,6 @@ class AddReservationController extends SuperController<AuthModel> {
     // getChildList();
     // getAllCoure();
   }
-
-  //  getChildList() async {
-  //
-  //   try {
-  //     childLoadProcess(true);
-  //     var value = await CQAPI.getMyChild(
-  //       id:  user.id
-  //     );
-  //     arrStudent(value);
-  //   } finally {
-  //     childLoadProcess(false);
-  //   }
-  //   // notifyChildrens();
-  // }
-
-  /* getAllCoure() async {
-
-    try {
-      childLoadProcess(true);
-      List<Course> value = await CQAPI.getAllCourseList();
-
-      for(var m in value){
-        int isExist=-1;
-        for(int i=0;i<arrCourseList.length;i++){
-           if(m.subject.name==arrCourseList[i].courseName){
-             isExist=i;
-             break;
-           }
-        }
-        if(isExist==-1){
-          var coursM=CourseSelectionModel();
-          coursM.arrCourse.add(m);
-          coursM.courseName=m.subject.name;
-          arrCourseList.add(coursM);
-        }else{
-          arrCourseList[isExist].arrCourse.add(m);
-        }
-      }
-
-
-    } finally {
-      childLoadProcess(false);
-    }
-    // notifyChildrens();
-  }*/
 
   var isBack = false.obs;
 
