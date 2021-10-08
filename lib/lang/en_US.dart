@@ -80,5 +80,6 @@ const Map<String, String> en_US = {
   'change_language': 'Change Language',
   'select_study_level': 'Select your Study Level',
   'select_child_to_see_booking': 'Select a child to see its bookings',
-  'add_child_a': 'Add child'
+  'add_child_a': 'Add child',
+  'select_a_child_reservation': 'Please select a child to make a reservation'
 };

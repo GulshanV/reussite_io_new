@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info/package_info.dart';
 import 'package:reussite_io_new/config/ps_color.dart';
 import 'package:reussite_io_new/routes/app_routes.dart';
 import 'package:share/share.dart';
 
-class SupportPage extends StatelessWidget {
+class SupportPage extends StatefulWidget {
+
+  @override
+  _SupportPage createState()=>_SupportPage();
+}
+class _SupportPage extends State<SupportPage> {
+
+
+   String buildNumber;
+  getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String appName = packageInfo.appName;
+    String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+     buildNumber = packageInfo.buildNumber;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +160,7 @@ class SupportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                '2021 - v.1.0.2',
+                '2021 - v.${buildNumber??''}',
                 style: GoogleFonts.notoSans(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -169,4 +188,13 @@ class SupportPage extends StatelessWidget {
       ),
     );
   }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getVersion();
+  }
+
+
 }

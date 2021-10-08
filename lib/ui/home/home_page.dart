@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -32,8 +34,8 @@ class _HomePage extends State<HomePage> {
             body: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.only(
-                      top: 50, bottom: 15, right: 20, left: 20),
+                  padding:  EdgeInsets.only(
+                      top:Platform.isIOS?35:50, bottom: 15, right: 20, left: 20),
                   child: Row(
                     children: [
                       InkWell(

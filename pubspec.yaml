@@ -45,6 +45,7 @@ dependencies:
   alt_http:
   url_launcher:
   flutter_libphonenumber:
+  package_info:
 
 dev_dependencies:
   flutter_test:

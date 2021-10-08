@@ -114,7 +114,7 @@ class _MobileWidget extends State<MobileWidget> {
                     fontStyle: FontStyle.normal,
                     color: PsColors.black,
                     fontSize: 16),
-                keyboardType: TextInputType.phone,
+                keyboardType: const TextInputType.numberWithOptions(signed: true),
                 autovalidateMode: AutovalidateMode.always,
                 decoration: InputDecoration(
                     hintText: 'mobile_number'.tr,
