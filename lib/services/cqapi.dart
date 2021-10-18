@@ -67,11 +67,11 @@ class CQAPI {
   static Future<List<ScheduleModel>> getScheduleAll(String grade) async {
     DateTime currnt = DateTime.now().add(Duration(days: -1));
     var s = DateFormat('MM/dd/yyyy').format(currnt);
-    var startSch = '&startDate=$s 00:00:00 -0500';
+    var startSch = '&startDate=$s 00:00:00 -0000';
     // 01/01/2010
 
     var url = 'schedule?size=300$startSch';
-    if (grade.length > 0) {
+    if (grade.trim().length > 0) {
       url = url + '&grades=$grade';
     }
     var response = await RequestApi.get(url);

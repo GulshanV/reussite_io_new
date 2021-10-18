@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:get/get.dart';
@@ -287,40 +288,41 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                             .split(' ');
                                         return Row(
                                           children: [
-                                            Text.rich(
-                                              TextSpan(
-                                                text:
-                                                    '${time[0].replaceAll(new RegExp(r'^0+(?=.)'), '')}',
-                                                style: GoogleFonts.notoSans(
-                                                  fontWeight: FontWeight.w300,
-                                                  color: PsColors.meetLinkColor,
-                                                  fontSize: 15,
-                                                ),
-                                                children: [
-                                                  WidgetSpan(
-                                                    child: Transform.translate(
-                                                      offset: const Offset(
-                                                          0.0, -7.0),
-                                                      child: Text(
-                                                        time.length > 1
-                                                            ? time[1]
-                                                            : '',
-                                                        style: GoogleFonts
-                                                            .notoSans(
-                                                          fontWeight: FontWeight.w500,
-                                                          color: PsColors.meetLinkColor,
-                                                          fontSize: 08,
+                                            SizedBox(
+                                              width: 60,
+                                              child:Text.rich(
+                                                TextSpan(
+                                                  text:
+                                                  '${time[0].replaceAll(new RegExp(r'^0+(?=.)'), '')}',
+                                                  style: GoogleFonts.notoSans(
+                                                    fontWeight: FontWeight.w300,
+                                                    color: PsColors.meetLinkColor,
+                                                    fontSize: 15,
+                                                  ),
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Transform.translate(
+                                                        offset: const Offset(
+                                                            0.0, -7.0),
+                                                        child: Text(
+                                                          time.length > 1
+                                                              ? time[1]
+                                                              : '',
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                            fontWeight: FontWeight.w500,
+                                                            color: PsColors.meetLinkColor,
+                                                            fontSize: 08,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              // textAlign: TextAlign.start,
+                                                  ],
+                                                ),
+                                                // textAlign: TextAlign.start,
+                                              )
                                             ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
+
                                             Expanded(
                                                 child: InkWell(
                                                   onTap:(){
@@ -365,42 +367,43 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                                         var isbooking=widget.controller.arrSubjectList[index].isBooking;
                                         return Row(
                                           children: [
-                                            Text.rich(
-                                              TextSpan(
-                                                text:
-                                                    '${time[0].replaceAll(new RegExp(r'^0+(?=.)'), '')}',
-                                                style: GoogleFonts.notoSans(
-                                                  fontWeight: FontWeight.w300,
-                                                  color: PsColors.meetLinkColor,
-                                                  fontSize: 15,
-                                                ),
-                                                children: [
-                                                  WidgetSpan(
-                                                    child: Transform.translate(
-                                                      offset: const Offset(
-                                                          0.0, -7.0),
-                                                      child: Text(
-                                                        time.length > 1
-                                                            ? time[1]
-                                                            : '',
-                                                        style: GoogleFonts
-                                                            .notoSans(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: PsColors
-                                                              .meetLinkColor,
-                                                          fontSize: 08,
+                                            SizedBox(
+                                              width: 60,
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text:
+                                                      '${time[0].replaceAll(new RegExp(r'^0+(?=.)'), '')}',
+                                                  style: GoogleFonts.notoSans(
+                                                    fontWeight: FontWeight.w300,
+                                                    color: PsColors.meetLinkColor,
+                                                    fontSize: 15,
+                                                  ),
+                                                  children: [
+                                                    WidgetSpan(
+                                                      child: Transform.translate(
+                                                        offset: const Offset(
+                                                            0.0, -7.0),
+                                                        child: Text(
+                                                          time.length > 1
+                                                              ? time[1]
+                                                              : '',
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: PsColors
+                                                                .meetLinkColor,
+                                                            fontSize: 08,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
+                                                // textAlign: TextAlign.start,
                                               ),
-                                              // textAlign: TextAlign.start,
                                             ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
+
                                             Expanded(
                                                 child: InkWell(
                                               onTap: () async {
@@ -601,12 +604,18 @@ class _BookListWithCalender extends State<BookListWithCalender> {
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            '${widget.controller.arrStudent[widget.controller.index.value].conferenceUrl ?? ''}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: PsColors.black),
+                          child: InkWell(
+                            onTap: () {
+                              var str='${widget.controller.arrStudent[widget.controller.index.value].conferenceUrl ?? ''}';
+                              Clipboard.setData(ClipboardData(text: str));
+                            },
+                            child: Text(
+                              '${widget.controller.arrStudent[widget.controller.index.value].conferenceUrl ?? ''}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                  color: PsColors.black),
+                            ),
                           ),
                         ),
                         InkWell(

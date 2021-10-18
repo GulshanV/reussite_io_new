@@ -306,14 +306,20 @@ class _EditChild extends State<EditChild> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Expanded(
-                                        child: Text(
+                                        child: InkWell(
+                                          onTap: () {
+                                            var str='${controller.student.value.conferenceUrl ?? ''}';
+                                            Clipboard.setData(ClipboardData(text: str));
+                                          },
+                                          child: Text(
                                       'meet.appui.io/${controller.student.value.conferenceUrl ?? ''}',
                                       style: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w500,
-                                          color: PsColors.meetLinkColor,
-                                          fontSize: 12,
-                                          decoration: TextDecoration.underline),
-                                    )),
+                                            fontWeight: FontWeight.w500,
+                                            color: PsColors.meetLinkColor,
+                                            fontSize: 12,
+                                            decoration: TextDecoration.underline),
+                                    ),
+                                        )),
                                     InkWell(
                                       onTap: () {
                                         Clipboard.setData(ClipboardData(

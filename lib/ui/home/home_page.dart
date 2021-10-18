@@ -40,6 +40,7 @@ class _HomePage extends State<HomePage> {
                     children: [
                       InkWell(
                         onTap: () {
+                          // controller.getSlot();
                           Get.offNamedUntil(Routes.MENU, (route) => true);
                         },
                         child: Container(

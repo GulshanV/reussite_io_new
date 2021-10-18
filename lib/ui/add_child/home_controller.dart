@@ -77,11 +77,12 @@ class HomeController extends GetxController{
     arrStudent.map((element) => grade.add(element.grade));
     final newList = grade.toSet().toList();
     final gr=newList.join('grade&');
-    var grad = 'grade&$gr';
+    var grad = '$gr';
     var value = await CQAPI.getScheduleAll(grad);
 
     List<ScheduleModel> data=[];
     for(var model in value){
+      int isDateSameIndex=-1;
       int isIndex=-1;
       bool alreadyExists=false;
       for(int index=0;index<data.length;index++){
@@ -93,10 +94,14 @@ class HomeController extends GetxController{
         ){
           isIndex=index;
           alreadyExists=true;
+        }else if(parent==child){
+          isDateSameIndex=index;
         }
       }
       if(!alreadyExists){
-      if(isIndex==-1){
+        if(isDateSameIndex!=-1&&isIndex==-1){
+          data[isDateSameIndex].arrMultiTime.add(model);
+        }else if(isIndex==-1){
         ScheduleModel m = ScheduleModel.empty();
         m.startDate= model.startDate;
         m.id= model.id;
@@ -107,6 +112,7 @@ class HomeController extends GetxController{
         data[isIndex].arrMultiTime.add(model);
       }
     }}
+
 
     arrAllSchedule(data);
     isLoading(false);
@@ -156,18 +162,13 @@ class HomeController extends GetxController{
       }
 
       for(var model in arrAllSchedule){
-       print(model.startDate);
-        int isIndex=-1;
-        String parent=model.startDate.toString().split(' ')[0];
-        for(int index=0;index<list.length;index++){
+       // print(model.startDate);
 
-          String child=list[index].startDate.toString().split(' ')[0];
-          if(parent==child){
-            isIndex=index;
-          }
-        }
+        // String parent=mmm.startDate.toString().split(' ')[0];
+
 
         for(var mmm in model.arrMultiTime){
+          int isIndex=-1;
           BookingModel nbModel=BookingModel.empty();
           var sM=ScheduleModel.empty();
           sM.startDate=mmm.startDate;
@@ -176,6 +177,14 @@ class HomeController extends GetxController{
           sM.course.name=mmm.course.subject.name;
           nbModel.schedule=sM;
           nbModel.isBooking=false;
+          String parent=mmm.startDate.toString().split(' ')[0];
+          for(int index=0;index<list.length;index++){
+
+            String child=list[index].startDate.toString().split(' ')[0];
+            if(parent==child){
+              isIndex=index;
+            }
+          }
 
           if(isIndex==-1){
             BookingModel mm=BookingModel.empty();
@@ -215,6 +224,7 @@ class HomeController extends GetxController{
       arrBooking(list);
       arrSubjectList(list);
       isLoadingSlot(false);
+      getSlot();
     }
 
   }
